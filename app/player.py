@@ -1,3 +1,3 @@
 class Player:
-    def __init__(self):
-        self.marker = "x"
+    def __init__(self, marker):
+        self.marker = marker

@@ -9,4 +9,3 @@ class Game:
         self.board = Board()
         self.players = [Player(player1), Player(player2)]
 
-

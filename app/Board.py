@@ -5,4 +5,3 @@ class Board:
     def mark_space(self, space, marker):
         if isinstance(self.spaces[space], int):
             self.spaces[space] = marker
-

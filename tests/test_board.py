@@ -14,3 +14,4 @@ def test_board_does_not_remark_space():
     board.mark_space(1, "x")
     board.mark_space(1, "o")
     assert board.spaces[1] == "x"
+

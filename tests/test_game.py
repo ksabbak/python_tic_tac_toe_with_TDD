@@ -14,7 +14,7 @@ def test_game_is_marked_over_when_board_is_filled():
     while i < len(game.board.spaces):
         game.board.mark_space(i, "X")
         i += 1
-    assert game.game_is_over
+    assert game.is_over
 
 #PLAYERS
 def test_game_has_two_players():

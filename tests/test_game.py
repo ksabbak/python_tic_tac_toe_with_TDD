@@ -11,3 +11,9 @@ def test_game_has_board():
 #PLAYERS
 def test_game_has_two_players():
     assert len(Game().players) == 2
+
+def test_player_one_has_marker_x():
+    assert Game().players[0].marker == "x"
+
+def test_player_two_has_marker_o():
+    assert Game().players[1].marker == "o"

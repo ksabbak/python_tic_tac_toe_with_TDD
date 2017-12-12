@@ -6,3 +6,8 @@ class Board:
         if isinstance(self.spaces[space], int):
             self.spaces[space] = marker
 
+    def is_full(self):
+        for space in self.spaces:
+            if isinstance(space, int): return False 
+        return True
+

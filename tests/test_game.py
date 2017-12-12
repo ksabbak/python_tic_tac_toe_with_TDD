@@ -10,7 +10,7 @@ def test_game_has_board():
 
 def test_game_is_marked_over_when_board_is_filled():
     game = Game()
-    for space in game.board.spaces
+    for space in game.board.spaces:
         game.board.mark_space(space, "X")
     assert game.game_is_over
 

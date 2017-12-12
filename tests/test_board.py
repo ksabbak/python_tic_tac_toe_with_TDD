@@ -15,3 +15,9 @@ def test_board_does_not_remark_space():
     board.mark_space(1, "o")
     assert board.spaces[1] == "x"
 
+def test_board_knows_when_full():
+    board = Board()
+    for space in board.spaces:
+        board.mark_space(space, "X")
+    assert board.is_full
+

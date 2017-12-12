@@ -17,9 +17,10 @@ def test_board_does_not_remark_space():
 
 def test_board_knows_when_full():
     board = Board()
+    assert not board.is_full()
     i = 0
     while i < len(board.spaces):
         board.mark_space(i, "X")
         i += 1
-    assert board.is_full
+    assert board.is_full()
 

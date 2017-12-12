@@ -1,4 +1,4 @@
-from ..app.game import Game
+from ..app.__init__ import Board
 
     
 def test_board_has_9_spaces():

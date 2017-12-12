@@ -1,5 +1,4 @@
-from ..app.game import Game
-
+from ..app.__init__ import Game
 
 # GENERAL
 def test_there_is_a_game():

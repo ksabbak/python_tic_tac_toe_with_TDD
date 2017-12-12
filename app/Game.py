@@ -10,4 +10,4 @@ class Game:
         self.players = [Player(player1), Player(player2)]
 
     def is_over(self):
-        return self.board.is_full
+        return self.board.is_full()

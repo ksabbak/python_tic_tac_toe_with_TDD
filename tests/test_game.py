@@ -10,6 +10,14 @@ def game():
 def test_there_is_a_game(game):
     assert game is not None
 
+def test_game_over_for_horizontal_win(game):
+    game.board.mark_space(0, "x")
+    game.board.mark_space(1, "x")
+    game.board.mark_space(2, "x")
+    print(game.is_over())
+    assert game.is_over()
+
+
 # BOARD
 def test_game_has_board(game):
     assert game.board is not None
@@ -19,7 +27,7 @@ def test_game_is_marked_over_when_board_is_filled(game):
     while i < len(game.board.spaces):
         game.board.mark_space(i, "X")
         i += 1
-    assert game.is_over
+    assert game.is_over()
 
 #PLAYERS
 def test_game_has_two_players(game):

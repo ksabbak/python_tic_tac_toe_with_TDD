@@ -24,5 +24,10 @@ class Game:
         return False
 
     def _vertical_win_conditions(self):
-        return (self.board.spaces[0] == self.board.spaces[3] 
-                and self.board.spaces[0] == self.board.spaces[6])
+        i = 0
+        while i < ( len(self.board.spaces) / 3):
+            winner = (self.board.spaces[i] == self.board.spaces[i + 3] 
+                       and self.board.spaces[i] == self.board.spaces[i+6])
+            if winner: return True
+            i += 1
+        return False

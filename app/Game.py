@@ -10,4 +10,5 @@ class Game:
         self.players = [Player(player1), Player(player2)]
 
     def is_over(self):
-        return self.board.is_full()
+        winner = (self.board.spaces[0] == self.board.spaces[1] and self.board.spaces[0] == self.board.spaces[2])
+        return self.board.is_full() or winner

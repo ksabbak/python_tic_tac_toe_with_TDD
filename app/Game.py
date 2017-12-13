@@ -11,7 +11,7 @@ class Game:
         self.players = [Player(player1), Player(player2)]
 
     def is_over(self):
-        return self.board.is_full() or self.winner()
+        return not not (self.board.is_full() or self.winner())
 
     def winner(self):
         winner = (self._horizontal_win_conditions() 

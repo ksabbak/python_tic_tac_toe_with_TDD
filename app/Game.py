@@ -16,6 +16,9 @@ class Game:
                   or self._diagonal_win_conditions())
         return self.board.is_full() or winner
 
+    def winner(self):
+        return self.is_over()
+
     def _horizontal_win_conditions(self):
         return self._calculate_win_condition(1, self.board.side_length)
         # i = 0
@@ -60,8 +63,7 @@ class Game:
             abs_i = int(math.fabs(i))
             winner = (self.board.spaces[abs_i] == self.board.spaces[i + addition] 
                        and self.board.spaces[abs_i] == self.board.spaces[i + 2*(addition)])
-            if winner: return True
+            if winner: return self.board.spaces[abs_i]
             i += incrementor
-        return False
 
 

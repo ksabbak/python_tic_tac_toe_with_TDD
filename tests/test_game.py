@@ -10,6 +10,12 @@ def game():
 def test_there_is_a_game(game):
     assert game is not None
 
+def test_game_knows_winner(game):
+    game.board.mark_space(0, "x")
+    game.board.mark_space(1, "x")
+    game.board.mark_space(2, "x")
+    assert game.winner() == "x"
+
 
 # Horizontal win ends game
 def test_game_over_for_horizontal_win_first_row(game):

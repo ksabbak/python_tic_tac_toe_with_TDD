@@ -11,7 +11,8 @@ class Game:
 
     def is_over(self):
         winner = (self._horizontal_win_conditions() 
-                  or self._vertical_win_conditions())
+                  or self._vertical_win_conditions()
+                  or self._diagonal_win_conditions())
         return self.board.is_full() or winner
 
     def _horizontal_win_conditions(self):
@@ -31,3 +32,7 @@ class Game:
             if winner: return True
             i += 1
         return False
+
+    def _diagonal_win_conditions(self):
+        return (self.board.spaces[0] == self.board.spaces[4] 
+                and self.board.spaces[0] == self.board.spaces[8])  

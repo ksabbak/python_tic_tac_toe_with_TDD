@@ -10,10 +10,17 @@ def game():
 def test_there_is_a_game(game):
     assert game is not None
 
-def test_game_over_for_horizontal_win(game):
+def test_game_over_for_horizontal_win_first_row(game):
     game.board.mark_space(0, "x")
     game.board.mark_space(1, "x")
     game.board.mark_space(2, "x")
+    print(game.is_over())
+    assert game.is_over()
+
+def test_game_over_for_horizontal_win_2nd_row(game):
+    game.board.mark_space(3, "x")
+    game.board.mark_space(4, "x")
+    game.board.mark_space(5, "x")
     print(game.is_over())
     assert game.is_over()
 

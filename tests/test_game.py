@@ -37,6 +37,12 @@ def test_game_over_for_vertical_win_first_col(game):
     game.board.mark_space(6, "x")
     assert game.is_over()
 
+    def test_game_over_for_horizontal_win_3nd_row(game):
+    game.board.mark_space(1, "x")
+    game.board.mark_space(4, "x")
+    game.board.mark_space(7, "x")
+    assert game.is_over()
+
 # BOARD
 def test_game_has_board(game):
     assert game.board is not None

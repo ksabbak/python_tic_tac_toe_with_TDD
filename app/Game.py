@@ -11,13 +11,13 @@ class Game:
         self.players = [Player(player1), Player(player2)]
 
     def is_over(self):
-        winner = (self._horizontal_win_conditions() 
-                  or self._vertical_win_conditions()
-                  or self._diagonal_win_conditions())
-        return self.board.is_full() or winner
+        return self.board.is_full() or self.winner()
 
     def winner(self):
-        return self.is_over()
+        winner = (self._horizontal_win_conditions() 
+          or self._vertical_win_conditions()
+          or self._diagonal_win_conditions())
+        return winner
 
     def _horizontal_win_conditions(self):
         return self._calculate_win_condition(1, self.board.side_length)

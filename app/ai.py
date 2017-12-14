@@ -1,4 +1,7 @@
 from .player import Player
+from .board import Board
 
 class AI(Player):
-    pass
+    
+    def get_move(self, board):
+        pass

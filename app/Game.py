@@ -9,6 +9,9 @@ class Game:
         self.board = Board()
         self.players = [Player(player1), Player(player2)]
 
+    def play(self):
+        print("Welcome!")
+
     def is_over(self):
         return not not (self.board.is_full() or self.winner())
 

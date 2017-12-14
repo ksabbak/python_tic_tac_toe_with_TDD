@@ -6,4 +6,4 @@ class Player:
         #This is not single responsibility.
         print("Where would you like to move?")
         move = input()
-        return move
+        return int(move)

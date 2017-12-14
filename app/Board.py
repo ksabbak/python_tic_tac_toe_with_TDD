@@ -13,4 +13,3 @@ class Board:
         for space in self.spaces:
             if isinstance(space, int): return False 
         return True
-

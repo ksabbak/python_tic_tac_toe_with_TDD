@@ -17,4 +17,4 @@ def test_players_have_markers():
 # @patch('builtins.print', return_value="")
 def test_get_move(playerx):
     with unittest.mock.patch('builtins.input', return_value='7'):
-        assert playerx.get_move() == "7"
+        assert playerx.get_move() == 7

@@ -32,4 +32,4 @@ def test_ai_can_stop_immediate_loss(ai, board):
 
 def test_ai_can_determine_opponent_marker(ai, board):
     board.mark_space(0, "o")
-    assert ai.deduce_opponent_marker(board) == "o"
+    assert ai._deduce_opponent_marker(board) == "o"

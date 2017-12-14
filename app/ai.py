@@ -20,3 +20,8 @@ class AI(Player):
     def _stop_immidate_loss(self):
         pass
 
+    def _deduce_opponent_marker(self, board):
+        for space in range(0, len(board.spaces)):
+            if (not board.space_is_empty(space) 
+                and (board.spaces[space] != self.marker)):
+                return board.spaces[space]

@@ -12,20 +12,20 @@ class AI(Player):
         return move
 
     def _get_winning_move(self, board):
-        for space in range(0, len(board.spaces)):
-            copy_board = copy(board)
-            copy_board.mark_space(space, self.marker)
-            if winner(copy_board) == self.marker: return space
+        return self._make_immediate_vital_move(board, self.marker)
 
     def _stop_immidate_loss(self, board):
         opponent_marker = self._deduce_opponent_marker(board)
-        for space in range(0, len(board.spaces)):
-            copy_board = copy(board)
-            copy_board.mark_space(space, opponent_marker)
-            if winner(copy_board) == opponent_marker: return space
+        return self._make_immediate_vital_move(board, opponent_marker)
 
     def _deduce_opponent_marker(self, board):
         for space in range(0, len(board.spaces)):
             if (not board.space_is_empty(space) 
                 and (board.spaces[space] != self.marker)):
                 return board.spaces[space]
+
+    def _make_immediate_vital_move(self, board, marker):
+        for space in range(0, len(board.spaces)):
+            copy_board = copy(board)
+            copy_board.mark_space(space, marker)
+            if winner(copy_board) == marker: return space

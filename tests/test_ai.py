@@ -14,3 +14,8 @@ def tests_ai_is_a_player():
 
 def tests_ai_can_move_without_input(ai, board):
     assert ai.get_move(board) in range(0, 9)
+
+def tests_ai_moves_to_empty_spot(ai, board):
+    for i in range(0, 8):
+        board.mark_space(i, "x")
+    assert ai.get_move(board) == 8

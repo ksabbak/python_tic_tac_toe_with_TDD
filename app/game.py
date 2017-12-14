@@ -11,6 +11,7 @@ class Game:
 
     def play(self):
         print("Welcome!")
+        print("this is tic-tac-toe!")
 
     def is_over(self):
         return not not (self.board.is_full() or self.winner())

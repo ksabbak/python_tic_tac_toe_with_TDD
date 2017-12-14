@@ -17,7 +17,7 @@ def test_play_prints_proper_output(game):
     sys.stdout = capturedOutput
     game.play()
     sys.stdout = sys.__stdout__
-    assert capturedOutput.getvalue() == "Welcome!\n"
+    assert "Welcome!" in capturedOutput.getvalue()
 
 def test_game_knows_winner(game):
     game.board.mark_space(0, "x")

@@ -1,6 +1,11 @@
+import pytest
+import unittest
 from unittest.mock import patch
+# from unittest import TestCase
 
 from ..app.__init__ import Player
+
+# class TestPlayer(TestCase):
 
 @pytest.fixture()
 def playerx():
@@ -9,6 +14,7 @@ def playerx():
 def test_players_have_markers():
     assert Player("?").marker is not None
 
-@patch('player.get_input', return_value=7)
+# @patch('builtins.input', return_value="7")
 def test_get_move(playerx):
-    assert playerx.get_move() == 7
+    with unittest.mock.patch('builtins.input', return_value='7'):
+        assert playerx.get_move() == "7"

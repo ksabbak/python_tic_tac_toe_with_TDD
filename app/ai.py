@@ -6,4 +6,6 @@ from .board import Board
 class AI(Player):
     
     def get_move(self, board):
-        return randint(0,8)
+        while True:
+            move = randint(0,8) 
+            if board.space_is_empty(move): return move

@@ -12,6 +12,7 @@ def game():
 def test_there_is_a_game(game):
     assert game is not None
 
+
 # def test_play_prints_proper_output(game):
 #     capturedOutput = io.StringIO()
 #     sys.stdout = capturedOutput

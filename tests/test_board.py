@@ -28,5 +28,5 @@ def test_board_knows_when_full(board):
         i += 1
     assert board.is_full()
 
-def test_board_pretty_print(board):
+def test_board_to_str(board):
      assert board.pretty_print() == " 0 | 1 | 2 \n===+===+===\n 3 | 4 | 5 \n===+===+===\n 6 | 7 | 8 \n" 

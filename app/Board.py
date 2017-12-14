@@ -14,5 +14,5 @@ class Board:
             if isinstance(space, int): return False 
         return True
 
-    def pretty_print(self):
+    def to_str(self):
          return(" %s | %s | %s \n===+===+===\n %s | %s | %s \n===+===+===\n %s | %s | %s \n" % self.spaces)

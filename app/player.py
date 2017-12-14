@@ -4,6 +4,6 @@ class Player:
 
     def get_move(self):
         #This is not single responsibility.
-        print("Where would you like to move?")
+        print("Where would you like to move, Player %s" % self.marker)
         move = input()
         return int(move)

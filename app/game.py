@@ -12,12 +12,15 @@ class Game:
     def play(self):
         print("Welcome!")
         print("this is tic-tac-toe!")
+        i = 0
         while not self.is_over():
-            move = self.players[0].get_move()
-            self.board.mark_space(move, self.players[0].marker)
-            move = self.players[1].get_move()
-            self.board.mark_space(move, self.players[1].marker)
+            current_player = self.players[i%2]
+            move = current_player.get_move()
+            self.board.mark_space(move, current_player.marker)
+            print(self.board.to_str())
+            i += 1
         print("Okay, the game is over")
+        if self.winner(): print("%s wins!" % self.winner())
 
     def is_over(self):
         return not not (self.board.is_full() or self.winner())

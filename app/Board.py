@@ -1,6 +1,6 @@
 class Board:
     def __init__(self):
-        self.spaces = (1, 2, 3, 4, 5, 6, 7, 8, 9)
+        self.spaces = (0, 1, 2, 3, 4, 5, 6, 7, 8)
         self.side_length = int(len(self.spaces) ** (1/2))
 
     def mark_space(self, space, marker):
@@ -13,3 +13,6 @@ class Board:
         for space in self.spaces:
             if isinstance(space, int): return False 
         return True
+
+    def pretty_print(self):
+         return(" %s | %s | %s \n===+===+===\n %s | %s | %s \n===+===+===\n %s | %s | %s \n" % self.spaces)

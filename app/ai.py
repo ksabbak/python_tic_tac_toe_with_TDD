@@ -17,5 +17,6 @@ class AI(Player):
             copy_board.mark_space(space, self.marker)
             if winner(copy_board) == self.marker: return space
 
-
+    def _stop_immidate_loss(self):
+        pass
 

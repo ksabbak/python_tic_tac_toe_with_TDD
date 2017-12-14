@@ -1,7 +1,6 @@
 import sys
 import math
 
-
 from .board import Board
 from .player import Player
 

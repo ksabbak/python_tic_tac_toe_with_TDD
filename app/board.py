@@ -14,5 +14,8 @@ class Board:
             if isinstance(space, int): return False 
         return True
 
+    def space_is_empty(self, space):
+        return self.spaces[space] == space
+
     def to_str(self):
          return(" %s | %s | %s \n===+===+===\n %s | %s | %s \n===+===+===\n %s | %s | %s \n" % self.spaces)

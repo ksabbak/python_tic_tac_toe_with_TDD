@@ -19,3 +19,8 @@ def tests_ai_moves_to_empty_spot(ai, board):
     for i in range(1, 9):
         board.mark_space(i, "x")
     assert ai.get_move(board) == 0
+
+def test_ai_can_make_winning_move(ai, board):
+    board.mark_space(0, "x")
+    board.mark_space(1, "x")
+    assert ai.get_move(board) == 2

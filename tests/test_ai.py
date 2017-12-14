@@ -24,3 +24,8 @@ def test_ai_can_make_winning_move(ai, board):
     board.mark_space(0, "x")
     board.mark_space(1, "x")
     assert ai.get_move(board) == 2
+
+def test_ai_can_stop_immediate_loss(ai, board):
+    board.mark_space(3, "o")
+    board.mark_space(4, "o")
+    assert ai.get_move(board) == 5

@@ -8,10 +8,10 @@ from .win_conditions import winner
 class AI(Player):
     
     def get_move(self, board):
-        move = self.get_winning_move(board) or 0
+        move = self._get_winning_move(board) or 0
         return move
 
-    def get_winning_move(self, board):
+    def _get_winning_move(self, board):
         for space in range(0, len(board.spaces)):
             copy_board = copy(board)
             copy_board.mark_space(space, self.marker)

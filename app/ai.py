@@ -3,7 +3,7 @@ from copy import copy
 
 from .player import Player
 from .board import Board
-from .win_conditions import winner
+from .end_conditions import winner, is_over
 
 class AI(Player):
     

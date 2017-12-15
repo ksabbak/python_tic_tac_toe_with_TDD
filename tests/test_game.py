@@ -16,13 +16,6 @@ def test_there_is_a_game(game):
 def test_game_has_board(game):
     assert game.board is not None
 
-def test_game_is_marked_over_when_board_is_filled(game):
-    i = 0
-    while i < len(game.board.spaces):
-        game.board.mark_space(i, "X")
-        i += 1
-    assert game.is_over()
-
 #PLAYERS
 def test_game_has_two_players(game):
     assert len(game.players) == 2

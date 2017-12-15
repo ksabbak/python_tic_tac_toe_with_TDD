@@ -25,3 +25,6 @@ def _calculate_win_conditions(board, addition, incrementor):
                    and board.spaces[abs_i] == board.spaces[i + 2*(addition)])
         if winner: return board.spaces[abs_i]
         i += incrementor
+
+def is_over(board):
+    return not not (board.is_full() or winner(board))

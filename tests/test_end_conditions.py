@@ -3,11 +3,18 @@ import pytest
 import io
 
 from ..app.__init__ import Game
-from ..app.win_conditions import winner
+from ..app.end_conditions import winner, is_over
 
 @pytest.fixture()
 def game():
     return Game()
+
+def test_game_is_marked_over_when_board_is_filled(game):
+    i = 0
+    while i < len(game.board.spaces):
+        game.board.mark_space(i, "X")
+        i += 1
+    assert is_over(game.board)
 
 def test_game_knows_winner(game):
     game.board.mark_space(0, "x")

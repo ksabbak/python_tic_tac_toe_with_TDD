@@ -25,7 +25,7 @@ class AI(Player):
                 return board.spaces[space]
 
     def _make_immediate_vital_move(self, board, marker):
-        for space in range(0, len(board.spaces)):
+        for space in board.empty_spaces():
             copy_board = copy(board)
             copy_board.mark_space(space, marker)
             if winner(copy_board) == marker: return space

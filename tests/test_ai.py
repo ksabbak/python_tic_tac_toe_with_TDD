@@ -34,3 +34,6 @@ def test_ai_can_determine_opponent_marker(ai, board):
     board.mark_space(0, "o")
     assert ai._deduce_opponent_marker(board) == "o"
 
+def test_ai_1st_move_when_2nd_is_middle_space_if_open(ai, board):
+    board.mark_space(3, "o")
+    assert ai.get_move(board) == 4

@@ -8,7 +8,10 @@ from .win_conditions import winner
 class AI(Player):
     
     def get_move(self, board):
-        move = self._get_winning_move(board) or self._stop_immidate_loss(board) or 0
+        move = self._get_winning_move(board) 
+        move = move or self._stop_immidate_loss(board) 
+        move = move or self._make_good_choice(board) 
+        move = move or 0
         return move
 
     def _get_winning_move(self, board):
@@ -29,3 +32,8 @@ class AI(Player):
             copy_board = copy(board)
             copy_board.mark_space(space, marker)
             if winner(copy_board) == marker: return space
+
+    def _make_good_choice(self, board):
+        if ((len(board.empty_spaces()) == len(board.spaces) - 1) 
+            and board.space_is_empty(4)):
+            return 4

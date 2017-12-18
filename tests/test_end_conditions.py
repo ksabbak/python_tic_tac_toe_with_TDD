@@ -22,6 +22,12 @@ def test_game_knows_winner(game):
     game.board.mark_space(2, "x")
     assert winner(game.board) == "x"
 
+def test_game_knows_winner_mixed_board(game):
+    game.board.mark_space(0, "x")
+    game.board.mark_space(1, "x")
+    game.board.mark_space(2, "o")
+    assert winner(game.board) is None
+
 # Horizontal win ends game
 def test_game_over_for_horizontal_win_first_row(game):
     game.board.mark_space(0, "x")

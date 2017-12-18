@@ -10,8 +10,8 @@ class AI(Player):
     
     def get_move(self, board):
         self.opponent_marker = self._deduce_opponent_marker(board) or chr(ord(self.marker) + 1)
-        # self.move_weights = {}
-        # self._get_move_weights(board)
+        self.move_weights = {}
+        self._get_move_weights(board)
         return self._make_best_choice(board)
 
 
@@ -51,27 +51,6 @@ class AI(Player):
             self.move_weights[space] = self._best_move(board, space)
         print(self.move_weights)
 
-
-    # def _smart_move(self, board):
-    #     if board.is_full(): 
-    #         print("+0")
-    #         return 0
-    #     for space in board.empty_spaces():
-    #         boardcopy = copy(board)
-    #         weight = 0
-    #         board.mark_space(space, self.marker)
-    #         if winner(board) == self.marker: 
-    #             print("+10")
-    #             return 10
-    #         for open_space in board.empty_spaces():
-    #             secondcopy = copy(board)
-    #             secondcopy.mark_space(open_space, self.opponent_marker)
-    #             if winner(secondcopy) == self.opponent_marker: 
-    #                 print("-10")
-    #                 return -10
-    #             weight += self._smart_move(secondcopy) 
-    #         return weight
-
     def _best_move(self, board, set_move=None):
         if board.is_full():
             return 0
@@ -87,13 +66,13 @@ class AI(Player):
             if self._current_spaces(boardcopy, self.marker) <= self._current_spaces(boardcopy, self.opponent_marker):
                 boardcopy.mark_space(move, self.marker)
                 if winner(boardcopy):
-                    return 10
+                    weight += 10
                 else:
                     weight += self._best_move(boardcopy)
             else:
                 boardcopy.mark_space(move, self.opponent_marker)
                 if winner(boardcopy):
-                    return -10
+                    weight += -10
                 else:
                     weight += self._best_move(boardcopy)
         return weight

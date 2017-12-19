@@ -1,6 +1,4 @@
 from random import randint, choice
-from copy import copy
-import pdb
 
 from .player import Player
 from .board import Board

@@ -12,8 +12,19 @@ class AI(Player):
         self.opponent_marker = self._deduce_opponent_marker(board) or chr(ord(self.marker) + 1)
         self.move_weights = {}
         self._get_move_weights(board)
-        return self._make_best_choice(board)
+        return self._pick_the_best_move()
 
+    def _pick_the_best_move(self):
+        best_spaces = []
+        most_weight = 0
+        for space, weight in self.move_weights.items():
+            if most_weight == weight:
+                best_spaces.append(space)
+            elif most_weight < weight:
+                most_weight = weight 
+                best_spaces = [space]
+        print(best_spaces)
+        return choice(best_spaces)
 
     def _get_winning_move(self, board):
         return self._make_immediate_vital_move(board, self.marker)
@@ -47,19 +58,22 @@ class AI(Player):
                 return board.spaces[space]
 
     def _get_move_weights(self, board):
+        print(board.to_str())
         for space in board.empty_spaces():
             self.move_weights[space] = self._best_move(board, space)
         print(self.move_weights)
 
-    def _best_move(self, board, set_move=None):
+    def _best_move(self, board, set_move=None, limit=0, zero_first=None):
         if board.is_full():
             return 0
         weight = 0
+        limit = limit + 1
         board2 = self._copy_the_board(board)
-        if set_move:
+        if set_move is not None:
+            if set_move == 0: zero_first = True
             board2.mark_space(set_move, self.marker)
             if winner(board2): 
-                return 10
+                return 100000000000
         moves = board2.empty_spaces()
         for move in moves:
             boardcopy = self._copy_the_board(board2)
@@ -68,13 +82,13 @@ class AI(Player):
                 if winner(boardcopy):
                     weight += 10
                 else:
-                    weight += self._best_move(boardcopy)
+                    weight += self._best_move(boardcopy, limit=limit, zero_first=zero_first)
             else:
                 boardcopy.mark_space(move, self.opponent_marker)
                 if winner(boardcopy):
                     weight += -10
                 else:
-                    weight += self._best_move(boardcopy)
+                    weight += self._best_move(boardcopy, limit=limit, zero_first=zero_first)
         return weight
 
     def _copy_the_board(self, board):

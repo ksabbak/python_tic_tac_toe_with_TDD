@@ -34,9 +34,9 @@ def test_ai_can_stop_immediate_loss(ai, board):
     print("------LOSING MOVE--------")
     assert ai.get_move(board) == 5
 
-def test_ai_1st_move_when_1st_is_corner(ai, board):
+def test_ai_1st_move_when_1st_is_center(ai, board):
     print("------1st MOVE--------")
-    assert ai.get_move(board) in [0, 3, 6, 8]
+    assert ai.get_move(board) == 4
 
 def test_ai_1st_move_when_2nd_is_middle_space_if_open(ai, board):
     board.mark_space(3, "o")

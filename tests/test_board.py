@@ -38,7 +38,9 @@ def test_board_to_str(board):
 
 def test_board_knows_all_empty_spaces(board):
     assert board.empty_spaces() == list(board.spaces)
+    assert len(board.empty_spaces()) == 9
     board.mark_space(1, "!")
     expected_spaces = list(board.spaces)
     expected_spaces.remove("!")
     assert board.empty_spaces() == expected_spaces
+    assert len(board.empty_spaces()) == 8

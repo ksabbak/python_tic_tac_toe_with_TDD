@@ -15,15 +15,18 @@ def _vertical_win_conditions(board):
 
 
 def _diagonal_win_conditions(board):
-    return _calculate_win_conditions(board, board.side_length+1 , -2)
+    win =  (board.spaces[0] == board.spaces[4] 
+            and board.spaces[0] == board.spaces[8])
+    win = (win or (board.spaces[2] == board.spaces[4] 
+                    and board.spaces[2] == board.spaces[6]))
+    if win: return board.spaces[4]
 
 def _calculate_win_conditions(board, addition, incrementor):
     i = 0
-    while int(math.fabs(i)) < math.ceil(len(board.spaces) / addition):
-        abs_i = int(math.fabs(i))
-        winner = (board.spaces[abs_i] == board.spaces[i + addition] 
-                   and board.spaces[abs_i] == board.spaces[i + 2*(addition)])
-        if winner: return board.spaces[abs_i]
+    while i < (len(board.spaces) / addition):
+        winner = (board.spaces[i] == board.spaces[i + addition] 
+                   and board.spaces[i] == board.spaces[i + 2*(addition)])
+        if winner: return board.spaces[i]
         i += incrementor
 
 def is_over(board):

@@ -43,6 +43,18 @@ def test_ai_1st_move_when_2nd_is_middle_space_if_open(ai, board):
     print("------2nd MOVE--------")
     assert ai.get_move(board) == 4
 
+def test_ai_prevents_opponent_from_fork_win(ai, board):
+    board.mark_space(0, "o")
+    board.mark_space(4, "x")
+    board.mark_space(8, "o")
+    assert ai.get_move(board) in [1, 3, 5, 7]
+
+def test_ai_prevents_opponent_from_fork_win_middle(ai, board):
+    board.mark_space(0, "o")
+    board.mark_space(4, "x")
+    board.mark_space(7, "o")
+    assert ai.get_move(board) not in [2, 1]
+
 def test_ai_can_determine_opponent_marker(ai, board):
     board.mark_space(0, "o")
     assert ai._deduce_opponent_marker(board) == "o"

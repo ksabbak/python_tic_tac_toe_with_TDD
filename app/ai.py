@@ -62,19 +62,14 @@ class AI(Player):
             self.move_weights[space] = self._best_move(board, space)
         print(self.move_weights)
 
-    def _best_move(self, board, set_move=None, limit=0, zero_first=None):
-        if board.is_full():
-            return 0
+    def _best_move(self, board, set_move=None):
+        if board.is_full(): return 0
         weight = 0
-        limit = limit + 1
         board2 = self._copy_the_board(board)
         if set_move is not None:
-            if set_move == 0: zero_first = True
             board2.mark_space(set_move, self.marker)
-            if winner(board2): 
-                return 100000000000
-        moves = board2.empty_spaces()
-        for move in moves:
+            if winner(board2): return 100000000000
+        for move in board2.empty_spaces():
             boardcopy = self._copy_the_board(board2)
             if self._current_spaces(boardcopy, self.marker) <= self._current_spaces(boardcopy, self.opponent_marker):
                 weight += self._calculate_move(boardcopy, move, self.marker, 10)

@@ -5,9 +5,9 @@ from .player import Player
 from .end_conditions import winner, is_over
 
 class Game:
-    def __init__(self, player1="x", player2="o"):
+    def __init__(self, player1=Player("x"), player2=Player("o")):
         self.board = Board()
-        self.players = [Player(player1), Player(player2)]
+        self.players = [player1, player2]
 
     def play(self):
         print("Welcome!")

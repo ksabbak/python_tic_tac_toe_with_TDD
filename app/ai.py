@@ -23,7 +23,6 @@ class AI(Player):
             elif most_weight < weight:
                 most_weight = weight 
                 best_spaces = [space]
-        print(best_spaces)
         return choice(best_spaces)
 
     def _get_winning_move(self, board):
@@ -78,18 +77,20 @@ class AI(Player):
         for move in moves:
             boardcopy = self._copy_the_board(board2)
             if self._current_spaces(boardcopy, self.marker) <= self._current_spaces(boardcopy, self.opponent_marker):
-                boardcopy.mark_space(move, self.marker)
-                if winner(boardcopy):
-                    weight += 10
-                else:
-                    weight += self._best_move(boardcopy, limit=limit, zero_first=zero_first)
+                weight += self._calculate_move(boardcopy, move, self.marker, 10)
             else:
-                boardcopy.mark_space(move, self.opponent_marker)
-                if winner(boardcopy):
-                    weight += -10
-                else:
-                    weight += self._best_move(boardcopy, limit=limit, zero_first=zero_first)
+                weight += self._calculate_move(boardcopy, move, self.opponent_marker, -10)
         return weight
+
+
+    def _calculate_move(self, board, move, marker, win_weight):
+        board.mark_space(move, marker)
+        if winner(board):
+            weight = win_weight
+        else:
+            weight = self._best_move(board)
+        return weight
+
 
     def _copy_the_board(self, board):
         new_board = Board()

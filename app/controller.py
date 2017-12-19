@@ -1,2 +1,3 @@
 class Controller:
-    pass
+    def run(self):
+        pass

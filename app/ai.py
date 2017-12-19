@@ -1,4 +1,5 @@
 from random import randint, choice
+from copy import copy
 
 from .player import Player
 from .board import Board

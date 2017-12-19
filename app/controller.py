@@ -10,6 +10,8 @@ class Controller:
         game_choice = input().strip()
         if game_choice in "1":
             return "Human vs. Human!"
-        else:
+        elif game_choice in "2":
             return "Human vs. Computer!"
+        else:
+            return "Computer vs. Computer!"
 

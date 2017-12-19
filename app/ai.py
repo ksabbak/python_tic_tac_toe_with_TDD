@@ -62,19 +62,26 @@ class AI(Player):
             self.move_weights[space] = self._best_move(board, space)
         print(self.move_weights)
 
-    def _best_move(self, board, set_move=None):
+    def _best_move(self, board, set_move=None, turn="self"):
         if board.is_full(): return 0
         weight = 0
         board2 = self._copy_the_board(board)
         if set_move is not None:
             board2.mark_space(set_move, self.marker)
+            turn = "other"
             if winner(board2): return 100000000000
         for move in board2.empty_spaces():
             boardcopy = self._copy_the_board(board2)
-            if self._current_spaces(boardcopy, self.marker) <= self._current_spaces(boardcopy, self.opponent_marker):
-                weight += self._calculate_move(boardcopy, move, self.marker, 10)
+            if self._current_spaces(boardcopy, self.marker) <= self._current_spaces(boardcopy, self.opponent_marker) and turn == "self":
+                if self._make_immediate_vital_move(boardcopy, self.marker) is not None:
+                    weight += 10
+                else:
+                    weight += self._calculate_move(boardcopy, move, self.marker, 10)
             else:
-                weight += self._calculate_move(boardcopy, move, self.opponent_marker, -10)
+                if self._make_immediate_vital_move(boardcopy, self.opponent_marker) is not None:
+                    weight -= 10
+                else:
+                    weight += self._calculate_move(boardcopy, move, self.opponent_marker, -10)
         return weight
 
 
@@ -83,7 +90,8 @@ class AI(Player):
         if winner(board):
             weight = win_weight
         else:
-            weight = self._best_move(board)
+            next_turn = "self" if win_weight < 0 else "other"
+            weight = self._best_move(board, turn=next_turn)
         return weight
 
 

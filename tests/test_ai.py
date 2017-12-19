@@ -30,6 +30,7 @@ def test_ai_can_make_winning_move(ai, board):
 
 def test_ai_can_stop_immediate_loss(ai, board):
     board.mark_space(3, "o")
+    board.mark_space(8, "x")
     board.mark_space(4, "o")
     print("------LOSING MOVE--------")
     assert ai.get_move(board) == 5

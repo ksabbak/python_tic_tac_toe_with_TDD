@@ -7,5 +7,9 @@ class Controller:
         print("  2. Human vs. Computer")
         print("  3. Computer vs. Computer")
         print("Please enter the number of your selection: ")
-        return "Human vs. Human!"
+        game_choice = input().strip()
+        if game_choice in "1":
+            return "Human vs. Human!"
+        else:
+            return "Human vs. Computer!"
 

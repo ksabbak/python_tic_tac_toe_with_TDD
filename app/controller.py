@@ -7,5 +7,5 @@ class Controller:
         print("  2. Human vs. Computer")
         print("  3. Computer vs. Computer")
         print("Please enter the number of your selection: ")
+        return "Human vs. Human!"
 
-            

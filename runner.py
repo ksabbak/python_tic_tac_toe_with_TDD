@@ -1,6 +1,5 @@
 import sys
 
-from app.__init__ import Game
+from app.controller import Controller
 
-game = Game()
-game.play()
+Controller().run()

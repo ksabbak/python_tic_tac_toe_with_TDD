@@ -1,17 +1,20 @@
+from .game import Game
+from .player import Player
+from .ai import AI
+from .view import print_intro_text, print_instructions
+
 class Controller:
     def run(self):
-        print("Welcome!")
-        print("this is tic-tac-toe!")
-        print("Here are your options: ")
-        print("  1. Human vs. Human")
-        print("  2. Human vs. Computer")
-        print("  3. Computer vs. Computer")
-        print("Please enter the number of your selection: ")
+        print_intro_text()
+        print_instructions()
         game_choice = input().strip()
+        game = None
         if game_choice in "1":
-            return "Human vs. Human!"
+            game = Game(Player("x"), Player("o"))
         elif game_choice in "2":
-            return "Human vs. Computer!"
+            game = Game.mixed_game({"player1" : Player("x"),  "player2" : AI("o")})
         else:
-            return "Computer vs. Computer!"
+            game = Game(AI("x"), AI("o"))
+        game.play()
+
 

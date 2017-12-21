@@ -12,10 +12,16 @@ def print_instructions():
         Which type of game would you like to play?
             1. Human vs. Human
             2. Human vs. Computer
-            3. Computer vs. Computer
-        Please enter the number of your selection:\
+            3. Computer vs. Computer\
         """
     print(dedent(instructions))
+
+def get_game_type_input():
+    print("Please enter the number of your selection:")
+    return input().strip()
+
+def print_sorry():
+    print("Sorry, I didn't understand that.")
 
 def print_who_first():
     print("Great, would you like to move first?")

@@ -30,7 +30,7 @@ class Controller:
         user_input = None
         while user_input is None: 
             user_input = input_getter()
-            if user_input not in acceptable_input or user_input is None: 
+            if user_input not in acceptable_input: 
                 user_input = None
                 print_sorry()
             else:

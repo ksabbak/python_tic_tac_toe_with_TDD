@@ -10,6 +10,7 @@ class Game:
         self.board = Board()
         self.players = [player1, player2]
         self.turn = 0
+        self._get_current_player()
     
     def play(self):
         print_new_turn(self.board)
@@ -17,16 +18,23 @@ class Game:
             self._take_a_turn()
         print_game_over(winner(self.board))
 
-#PRIVATE METHODS
-    def _take_a_turn(self):
-        current_player = self._get_current_player()
-        move = current_player.get_move(self.board)
-        self.board.mark_space(move, current_player.marker)
-        current_player.print_update(self.board, move)
+    def is_over(self):
+        return is_over(self.board)
+
+    def take_a_turn(self):
+        self._get_current_player()
+        move = self.current_player.get_move(self.board)
+        self.board.mark_space(move, self.current_player.marker)
         self.turn += 1
+        return move
+
+    def winner(self):
+        return winner(self.board)
+
+#PRIVATE METHODS
 
     def _get_current_player(self):
-        return self.players[self.turn % 2]
+        self.current_player = self.players[self.turn % 2]
 
 #CLASS METHODS: 
     @classmethod

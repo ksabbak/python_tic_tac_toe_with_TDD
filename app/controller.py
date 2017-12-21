@@ -1,7 +1,7 @@
 from .game import Game
 from .player import HumanPlayer
 from .ai import AI
-from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry
+from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over
 
 class Controller:
     def run(self):
@@ -15,14 +15,15 @@ class Controller:
             game = Game.mixed_game({"player1" : HumanPlayer("x"),  "player2" : AI("o")})
         else:
             game = Game(AI("x"), AI("o"))
-        game.play()
+        self._play(game)
 
     
     def _play(self, game):
         print_new_turn(game.board)
         while not game.is_over():
-            game.take_a_turn()
-        print_game_over(winner(self.board))
+           move = game.take_a_turn()
+           game.current_player.print_update(game.board, move)
+        print_game_over(game.winner())
 
 
 

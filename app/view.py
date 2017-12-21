@@ -40,8 +40,9 @@ def print_game_over(winner=None):
     if winner is not None: print("%s wins!" % winner)
 
 def print_computer_update(board, computer_marker, move):
+    time.sleep(0.5)
     print("Hmmmm, the computer is thinking")
-    time.sleep(2)
+    time.sleep(1)
     print_new_turn(board)
     print("It looks like, %s moved to space %s" % (computer_marker, move))
 

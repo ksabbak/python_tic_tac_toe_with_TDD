@@ -1,4 +1,5 @@
 from textwrap import dedent
+import time
 
 # from .board import Board
 
@@ -30,10 +31,21 @@ def print_new_turn(board):
     print_board(board)
     
 def print_get_player_move(marker):
-    print("Where would you like to move, Player %s" % marker)
+    print("Where would you like to move, Player %s?" % marker)
     move = input()
     return move
 
 def print_game_over(winner=None):
     print("Okay, the game is over")
     if winner is not None: print("%s wins!" % winner)
+
+def print_computer_update(board, computer_marker, move):
+    print("Hmmmm, the computer is thinking")
+    time.sleep(2)
+    print_new_turn(board)
+    print("It looks like, %s moved to space %s" % (computer_marker, move))
+
+def print_human_update(board, human_marker, move):
+    print_new_turn(board)
+    print("Okay, %s is now on space %s" % (human_marker, move))
+    time.sleep(1)

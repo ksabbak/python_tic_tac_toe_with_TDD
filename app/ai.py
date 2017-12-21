@@ -4,6 +4,7 @@ from copy import copy
 from .player import Player
 from .board import Board
 from .end_conditions import winner, is_over
+from .view import print_computer_update
 
 class AI(Player):
     
@@ -13,13 +14,15 @@ class AI(Player):
         self._get_move_weights(board)
         return self._pick_the_best_move()
 
+    def print_update(self, board, move):
+        print_computer_update(board, self.marker, move)
+
     # PRIVATE METHODS
 
     # MINIMAX
     def _pick_the_best_move(self):
         best_spaces = []
         most_weight = -1000000000
-        print(self.move_weights)
         for space, weight in self.move_weights.items():
             if most_weight == weight:
                 best_spaces.append(space)
@@ -66,7 +69,6 @@ class AI(Player):
             if winner(copy_board) == marker: return space
 
     # MECHANICS
-
     def _deduce_opponent_marker(self, board):
         for space in range(0, len(board.spaces)):
             if (not board.space_is_empty(space) 

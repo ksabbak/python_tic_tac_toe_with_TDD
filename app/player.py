@@ -1,4 +1,4 @@
-from .view import print_get_player_move
+from .view import print_get_player_move, print_human_update
 
 class Player:
     def __init__(self, marker):
@@ -9,4 +9,5 @@ class Player:
         return int(move)
 
 class HumanPlayer(Player):
-    pass
+    def print_update(self, board, move):
+        print_human_update(board, self.marker, move)

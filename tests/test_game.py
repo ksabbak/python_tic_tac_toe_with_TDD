@@ -32,10 +32,3 @@ def test_player_one_has_marker_x(game):
 
 def test_player_two_has_marker_o(game):
     assert game.players[1].marker == "o"
-
-def test_current_player_is_not_ai(game):
-    assert game.current_player_is_ai() is False
-
-def test_current_player_is_ai():
-    game = Game.cvc()
-    assert game.current_player_is_ai() is True

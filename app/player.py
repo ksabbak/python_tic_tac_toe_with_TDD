@@ -6,10 +6,11 @@ class Player:
 
 
 class HumanPlayer(Player):
-    
+
     def get_move(self, board=None):
         move = print_get_player_move(self.marker)
         return int(move)
 
     def print_update(self, board, move):
         print_human_update(board, self.marker, move)
+    

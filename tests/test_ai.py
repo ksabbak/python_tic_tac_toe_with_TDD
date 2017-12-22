@@ -12,6 +12,9 @@ def board():
 def tests_ai_is_a_player():
     assert issubclass(AI, Player)
 
+def test_player_is_ai(ai):
+    assert ai.is_ai() is True
+
 def tests_ai_can_move_without_input(ai, board):
     assert ai.get_move(board) in range(0, 9)
 

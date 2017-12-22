@@ -15,6 +15,9 @@ def test_players_have_markers():
     assert Player("?").marker is not None
     assert Player("!").marker == "!"
 
+def test_player_is_not_ai(human_playerx):
+    assert human_playerx.is_ai() is False
+
 # @patch('builtins.print', return_value="")
 def test_get_move(human_playerx):
     with unittest.mock.patch('builtins.input', return_value='7'):

@@ -20,11 +20,16 @@ def get_game_type_input():
     print("Please enter the number of your selection:")
     return input().strip()
 
-def print_sorry():
-    print("Sorry, I didn't understand that.")
+def get_marker(player):
+    print("Please enter the marker choice for %s." % player)
+    return input().strip()
 
-def print_who_first():
+def print_sorry():
+    print("Sorry, that won't work, please try again.")
+
+def get_who_first():
     print("Great, would you like to move first?")
+    return input().strip()
 
 def print_clear():
     print(chr(27) + "[2J" + chr(27) + "[0;0H")
@@ -45,14 +50,14 @@ def print_game_over(winner=None):
     print("Okay, the game is over")
     if winner is not None: print("%s wins!" % winner.marker)
 
-def print_computer_update(board, computer_marker, move):
+def print_ai_update(board, computer_marker, move):
     time.sleep(0.5)
     print("Hmmmm, the computer is thinking")
     time.sleep(1)
     print_new_turn(board)
     print("It looks like, %s moved to space %s" % (computer_marker, move))
 
-def print_human_update(board, human_marker, move):
+def print_humanplayer_update(board, human_marker, move):
     print_new_turn(board)
     print("Okay, %s is now on space %s" % (human_marker, move))
     time.sleep(1)

@@ -4,16 +4,12 @@ from copy import copy
 from .player import Player
 from .board import Board
 from .end_conditions import winning_marker
-from .view import print_computer_update
 
 class AI(Player):
     
     def make_move(self, board, move):
         move = self._get_move(board)
-        super.make_move(board, move)
-
-    def print_update(self, board, move):
-        print_computer_update(board, self.marker, move)
+        return super().make_move(board, move)
 
     def is_ai(self):
         return True
@@ -21,7 +17,7 @@ class AI(Player):
     # PRIVATE METHODS
 
     # MOVE LOGIC
-    def get_move(self, board):
+    def _get_move(self, board):
         self.opponent_marker = self._deduce_opponent_marker(board) or chr(ord(self.marker) + 1)
         self.move_weights = {}
         self._get_move_weights(board)

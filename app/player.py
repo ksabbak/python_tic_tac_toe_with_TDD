@@ -1,21 +1,17 @@
-from .view import print_human_update
-
 class Player:
     def __init__(self, marker):
         self.marker = marker
 
     def make_move(self, board, move):
         board.mark_space(move, self.marker)
+        return move
 
 
 class HumanPlayer(Player):
 
-    # def get_move(self, board=None):
-    #     move = print_get_player_move(self.marker)
-    #     return int(move)
-
-    def print_update(self, board, move):
-        print_human_update(board, self.marker, move)
+    def make_move(self, board, move):
+        move = int(move)
+        return super().make_move(board, move)
 
     def is_ai(self):
         return False

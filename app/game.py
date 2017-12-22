@@ -4,7 +4,6 @@ from .board import Board
 from .player import HumanPlayer
 from .ai import AI
 from .end_conditions import winning_marker
-from .view import print_new_turn, print_game_over, print_computer_update
 
 class Game:
     def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o")):
@@ -16,11 +15,13 @@ class Game:
     def is_over(self):
         return (self.board.is_full() or winning_marker(self.board))
 
-    def take_a_turn(self, move=None):
-        self._get_current_player()
+    def start_turn(self, move=None):
         move = self.current_player.make_move(self.board, move)
-        self.turn += 1
         return move
+
+    def end_turn(self):
+        self.turn += 1
+        self._get_current_player()
 
     def winner(self):
         for player in self.players:

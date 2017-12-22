@@ -54,7 +54,7 @@ class Controller:
         while first_marker == second_marker:
             first_marker = get_marker(player1)[0]
             second_marker = get_marker(player2)[0]
-            if first_marker == second_marker:
+            if first_marker == second_marker or (first_marker is None) or (second_marker is None):
                 print_sorry()
         return[first_marker, second_marker] 
 

@@ -1,5 +1,7 @@
+from textwrap import dedent
+
 class Board:
-    def __init__(self):
+    def __init__(self, length=9):
         self.spaces = (0, 1, 2, 3, 4, 5, 6, 7, 8)
         self.side_length = int(len(self.spaces) ** (1/2))
 
@@ -20,5 +22,19 @@ class Board:
                 if self.space_is_empty(space)]
 
     def to_str(self):
-         return(" %s | %s | %s \n===+===+===\n %s | %s | %s \n===+===+===\n %s | %s | %s \n" % self.spaces)
+        pretty_board = """\
+           1   2   3 
+        A  %s | %s | %s
+          ===+===+===
+        B  %s | %s | %s
+          ===+===+===
+        C  %s | %s | %s  
+            """ % self.spaces       
+        return dedent(pretty_board)
 
+    def _build_board(self, length)
+        i = 0
+        self.spaces = ()
+        while i < length:
+            self.spaces.append(" ")
+            i += 1

@@ -44,3 +44,7 @@ def test_board_knows_all_empty_spaces(board):
     expected_spaces.remove("!")
     assert board.empty_spaces() == expected_spaces
     assert len(board.empty_spaces()) == 8
+
+def test_build_board_length(board):
+    board._build_board(5)
+    assert len(board.spaces) == 5

@@ -16,10 +16,9 @@ class Game:
     def is_over(self):
         return (self.board.is_full() or winning_marker(self.board))
 
-    def take_a_turn(self):
+    def take_a_turn(self, move=None):
         self._get_current_player()
-        move = self.current_player.get_move(self.board)
-        self.board.mark_space(move, self.current_player.marker)
+        move = self.current_player.make_move(self.board, move)
         self.turn += 1
         return move
 

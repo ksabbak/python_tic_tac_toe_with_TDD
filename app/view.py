@@ -36,7 +36,7 @@ def print_new_turn(board):
     print_clear()
     print_board(board)
     
-def print_get_player_move(marker):
+def get_player_move(marker):
     print("Where would you like to move, Player %s?" % marker)
     move = input().strip()
     return move

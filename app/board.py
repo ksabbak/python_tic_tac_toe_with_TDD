@@ -32,9 +32,9 @@ class Board:
             """ % self.spaces       
         return dedent(pretty_board)
 
-    def _build_board(self, length)
+    def _build_board(self, length):
         i = 0
         self.spaces = ()
         while i < length:
-            self.spaces.append(" ")
+            self.spaces += (" ",)
             i += 1

@@ -8,7 +8,7 @@ def tests_controller_can_be_called():
     controller = Controller()
     assert controller.run
 
-def controller_choses_proper_game():
+def xtest_controller_choses_proper_game():
     with unittest.mock.patch('builtins.input', return_value='1'):
         assert Controller().run() in "Human vs. Human!"
     with unittest.mock.patch('builtins.input', return_value='2'):

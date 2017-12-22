@@ -1,6 +1,6 @@
 import math
 
-def winner(board):
+def winning_marker(board):
     winner = (_horizontal_win_conditions(board) 
       or _vertical_win_conditions(board)
       or _diagonal_win_conditions(board))
@@ -28,6 +28,3 @@ def _calculate_win_conditions(board, addition, incrementor):
                    and board.spaces[i] == board.spaces[i + 2*(addition)])
         if winner: return board.spaces[i]
         i += incrementor
-
-def is_over(board):
-    return not not (board.is_full() or winner(board))

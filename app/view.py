@@ -38,12 +38,12 @@ def print_new_turn(board):
     
 def print_get_player_move(marker):
     print("Where would you like to move, Player %s?" % marker)
-    move = input()
+    move = input().strip()
     return move
 
 def print_game_over(winner=None):
     print("Okay, the game is over")
-    if winner is not None: print("%s wins!" % winner)
+    if winner is not None: print("%s wins!" % winner.marker)
 
 def print_computer_update(board, computer_marker, move):
     time.sleep(0.5)

@@ -3,7 +3,7 @@ from copy import copy
 
 from .player import Player
 from .board import Board
-from .end_conditions import winner, is_over
+from .end_conditions import winning_marker
 from .view import print_computer_update
 
 class AI(Player):
@@ -41,7 +41,7 @@ class AI(Player):
         board2 = copy(board)
         if set_move is not None:
             board2.mark_space(set_move, self.marker)
-            if winner(board2): return 100000000000
+            if winning_marker(board2): return 100000000000
             if self._check_move_for_win(board2, self.opponent_marker) is not None: return -10000000000
             turn = "other"
         weight = 0
@@ -66,7 +66,7 @@ class AI(Player):
         for space in board.empty_spaces():
             copy_board = copy(board)
             copy_board.mark_space(space, marker)
-            if winner(copy_board) == marker: return space
+            if winning_marker(copy_board) == marker: return space
 
     # MECHANICS
     def _deduce_opponent_marker(self, board):

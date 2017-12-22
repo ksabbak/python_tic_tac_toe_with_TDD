@@ -2,7 +2,7 @@ import sys
 
 from .board import Board
 from .player import HumanPlayer
-from .end_conditions import winner, is_over
+from .end_conditions import winning_marker
 from .view import print_new_turn, print_game_over, print_computer_update
 
 class Game:
@@ -11,15 +11,9 @@ class Game:
         self.players = [player1, player2]
         self.turn = 0
         self._get_current_player()
-    
-    def play(self):
-        print_new_turn(self.board)
-        while not is_over(self.board):
-            self._take_a_turn()
-        print_game_over(winner(self.board))
 
     def is_over(self):
-        return is_over(self.board)
+        return (self.board.is_full() or winning_marker(self.board))
 
     def take_a_turn(self):
         self._get_current_player()
@@ -29,7 +23,9 @@ class Game:
         return move
 
     def winner(self):
-        return winner(self.board)
+        for player in self.players:
+            if winning_marker(self.board) == player.marker: return player
+        
 
 #PRIVATE METHODS
 

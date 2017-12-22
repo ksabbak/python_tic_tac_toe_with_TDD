@@ -21,16 +21,14 @@ class Controller:
     def _play(self, game):
         print_new_turn(game.board)
         while not game.is_over():
-           move = game.take_a_turn()
-           game.current_player.print_update(game.board, move)
+            move = game.take_a_turn()
+            game.current_player.print_update(game.board, move)
         print_game_over(game.winner())
 
-
-
-    def _handle_input(self, input_getter, acceptable_input):
+    def _handle_input(self, input_getter, acceptable_input, arguments=[]):
         user_input = None
         while user_input is None: 
-            user_input = input_getter()
+            user_input = input_getter(*arguments)
             if user_input not in acceptable_input: 
                 user_input = None
                 print_sorry()

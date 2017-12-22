@@ -2,6 +2,7 @@ import sys
 
 from .board import Board
 from .player import HumanPlayer
+from .ai import AI
 from .end_conditions import winning_marker
 from .view import print_new_turn, print_game_over, print_computer_update
 

@@ -29,6 +29,7 @@ class Game:
     def undo_turn(self):
         for player in self.players:
             move = player.undo()
+            if move is not None: self.board.clear_space(move)
         self.turn -= 1
 
 # PRIVATE METHODS

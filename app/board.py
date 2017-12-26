@@ -12,7 +12,7 @@ class Board:
 
     def clear_space(self, space):
         if not self.space_is_empty(space):
-            self._change_space(space, "")
+            self._change_space(space, " ")
 
     def is_full(self):
         return not self.empty_spaces()

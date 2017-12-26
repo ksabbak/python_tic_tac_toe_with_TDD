@@ -18,6 +18,11 @@ def test_player_is_ai(ai):
 def test_ai_player_has_move_log(ai):
     assert ai.moves == []
 
+def test_ai_player_logs_moves(ai, board):
+    move = ai.make_move(board, None)
+    move_2 = ai.make_move(board, None)
+    assert ai.moves == [move, move_2]
+
 def tests_ai_can_move_without_input(ai, board):
     assert ai._get_move(board) in range(0, 9)
 

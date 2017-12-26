@@ -24,12 +24,29 @@ def get_marker(player):
     print("Please enter the marker choice for %s." % player)
     return input().strip()
 
-def print_sorry():
-    print("Sorry, that won't work, please try again.")
+def print_sorry(about=None):
+    if about == "game type":
+        print("Please enter the numeral 1, 2, or 3:")
+    elif about == "marker length":
+        print("Sorry, your marker can only be one character.")
+    elif about == "no coord":
+        print("Sorry, I can't find that coordinate.")
+    elif about == "taken":
+        print("Sorry, looks like that spot is taken.")
+    elif about == "match marker":
+        print("Each marker needs to be different, let's try again.")
+    else:
+        print("Sorry, that won't work, please try again.")
 
 def get_who_first():
     print("Great, would you like to move first?")
     return input().strip()
+
+def print_who_first(player_first):
+    if player_first:
+        print("Great, you'll go first!")
+    else:
+        print("Cool! The computer will go first.")
 
 def print_clear():
     print(chr(27) + "[2J" + chr(27) + "[0;0H")

@@ -9,7 +9,8 @@ class Player:
         return move
 
     def undo(self):
-        self.moves.pop()
+        if self.moves:
+            self.moves.pop()
 
 class HumanPlayer(Player):
 

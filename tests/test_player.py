@@ -7,13 +7,19 @@ from ..app.__init__ import Player, HumanPlayer, Board
 
 # class TestPlayer(TestCase):
 
-@pytest.fixture()
-def human_playerx():
-    return HumanPlayer("x")
-
 def test_players_have_markers():
     assert Player("?").marker is not None
     assert Player("!").marker == "!"
+
+def test_player_undo_removes_last_move():
+    player = Player()
+    player.moves = [1, 2, 3]
+    player.undo()
+    assert player.moves == [1, 2]
+
+@pytest.fixture()
+def human_playerx():
+    return HumanPlayer("x")
 
 def test_human_player_is_not_ai(human_playerx):
     assert human_playerx.is_ai() is False

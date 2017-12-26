@@ -12,10 +12,15 @@ def test_players_have_markers():
     assert Player("!").marker == "!"
 
 def test_player_undo_removes_last_move():
-    player = Player()
+    player = Player("X")
     player.moves = [1, 2, 3]
     player.undo()
     assert player.moves == [1, 2]
+
+def test_player_undo_to_empty_does_not_break_everything():
+    player = Player("X")
+    player.undo()
+    assert player.moves == []
 
 @pytest.fixture()
 def human_playerx():

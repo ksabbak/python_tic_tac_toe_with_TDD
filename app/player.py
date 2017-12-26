@@ -8,6 +8,8 @@ class Player:
         self.moves.append(move)
         return move
 
+    def undo(self):
+        self.moves.pop()
 
 class HumanPlayer(Player):
 

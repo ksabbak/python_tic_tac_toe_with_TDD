@@ -28,7 +28,7 @@ class Game:
             if winning_marker(self.board) == player.marker: return player
 
     def undo(self):
-        for player in players:
+        for player in self.players:
             player.undo()
         
 

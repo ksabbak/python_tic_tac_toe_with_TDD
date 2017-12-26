@@ -43,9 +43,12 @@ class Controller:
 
     def _human_player_turn(self):
         move = self._handle_input(get_player_move, self._acceptable_move_input, [self.game.current_player.marker])
-        move = self._coordinate_to_number(move)
-        self.game.start_turn(move)
-        print_humanplayer_update(self.game.board, self.game.current_player.marker, self._number_to_coordinate(move))
+        if move == "undo":
+            self.game.undo()
+        else:
+            move = self._coordinate_to_number(move)
+            self.game.start_turn(move)
+            print_humanplayer_update(self.game.board, self.game.current_player.marker, self._number_to_coordinate(move))
 
     def _ai_player_turn(self):
         move = self.game.start_turn()
@@ -95,6 +98,7 @@ class Controller:
             return "game type"
 
     def _acceptable_move_input(self, move_input):
+        if move_input == "undo": return
         move_input = self._format_move_input(move_input)
         move_input = self._coordinate_to_number(move_input)
         if move_input is None:

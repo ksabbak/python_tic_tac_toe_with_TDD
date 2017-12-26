@@ -11,6 +11,12 @@ class Board:
             spaces[space] = marker
             self.spaces = tuple(spaces)
 
+    def clear_space(self, space):
+        if not self.space_is_empty(space):
+            spaces = list(self.spaces)
+            spaces[space] = ""
+            self.spaces = tuple(spaces)
+
     def is_full(self):
         return not self.empty_spaces()
 

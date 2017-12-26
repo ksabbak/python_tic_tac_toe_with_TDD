@@ -39,14 +39,17 @@ class Controller:
         print_game_over(game.winner())
 
     def _human_player_turn(self, game):
-        acceptable_input = list(map(str, game.board.empty_spaces()))
-        move = self._handle_input(get_player_move, acceptable_input, game.current_player.marker)
+        # acceptable_input = list(map(str, game.board.empty_spaces()))
+        # acceptable_input = self._coordinates()
+        # move = self._handle_input(get_player_move, acceptable_input, game.current_player.marker)
+        move = get_player_move(game.current_player.marker)
+        move = self._coordinate_to_number(move)
         game.start_turn(move)
-        print_humanplayer_update(game.board, game.current_player.marker, move)
+        print_humanplayer_update(game.board, game.current_player.marker, self._number_to_coordinate(move))
 
     def _ai_player_turn(self, game):
         move = game.start_turn()
-        print_ai_update(game.board, game.current_player.marker, move)
+        print_ai_update(game.board, game.current_player.marker, self._number_to_coordinate(move))
 
     def _get_markers(self, player1, player2):
         first_marker = None
@@ -61,6 +64,26 @@ class Controller:
     def _affirmative(self, response):
         response = response.lower()
         return (response != "n") and (response in "yes yeah definitely affirmative okay yup sure true")
+
+    def _coordinates(self):
+        return ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']
+
+
+    def _coordinate_to_number(self, move):
+        move = self._format_input(move) 
+        if move in self._coordinates():
+            return self._coordinates().index(move)
+
+    def _number_to_coordinate(self, move):
+        return self._coordinates()[move]
+
+
+    def _format_input(self, move):
+        coord_list = list(move.upper())
+        coord_list.sort()
+        coord_list.reverse()
+        return "".join(coord_list) 
+
 
     def _handle_input(self, input_getter, acceptable_input, arguments=[]):
         user_input = None

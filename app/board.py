@@ -2,7 +2,7 @@ from textwrap import dedent
 
 class Board:
     def __init__(self, length=9):
-        self.spaces = (0, 1, 2, 3, 4, 5, 6, 7, 8)
+        self._build_board(length)
         self.side_length = int(len(self.spaces) ** (1/2))
 
     def mark_space(self, space, marker):
@@ -15,7 +15,7 @@ class Board:
         return not self.empty_spaces()
 
     def space_is_empty(self, space):
-        return self.spaces[space] == space
+        return self.spaces[space] == " "
 
     def empty_spaces(self): 
         return [space for space in range(0, len(self.spaces)) 

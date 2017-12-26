@@ -1,4 +1,4 @@
 from .game import Game
 from .board import Board
-from .player import Player
+from .player import Player, HumanPlayer
 from .ai import AI

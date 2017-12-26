@@ -1,27 +1,47 @@
 import sys
 
 from .board import Board
-from .player import Player
-from .end_conditions import winner, is_over
+from .player import HumanPlayer
+from .ai import AI
+from .end_conditions import winning_marker
 
 class Game:
-    def __init__(self, player1="x", player2="o"):
+    def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o")):
         self.board = Board()
-        self.players = [Player(player1), Player(player2)]
+        self.players = [player1, player2]
+        self.turn = 0
+        self._get_current_player()
 
-    def play(self):
-        print("Welcome!")
-        print("this is tic-tac-toe!")
-        i = 0
-        while not is_over(board):
-            current_player = self.players[i%2]
-            move = current_player.get_move()
-            self.board.mark_space(move, current_player.marker)
-            print(self.board.to_str())
-            i += 1
-        print("Okay, the game is over")
-        if winner(self.board): print("%s wins!" % winner(self.board))
+    def is_over(self):
+        return (self.board.is_full() or winning_marker(self.board))
 
+    def start_turn(self, move=None):
+        move = self.current_player.make_move(self.board, move)
+        return move
 
+    def end_turn(self):
+        self.turn += 1
+        self._get_current_player()
 
+    def winner(self):
+        for player in self.players:
+            if winning_marker(self.board) == player.marker: return player
+        
 
+#PRIVATE METHODS
+
+    def _get_current_player(self):
+        self.current_player = self.players[self.turn % 2]
+
+#CLASS METHODS: 
+    @classmethod
+    def pvp(cls):
+        return Game()
+
+    @classmethod
+    def mixed_game(cls, order):
+        return Game(**order)
+
+    @classmethod
+    def cvc(cls):
+        return Game(AI("X"), AI("O"))

@@ -6,11 +6,18 @@ from ..app.__init__ import Game
 
 @pytest.fixture()
 def game():
-    return Game()
+    return Game.pvp()
 
 # GENERAL
 def test_there_is_a_game(game):
     assert game is not None
+
+def test_game_is_marked_over_when_board_is_filled(game):
+    i = 0
+    while i < len(game.board.spaces):
+        game.board.mark_space(i, "X")
+        i += 1
+    assert game.is_over() is True
 
 # BOARD
 def test_game_has_board(game):

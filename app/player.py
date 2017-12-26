@@ -2,8 +2,17 @@ class Player:
     def __init__(self, marker):
         self.marker = marker
 
-    def get_move(self):
-        #This is not single responsibility.
-        print("Where would you like to move, Player %s" % self.marker)
-        move = input()
-        return int(move)
+    def make_move(self, board, move):
+        board.mark_space(move, self.marker)
+        return move
+
+
+class HumanPlayer(Player):
+
+    def make_move(self, board, move):
+        move = int(move)
+        return super().make_move(board, move)
+
+    def is_ai(self):
+        return False
+

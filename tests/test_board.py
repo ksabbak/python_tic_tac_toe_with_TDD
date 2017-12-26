@@ -7,13 +7,18 @@ def board():
     board = Board()
     return board
 
-    
+
 def test_board_has_9_spaces(board):
     assert len(board.spaces) == 9
 
 def test_board_can_mark_space(board):
     board.mark_space(1, "x")
     assert board.spaces[1] == "x"
+
+def test_board_can_clear_space(board):
+    board.mark_space(1, "x")
+    board.clear_space(1)
+    assert board.spaces[1] == " "
 
 def test_board_does_not_remark_space(board):
     board.mark_space(1, "x")

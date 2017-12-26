@@ -43,8 +43,12 @@ class Controller:
 
     def _human_player_turn(self):
         move = self._handle_input(get_player_move, self._acceptable_move_input, [self.game.current_player.marker])
-        move = self._coordinate_to_number(move)
-        self.game.start_turn(move)
+        if move == "undo":
+            self.game.undo_turn()
+            move = self.game.current_player.moves[-1] if self.game.current_player.moves else None
+        else:
+            move = self._coordinate_to_number(move)
+            self.game.start_turn(move) 
         print_humanplayer_update(self.game.board, self.game.current_player.marker, self._number_to_coordinate(move))
 
     def _ai_player_turn(self):
@@ -60,7 +64,7 @@ class Controller:
             if first_marker == second_marker or (first_marker is None) or (second_marker is None):
                 print_sorry("match marker")
 
-        return[first_marker, second_marker] 
+        return[first_marker, second_marker]
 
     def _affirmative(self, response):
         response = response.lower().strip(punctuation)
@@ -69,22 +73,19 @@ class Controller:
     def _coordinates(self):
         return ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']
 
-
     def _coordinate_to_number(self, move):
-        move = self._format_move_input(move) 
+        move = self._format_move_input(move)
         if move in self._coordinates():
             return self._coordinates().index(move)
 
     def _number_to_coordinate(self, move):
-        return self._coordinates()[move]
-
+        if move is not None: return self._coordinates()[move]
 
     def _format_move_input(self, move):
         coord_list = list(move.upper())
         coord_list.sort()
         coord_list.reverse()
-        print("".join(coord_list)) 
-        return "".join(coord_list) 
+        return "".join(coord_list)
 
     def _acceptable_marker_input(self, marker_input):
         if len(marker_input) != 1:
@@ -95,6 +96,7 @@ class Controller:
             return "game type"
 
     def _acceptable_move_input(self, move_input):
+        if move_input == "undo": return
         move_input = self._format_move_input(move_input)
         move_input = self._coordinate_to_number(move_input)
         if move_input is None:

@@ -75,6 +75,9 @@ def print_ai_update(board, computer_marker, move):
     print("It looks like, %s moved to space %s" % (computer_marker, move))
 
 def print_humanplayer_update(board, human_marker, move):
-    print_new_turn(board)
-    print("Okay, %s is now on space %s" % (human_marker, move))
-    time.sleep(1)
+    if move is not None:
+        print_new_turn(board)
+        print("Okay, %s is now on space %s" % (human_marker, move))
+        time.sleep(1)
+    else:
+        print_new_turn(board)

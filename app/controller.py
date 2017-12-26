@@ -86,7 +86,6 @@ class Controller:
         coord_list = list(move.upper())
         coord_list.sort()
         coord_list.reverse()
-        print("".join(coord_list)) 
         return "".join(coord_list) 
 
     def _acceptable_marker_input(self, marker_input):

@@ -23,9 +23,14 @@ def test_undo_removes_last_move_from_both_players(game):
     game.players[0].make_move(game.board, 4)
     game.players[1].make_move(game.board, 5)
     game.players[0].make_move(game.board, 0)
-    game.undo()
+    game.undo_turn()
     assert len(game.players[0].moves) == 1
     assert len(game.players[1].moves) == 0
+
+def test_undo_does_not_cause_lost_turn(game):
+    current_player = game.current_player
+    game.undo_turn()
+    assert game.current_player == current_player
 
 # BOARD
 def test_game_has_board(game):

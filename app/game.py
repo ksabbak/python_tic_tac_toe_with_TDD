@@ -1,9 +1,8 @@
-import sys
-
-from .board import Board
-from .player import HumanPlayer
 from .ai import AI
+from .board import Board
 from .end_conditions import winning_marker
+from .player import HumanPlayer
+
 
 class Game:
     def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o")):
@@ -27,17 +26,17 @@ class Game:
         for player in self.players:
             if winning_marker(self.board) == player.marker: return player
 
-    def undo(self):
+    def undo_turn(self):
         for player in self.players:
-            player.undo()
-        
+            move = player.undo()
+        self.turn -= 1
 
-#PRIVATE METHODS
+# PRIVATE METHODS
 
     def _get_current_player(self):
         self.current_player = self.players[self.turn % 2]
 
-#CLASS METHODS: 
+# CLASS METHODS:
     @classmethod
     def pvp(cls):
         return Game()

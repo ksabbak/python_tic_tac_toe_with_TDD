@@ -5,6 +5,7 @@ class Player:
 
     def make_move(self, board, move):
         board.mark_space(move, self.marker)
+        self.moves.append(move)
         return move
 
 

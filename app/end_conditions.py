@@ -1,30 +1,36 @@
 import math
 
 def winning_marker(board):
-    winner = (_horizontal_win_conditions(board) 
-      or _vertical_win_conditions(board)
-      or _diagonal_win_conditions(board))
-    return winner
+    for win_condition in _all_win_conditions(board):
+        board_sample = list(map(lambda x: board.spaces[x], win_condition))
+        if (len(set(board_sample)) == 1 
+           and not board.space_is_empty(win_condition[0])):
+            return board_sample[0]
     
 
+def _all_win_conditions(board):
+    return _horizontal_win_conditions(board) + _vertical_win_conditions(board) + _diagonal_win_conditions(board)
+
 def _horizontal_win_conditions(board):
-    return _calculate_win_conditions(board, 1, board.side_length)
+    wins = []
+    for i in range(0, board.side_length):
+        wins.append(_calculate_win_conditions(board, 1, board.side_length * i))
+    return wins
 
 def _vertical_win_conditions(board):
-    return _calculate_win_conditions(board, board.side_length, 1)
-
+    wins = []
+    for i in range(0, board.side_length):
+        wins.append(_calculate_win_conditions(board, board.side_length, i))
+    return wins
 
 def _diagonal_win_conditions(board):
-    win =  (board.spaces[0] == board.spaces[4] 
-            and board.spaces[0] == board.spaces[8])
-    win = (win or (board.spaces[2] == board.spaces[4] 
-                    and board.spaces[2] == board.spaces[6]))
-    if win and not board.space_is_empty(4): return board.spaces[4]
+    wins = []
+    wins.append(_calculate_win_conditions(board, board.side_length + 1, 0))
+    wins.append(_calculate_win_conditions(board, board.side_length - 1, board.side_length - 1))
+    return wins
 
-def _calculate_win_conditions(board, addition, incrementor):
-    i = 0
-    while i < (len(board.spaces) / addition):
-        winner = (board.spaces[i] == board.spaces[i + addition] 
-                   and board.spaces[i] == board.spaces[i + 2*(addition)])
-        if winner and not board.space_is_empty(i): return board.spaces[i]
-        i += incrementor
+def _calculate_win_conditions(board, incrementor, addition):
+    lst = []
+    for space in range(0, board.side_length):
+        lst.append(space * incrementor + addition)
+    return lst

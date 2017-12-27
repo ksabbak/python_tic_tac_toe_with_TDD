@@ -7,7 +7,6 @@ def board():
     board = Board()
     return board
 
-
 def test_board_has_9_spaces(board):
     assert len(board.spaces) == 9
 

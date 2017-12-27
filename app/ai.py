@@ -38,7 +38,8 @@ class AI(Player):
 
     def _get_move_weights(self, board):
         for space in board.empty_spaces():
-            self.move_weights[space] = sum(self._weigh_move_with_array(board, space, array=[]))
+            board2 = copy(board)
+            self.move_weights[space] = sum(self._weigh_move_with_array(board2, space, array=[]))
 
     def _weigh_move(self, board, set_move=None, turn="self"):
         if board.is_full(): return 0
@@ -60,18 +61,16 @@ class AI(Player):
         return weight
 
     def _weigh_move_with_array(self, board, set_move=None, turn="self", array=[]):
-        if board.is_full(): return [0]
-        board2 = copy(board)
+        if board.is_full(): return
         if set_move is not None:
-            board2.mark_space(set_move, self.marker)
+            board.mark_space(set_move, self.marker)
             # print(set_move)
-            # print(winning_marker(board2))
-            if winning_marker(board2): return [100000000000]
-            if self._check_move_for_win(board2, self.opponent_marker) is not None: return [-10000000000]
+            # print(winning_marker(board))
+            if winning_marker(board): return [100000000000]
+            if self._check_move_for_win(board, self.opponent_marker) is not None: return [-10000000000]
             turn = "other"
-        array
-        for move in board2.empty_spaces():
-            boardcopy = copy(board2)
+        for move in board.empty_spaces():
+            boardcopy = copy(board)
             if turn == "self":
                 self._calculate_move(boardcopy, move, self.marker, 10, array)
             else:

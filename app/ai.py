@@ -38,7 +38,7 @@ class AI(Player):
 
     def _get_move_weights(self, board):
         for space in board.empty_spaces():
-            self.move_weights[space] = sum(self._weigh_move_with_array(board, space))
+            self.move_weights[space] = sum(self._weigh_move_with_array(board, space, array=[]))
 
     def _weigh_move(self, board, set_move=None, turn="self"):
         if board.is_full(): return 0

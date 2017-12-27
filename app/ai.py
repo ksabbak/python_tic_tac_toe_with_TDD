@@ -24,6 +24,7 @@ class AI(Player):
         return self._pick_the_best_move()
 
     def _pick_the_best_move(self):
+        print(self.move_weights)
         best_spaces = []
         most_weight = -1000000000
         for space, weight in self.move_weights.items():
@@ -37,13 +38,15 @@ class AI(Player):
 
     def _get_move_weights(self, board):
         for space in board.empty_spaces():
-            self.move_weights[space] = self._weigh_move(board, space)
+            self.move_weights[space] = sum(self._weigh_move_with_array(board, space))
 
     def _weigh_move(self, board, set_move=None, turn="self"):
         if board.is_full(): return 0
         board2 = copy(board)
         if set_move is not None:
             board2.mark_space(set_move, self.marker)
+            # print(set_move)
+            # print(winning_marker(board2))
             if winning_marker(board2): return 100000000000
             if self._check_move_for_win(board2, self.opponent_marker) is not None: return -10000000000
             turn = "other"
@@ -56,14 +59,33 @@ class AI(Player):
                 weight += self._calculate_move(boardcopy, move, self.opponent_marker, -10)
         return weight
 
-    def _calculate_move(self, board, move, marker, win_weight):
+    def _weigh_move_with_array(self, board, set_move=None, turn="self", array=[]):
+        if board.is_full(): return [0]
+        board2 = copy(board)
+        if set_move is not None:
+            board2.mark_space(set_move, self.marker)
+            # print(set_move)
+            # print(winning_marker(board2))
+            if winning_marker(board2): return [100000000000]
+            if self._check_move_for_win(board2, self.opponent_marker) is not None: return [-10000000000]
+            turn = "other"
+        array
+        for move in board2.empty_spaces():
+            boardcopy = copy(board2)
+            if turn == "self":
+                self._calculate_move(boardcopy, move, self.marker, 10, array)
+            else:
+                self._calculate_move(boardcopy, move, self.opponent_marker, -10, array)
+        return array
+
+
+    def _calculate_move(self, board, move, marker, win_weight, array):
         if self._check_move_for_win(board, marker) is not None:
-            weight = win_weight
+            array += [win_weight]
         else:
             board.mark_space(move, marker)
             next_turn = "self" if win_weight < 0 else "other"
-            weight = self._weigh_move(board, turn=next_turn)
-        return weight
+            self._weigh_move_with_array(board, turn=next_turn, array=array)
 
     def _check_move_for_win(self, board, marker):
         for space in board.empty_spaces():

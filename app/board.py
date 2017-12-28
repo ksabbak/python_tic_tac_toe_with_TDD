@@ -24,7 +24,7 @@ class Board:
         return [space for space in range(0, len(self.spaces))
                 if self.space_is_empty(space)]
 
-    def to_str(self):
+    def __str__(self):
         pretty_board = """\
            1   2   3
         A  %s | %s | %s

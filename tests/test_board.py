@@ -39,7 +39,7 @@ def test_board_knows_when_space_is_empty(board):
     assert board.space_is_empty(0) is False
 
 def xtest_board_to_str(board):
-     assert board.to_str() == " 0 | 1 | 2 \n===+===+===\n 3 | 4 | 5 \n===+===+===\n 6 | 7 | 8 \n" 
+     assert str(board) == " 0 | 1 | 2 \n===+===+===\n 3 | 4 | 5 \n===+===+===\n 6 | 7 | 8 \n" 
 
 def test_board_knows_all_empty_spaces(board):
     assert board.empty_spaces() == list(range(0, 9))

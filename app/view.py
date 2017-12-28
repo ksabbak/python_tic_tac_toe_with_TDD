@@ -52,7 +52,7 @@ def print_clear():
     print(chr(27) + "[2J" + chr(27) + "[0;0H")
 
 def print_board(board):
-    print(board.to_str())
+    print(str(board))
 
 def print_new_turn(board):
     print_clear()

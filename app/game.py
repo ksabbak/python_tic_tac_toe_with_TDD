@@ -1,6 +1,5 @@
 from .ai import AI
 from .board import Board
-from .end_conditions import winning_marker
 from .player import HumanPlayer
 
 
@@ -12,7 +11,7 @@ class Game:
         self._get_current_player()
 
     def is_over(self):
-        return (self.board.is_full() or winning_marker(self.board))
+        return (self.board.is_full() or self.board.winning_marker())
 
     def start_turn(self, move=None):
         move = self.current_player.make_move(self.board, move)
@@ -24,7 +23,7 @@ class Game:
 
     def winner(self):
         for player in self.players:
-            if winning_marker(self.board) == player.marker: return player
+            if self.board.winning_marker() == player.marker: return player
 
     def undo_turn(self):
         for player in self.players:

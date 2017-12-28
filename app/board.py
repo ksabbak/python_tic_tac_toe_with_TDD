@@ -1,6 +1,5 @@
 from textwrap import dedent
 
-
 class Board:
     def __init__(self, length=9):
         self._build_board(length)

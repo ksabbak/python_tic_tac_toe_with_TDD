@@ -3,7 +3,6 @@ from copy import copy
 
 from .player import Player
 from .board import Board
-from .end_conditions import winning_marker
 
 class AI(Player):
     
@@ -41,7 +40,7 @@ class AI(Player):
             board2 = copy(board)
             self.move_weights[space] = sum(self._weigh_move_with_array(board2, space, array=[]))
 
-    def _weigh_move(self, board, set_move=None, turn="self"):
+    def _weigh_move(self, board, set_move=None, turn="self", depth=1):
         if board.is_full(): return 0
         board2 = copy(board)
         if set_move is not None:
@@ -58,8 +57,8 @@ class AI(Player):
                 weight += self._calculate_move(boardcopy, move, self.opponent_marker, -10)
         return weight
 
-    def _weigh_move_with_array(self, board, set_move=None, turn="self", array=[]):
-        if board.is_full(): return
+    def _weigh_move_with_array(self, board, set_move=None, turn="self", array=[], depth=1):
+        if board.is_full() or depth > board.side_length + 1: return array
         if set_move is not None:
             board.mark_space(set_move, self.marker)
             if board.winning_marker(): return [100000000000]
@@ -68,19 +67,20 @@ class AI(Player):
         for move in board.empty_spaces():
             boardcopy = copy(board)
             if turn == "self":
-                self._calculate_move(boardcopy, move, self.marker, 10, array)
+                self._calculate_move(boardcopy, move, self.marker, 10, array, depth)
             else:
-                self._calculate_move(boardcopy, move, self.opponent_marker, -10, array)
+                self._calculate_move(boardcopy, move, self.opponent_marker, -10, array, depth)
         return array
 
 
-    def _calculate_move(self, board, move, marker, win_weight, array):
+    def _calculate_move(self, board, move, marker, win_weight, array, depth):
+        depth += 1
         if self._check_move_for_win(board, marker) is not None:
             array += [win_weight]
         else:
             board.mark_space(move, marker)
             next_turn = "self" if win_weight < 0 else "other"
-            self._weigh_move_with_array(board, turn=next_turn, array=array)
+            self._weigh_move_with_array(board, turn=next_turn, array=array, depth=depth)
 
     def _check_move_for_win(self, board, marker):
         for space in board.empty_spaces():

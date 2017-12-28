@@ -49,7 +49,6 @@ class Board:
         spaces[space] = marker
         self.spaces = tuple(spaces)
 
-
 # BUILDING: 
     def _build_board(self, length):
         i = 0
@@ -66,7 +65,6 @@ class Board:
         return coords
 
 # END CONDITIONS: 
-
     def _all_win_conditions(self):
         self.all_win_conditions = self.all_win_conditions or self._horizontal_win_conditions() + self._vertical_win_conditions() + self._diagonal_win_conditions()
         return self.all_win_conditions

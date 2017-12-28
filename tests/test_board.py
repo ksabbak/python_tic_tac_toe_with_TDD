@@ -45,16 +45,51 @@ def test_board_knows_when_space_is_empty(board):
     board.mark_space(0, "x")
     assert board.space_is_empty(0) is False
 
-def test_board_to_str(board):
+def test_board_to_str_empty(board, big_board):
     pretty_board = """\
            1   2   3
-        A    |   |  
+        A    |   |   
           ===+===+===
         B    |   |  
           ===+===+===
         C    |   |  
         """
     assert str(board) == dedent(pretty_board)
+    pretty_big_board = """\
+           1   2   3   4
+        A    |   |   |   
+          ===+===+===+===
+        B    |   |   |
+          ===+===+===+===
+        C    |   |   |   
+          ===+===+===+===
+        D    |   |   |   
+        """
+    assert str(big_board) == dedent(pretty_big_board)
+
+def test_board_to_str_marked(board, big_board):
+    board.mark_space(4, "x")
+    pretty_board = """\
+           1   2   3
+        A    |   |   
+          ===+===+===
+        B    | x |   
+          ===+===+===
+        C    |   |   
+        """
+    assert str(board) == dedent(pretty_board)
+    big_board.mark_space(4, "x")
+    pretty_big_board = """\
+           1   2   3   4
+        A    |   |   |   
+          ===+===+===+===
+        B    | x |   |
+          ===+===+===+===
+        C    |   |   |   
+          ===+===+===+===
+        D    |   |   |   
+        """
+    assert str(big_board) == dedent(pretty_big_board)
 
 def test_board_knows_all_empty_spaces(board):
     assert board.empty_spaces() == list(range(0, 9))

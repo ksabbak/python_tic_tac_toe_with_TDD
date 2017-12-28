@@ -23,7 +23,6 @@ class AI(Player):
         return self._pick_the_best_move()
 
     def _pick_the_best_move(self):
-        print(self.move_weights)
         best_spaces = []
         most_weight = -1000000000
         for space, weight in self.move_weights.items():

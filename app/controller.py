@@ -6,11 +6,13 @@ from .ai import AI
 from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first
 
 class Controller:
+    def __init__(self):
+        self.game = Game(AI("x"), AI("o"))
+        
     def run(self):
         print_intro_text()
         print_instructions()
         game_choice = self._handle_input(get_game_type_input, self._acceptable_game_type_input)
-        self.game = None
         if game_choice in "1":
             player1, player2 = self._get_markers("Player 1", "Player 2")
             self.game = Game(HumanPlayer(player1), HumanPlayer(player2))
@@ -71,7 +73,7 @@ class Controller:
         return (response != "n") and (response in "yes yeah definitely affirmative okay yup sure true")
 
     def _coordinates(self):
-        return ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']
+        return self.game.board.coordinates
 
     def _coordinate_to_number(self, move):
         move = self._format_move_input(move)

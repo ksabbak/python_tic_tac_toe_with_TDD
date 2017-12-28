@@ -5,6 +5,7 @@ class Board:
     def __init__(self, length=9):
         self._build_board(length)
         self.side_length = int(len(self.spaces) ** (1 / 2))
+        self.all_win_conditions = None
 
     def mark_space(self, space, marker):
         if self.space_is_empty(space):
@@ -47,3 +48,40 @@ class Board:
         while i < length:
             self.spaces += (" ",)
             i += 1
+
+
+    def winning_marker(self):
+        for win_condition in self._all_win_conditions():
+            board_sample = list(map(lambda x: self.spaces[x], win_condition))
+            if (len(set(board_sample)) == 1 
+               and not self.space_is_empty(win_condition[0])):
+                return board_sample[0]
+        
+
+    def _all_win_conditions(self):
+        self.all_win_conditions = self.all_win_conditions or self._horizontal_win_conditions() + self._vertical_win_conditions() + self._diagonal_win_conditions()
+        return self.all_win_conditions
+
+    def _horizontal_win_conditions(self):
+        wins = []
+        for i in range(0, self.side_length):
+            wins.append(self._calculate_win_conditions(1, self.side_length * i))
+        return wins
+
+    def _vertical_win_conditions(self):
+        wins = []
+        for i in range(0, self.side_length):
+            wins.append(self._calculate_win_conditions(self.side_length, i))
+        return wins
+
+    def _diagonal_win_conditions(self):
+        wins = []
+        wins.append(self._calculate_win_conditions(self.side_length + 1, 0))
+        wins.append(self._calculate_win_conditions(self.side_length - 1, self.side_length - 1))
+        return wins
+
+    def _calculate_win_conditions(self, incrementor, addition):
+        lst = []
+        for space in range(0, self.side_length):
+            lst.append(space * incrementor + addition)
+        return lst

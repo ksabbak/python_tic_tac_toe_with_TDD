@@ -46,8 +46,6 @@ class AI(Player):
         board2 = copy(board)
         if set_move is not None:
             board2.mark_space(set_move, self.marker)
-            # print(set_move)
-            # print(winning_marker(board2))
             if winning_marker(board2): return 100000000000
             if self._check_move_for_win(board2, self.opponent_marker) is not None: return -10000000000
             turn = "other"
@@ -64,9 +62,7 @@ class AI(Player):
         if board.is_full(): return
         if set_move is not None:
             board.mark_space(set_move, self.marker)
-            # print(set_move)
-            # print(winning_marker(board))
-            if winning_marker(board): return [100000000000]
+            if board.winning_marker(): return [100000000000]
             if self._check_move_for_win(board, self.opponent_marker) is not None: return [-10000000000]
             turn = "other"
         for move in board.empty_spaces():
@@ -90,7 +86,7 @@ class AI(Player):
         for space in board.empty_spaces():
             copy_board = copy(board)
             copy_board.mark_space(space, marker)
-            if winning_marker(copy_board) == marker: return space
+            if copy_board.winning_marker() == marker: return space
 
     # MECHANICS
     def _deduce_opponent_marker(self, board):

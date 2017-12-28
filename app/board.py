@@ -5,6 +5,7 @@ class Board:
         self._build_board(length)
         self.side_length = int(len(self.spaces) ** (1 / 2))
         self.all_win_conditions = None
+        self.coordinates = self._build_coordinates()
 
     def mark_space(self, space, marker):
         if self.space_is_empty(space):
@@ -56,8 +57,13 @@ class Board:
             self.spaces += (" ",)
             i += 1
 
+    def _build_coordinates(self):
+        coords = []
+        for alpha in range(ord("A") , ord("A") + self.side_length):
+            for num in range(1 , self.side_length + 1):
+                coords.append(chr(alpha) + str(num))
+        return coords
 
-        
 # END CONDITIONS: 
 
     def _all_win_conditions(self):

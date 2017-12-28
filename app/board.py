@@ -26,15 +26,7 @@ class Board:
                 if self.space_is_empty(space)]
 
     def __str__(self):
-        pretty_board = """\
-           1   2   3
-        A  %s | %s | %s
-          ===+===+===
-        B  %s | %s | %s
-          ===+===+===
-        C  %s | %s | %s
-            """ % self.spaces
-        return dedent(pretty_board)
+        return self._build_board_str()
 
     def winning_marker(self):
         for win_condition in self._all_win_conditions():
@@ -59,10 +51,31 @@ class Board:
 
     def _build_coordinates(self):
         coords = []
-        for alpha in range(ord("A") , ord("A") + self.side_length):
-            for num in range(1 , self.side_length + 1):
+        for alpha in range(ord("A"), ord("A") + self.side_length):
+            for num in range(1, self.side_length + 1):
                 coords.append(chr(alpha) + str(num))
         return coords
+
+    def _build_board_str(self):
+        first_row = ""
+        for num in range(1, self.side_length + 1):
+            first_row += "   " + str(num)
+        first_row += "\n"
+        filler_row = "  ==="
+        for row in range(1, self.side_length):
+            filler_row += "+==="
+        filler_row += "\n"
+        board = first_row
+        for space in range(0, len(self.spaces)):
+            if space % self.side_length == 0:
+                board += self.coordinates[space][0] + " "
+            board += " %s |" % self.spaces[space]
+            if (space % self.side_length == self.side_length - 1
+                 and space != len(self.spaces) -1 ):
+                board = board[:-1]
+                board += "\n" + filler_row
+        return board[:-1] + "\n"
+
 
 # END CONDITIONS: 
     def _all_win_conditions(self):

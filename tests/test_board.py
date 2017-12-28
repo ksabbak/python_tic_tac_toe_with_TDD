@@ -50,16 +50,16 @@ def test_board_to_str_empty(board, big_board):
            1   2   3
         A    |   |   
           ===+===+===
-        B    |   |  
+        B    |   |   
           ===+===+===
-        C    |   |  
+        C    |   |   
         """
     assert str(board) == dedent(pretty_board)
     pretty_big_board = """\
            1   2   3   4
         A    |   |   |   
           ===+===+===+===
-        B    |   |   |
+        B    |   |   |   
           ===+===+===+===
         C    |   |   |   
           ===+===+===+===
@@ -83,7 +83,7 @@ def test_board_to_str_marked(board, big_board):
            1   2   3   4
         A    |   |   |   
           ===+===+===+===
-        B    | x |   |
+        B  x |   |   |   
           ===+===+===+===
         C    |   |   |   
           ===+===+===+===

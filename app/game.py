@@ -4,8 +4,8 @@ from .player import HumanPlayer
 
 
 class Game:
-    def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o")):
-        self.board = Board()
+    def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o"), board=9):
+        self.board = Board(board)
         self.players = [player1, player2]
         self.turn = 0
         self._get_current_player()

@@ -56,7 +56,7 @@ class AI(Player):
                 weight += self._calculate_move(boardcopy, move, self.opponent_marker, -10)
         return weight
 
-    def _weigh_move_with_array(self, board, set_move=None, turn="self", array=[], depth=1):
+    def _weigh_move_with_array(self, board, set_move=None, turn="self", array=[], depth=0):
         if board.is_full() or depth > board.side_length + 1: return array
         if set_move is not None:
             board.mark_space(set_move, self.marker)

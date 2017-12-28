@@ -49,6 +49,7 @@ class Board:
         spaces[space] = marker
         self.spaces = tuple(spaces)
 
+
 # BUILDING: 
     def _build_board(self, length):
         i = 0

@@ -1,7 +1,9 @@
 import io
 import pytest
+from textwrap import dedent
 
 from ..app.__init__ import Board
+
 
 @pytest.fixture()
 def board():
@@ -43,8 +45,16 @@ def test_board_knows_when_space_is_empty(board):
     board.mark_space(0, "x")
     assert board.space_is_empty(0) is False
 
-def xtest_board_to_str(board):
-     assert str(board) == " 0 | 1 | 2 \n===+===+===\n 3 | 4 | 5 \n===+===+===\n 6 | 7 | 8 \n" 
+def test_board_to_str(board):
+    pretty_board = """\
+           1   2   3
+        A    |   |  
+          ===+===+===
+        B    |   |  
+          ===+===+===
+        C    |   |  
+        """
+    assert str(board) == dedent(pretty_board)
 
 def test_board_knows_all_empty_spaces(board):
     assert board.empty_spaces() == list(range(0, 9))

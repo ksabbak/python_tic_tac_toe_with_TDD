@@ -1,6 +1,6 @@
 class Player:
-    def __init__(self, marker):
-        self.marker = marker
+    def __init__(self, marker, color='\033[0m'):
+        self.marker = color + marker + '\033[0m'
         self.moves = []
 
     def make_move(self, board, move):

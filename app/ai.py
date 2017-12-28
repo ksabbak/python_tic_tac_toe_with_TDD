@@ -18,7 +18,7 @@ class AI(Player):
 
     # MOVE LOGIC
     def _get_move(self, board):
-        self.opponent_marker = self._deduce_opponent_marker(board) or chr(ord(self.marker) + 1)
+        self.opponent_marker = self._deduce_opponent_marker(board) 
         self.move_weights = {}
         self._get_move_weights(board)
         return self._pick_the_best_move()
@@ -77,3 +77,4 @@ class AI(Player):
             if (not board.space_is_empty(space) 
                 and (board.spaces[space] != self.marker)):
                 return board.spaces[space]
+        return chr(ord(self.marker.strip('\033[0m')) + 1)

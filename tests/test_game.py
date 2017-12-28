@@ -41,7 +41,7 @@ def test_game_has_two_players(game):
     assert len(game.players) == 2
 
 def test_player_one_has_marker_x(game):
-    assert game.players[0].marker == "x"
+    assert game.players[0].marker.strip('\033[0m') == "x"
 
 def test_player_two_has_marker_o(game):
-    assert game.players[1].marker == "o"
+    assert game.players[1].marker.strip('\033[0m') == "o"

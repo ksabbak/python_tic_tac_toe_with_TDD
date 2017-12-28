@@ -35,12 +35,20 @@ class Board:
             """ % self.spaces
         return dedent(pretty_board)
 
+    def winning_marker(self):
+        for win_condition in self._all_win_conditions():
+            board_sample = list(map(lambda x: self.spaces[x], win_condition))
+            if (len(set(board_sample)) == 1 
+               and not self.space_is_empty(win_condition[0])):
+                return board_sample[0]
+
 
     def _change_space(self, space, marker):
         spaces = list(self.spaces)
         spaces[space] = marker
         self.spaces = tuple(spaces)
 
+# BUILDING: 
     def _build_board(self, length):
         i = 0
         self.spaces = ()
@@ -49,13 +57,8 @@ class Board:
             i += 1
 
 
-    def winning_marker(self):
-        for win_condition in self._all_win_conditions():
-            board_sample = list(map(lambda x: self.spaces[x], win_condition))
-            if (len(set(board_sample)) == 1 
-               and not self.space_is_empty(win_condition[0])):
-                return board_sample[0]
         
+# END CONDITIONS: 
 
     def _all_win_conditions(self):
         self.all_win_conditions = self.all_win_conditions or self._horizontal_win_conditions() + self._vertical_win_conditions() + self._diagonal_win_conditions()

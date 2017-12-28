@@ -8,6 +8,11 @@ def board():
     board = Board()
     return board
 
+@pytest.fixture()
+def big_board():
+    board = Board(16)
+    return board
+
 def test_board_has_9_spaces(board):
     assert len(board.spaces) == 9
 
@@ -52,6 +57,18 @@ def test_board_knows_all_empty_spaces(board):
 def test_build_board_length(board):
     board._build_board(5)
     assert len(board.spaces) == 5
+
+
+def test_build_coordinates(board, big_board):
+    assert board.coordinates == ['A1', 'A2', 'A3', 
+                                 'B1', 'B2', 'B3', 
+                                 'C1', 'C2', 'C3'
+                                 ]
+    assert big_board.coordinates == ['A1', 'A2', 'A3', 'A4', 
+                                     'B1', 'B2', 'B3', 'B4',
+                                     'C1', 'C2', 'C3', 'C4',
+                                     'D1', 'D2', 'D3', 'D4'
+                                     ]
 
 
 #END CONDITIONS:
@@ -127,11 +144,7 @@ def test_game_over_for_diagonal_win_right_to_left_9_space_board(board):
     board.mark_space(6, "x")
     assert board.winning_marker() == "x"
 
-
-@pytest.fixture()
-def big_board():
-    board = Board(16)
-    return board
+# Big Board: 
 
 def test_game_knows_winner_16_space_board(big_board):
     big_board.mark_space(0, "x")

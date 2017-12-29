@@ -16,6 +16,14 @@ def print_instructions():
         """
     print(dedent(instructions))
 
+def print_board_size():
+    instructions = """\
+        Which size board do you want?
+            1. 3x3
+            2. 4x4
+        """
+    print(dedent(instructions))
+
 def get_game_type_input():
     print("Please enter the number of your selection:")
     return input().strip()
@@ -27,6 +35,8 @@ def get_marker(player):
 def print_sorry(about=None):
     if about == "game type":
         print("Please enter the numeral 1, 2, or 3:")
+    elif about == "board type":
+        print("Please enter the numeral 1, or 2:")
     elif about == "marker length":
         print("Sorry, your marker can only be one character.")
     elif about == "no coord":
@@ -52,7 +62,7 @@ def print_clear():
     print(chr(27) + "[2J" + chr(27) + "[0;0H")
 
 def print_board(board):
-    print(board.to_str())
+    print(str(board))
 
 def print_new_turn(board):
     print_clear()

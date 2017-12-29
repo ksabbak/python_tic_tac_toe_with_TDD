@@ -23,6 +23,10 @@ def test_ai_player_logs_moves(ai, board):
     move_2 = ai.make_move(board, None)
     assert ai.moves == [move, move_2]
 
+def test_ai_can_determine_opponent_marker(ai, board):
+    board.mark_space(0, "o")
+    assert ai._deduce_opponent_marker(board) == "o"
+
 def tests_ai_can_move_without_input(ai, board):
     assert ai._get_move(board) in range(0, 9)
 
@@ -96,6 +100,37 @@ def test_ai_prevents_opponent_from_fork_win_middle_two_corners(ai, board):
     board.mark_space(0, "o")
     assert ai._get_move(board) in [2, 6]
 
-def test_ai_can_determine_opponent_marker(ai, board):
-    board.mark_space(0, "o")
-    assert ai._deduce_opponent_marker(board) == "o"
+
+@pytest.fixture()
+def big_board():
+    return Board(16)
+
+def test_ai_can_make_winning_move_16_space_board(ai, big_board):
+    big_board.mark_space(0, "x")
+    big_board.mark_space(1, "x")
+    big_board.mark_space(3, "x")
+    assert ai._get_move(big_board) == 2
+
+def test_ai_can_stop_immediate_horizontal_loss_16_space_board(ai, big_board):
+    big_board.mark_space(4, "o")
+    big_board.mark_space(5, "o")
+    big_board.mark_space(6, "o")
+    assert ai._get_move(big_board) == 7
+
+def test_ai_ends_game_when_possible_16_space_board(ai, big_board):
+    big_board.mark_space(0, "o")
+    big_board.mark_space(1, "o")
+    big_board.mark_space(2, "o")
+    big_board.mark_space(12, "x")
+    big_board.mark_space(13, "x")
+    big_board.mark_space(14, "x")
+    assert ai._get_move(big_board) == 15
+
+def test_ai_prevents_fork_16_space_board(ai, big_board):
+    big_board.mark_space(3, "o")
+    big_board.mark_space(5, "o")
+    big_board.mark_space(6, "o")
+    big_board.mark_space(11, "o")
+    big_board.mark_space(13, "x")
+    big_board.mark_space(14, "x")
+    assert ai._get_move(big_board) == 7

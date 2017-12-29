@@ -3,28 +3,36 @@ from string import punctuation
 from .game import Game
 from .player import HumanPlayer
 from .ai import AI
-from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first
+from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size
 
 class Controller:
+    def __init__(self):
+        self.game = Game(AI("x"), AI("o"))
+
     def run(self):
         print_intro_text()
+        print_board_size()
+        board_choice = self._handle_input(get_game_type_input, self._acceptable_board_type_input)
+        if board_choice in "1":
+            board_choice = 9
+        else:
+            board_choice = 16
         print_instructions()
         game_choice = self._handle_input(get_game_type_input, self._acceptable_game_type_input)
-        self.game = None
         if game_choice in "1":
             player1, player2 = self._get_markers("Player 1", "Player 2")
-            self.game = Game(HumanPlayer(player1), HumanPlayer(player2))
+            self.game = Game(HumanPlayer(player1), HumanPlayer(player2), board=board_choice)
         elif game_choice in "2":
             player_first = self._affirmative(get_who_first())
             print_who_first(player_first)
             human_player, ai = self._get_markers("you", "the computer")
             if player_first:
-                self.game = Game.mixed_game({"player1" : HumanPlayer(human_player),  "player2" : AI(ai)})
+                self.game = Game.mixed_game({"player1" : HumanPlayer(human_player),  "player2" : AI(ai), "board" : board_choice})
             else:
-                self.game = Game.mixed_game({"player2" : HumanPlayer(human_player),  "player1" : AI(ai)})
+                self.game = Game.mixed_game({"player2" : HumanPlayer(human_player),  "player1" : AI(ai), "board" : board_choice})
         elif game_choice in "3":
             player1, player2 = self._get_markers("Computer 1", "Computer 2")
-            self.game = Game(AI(player1), AI(player2))
+            self.game = Game(AI(player1), AI(player2), board=board_choice)
         else:
             print("This program will self-destruct")
             return
@@ -71,7 +79,7 @@ class Controller:
         return (response != "n") and (response in "yes yeah definitely affirmative okay yup sure true")
 
     def _coordinates(self):
-        return ['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3']
+        return self.game.board.coordinates
 
     def _coordinate_to_number(self, move):
         move = self._format_move_input(move)
@@ -94,6 +102,10 @@ class Controller:
     def _acceptable_game_type_input(self, game_type_input):
         if game_type_input not in ["1", "2", "3"]:
             return "game type"
+
+    def _acceptable_board_type_input(self, board_type_input):
+        if board_type_input not in ["1", "2"]:
+            return "board type"
 
     def _acceptable_move_input(self, move_input):
         if move_input == "undo": return

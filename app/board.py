@@ -1,11 +1,12 @@
 from textwrap import dedent
 
 class Board:
-    def __init__(self, length=9):
+    def __init__(self, length=9, color=""):
         self._build_board(length)
         self.side_length = int(len(self.spaces) ** (1 / 2))
         self.all_win_conditions = None
         self.coordinates = self._build_coordinates()
+        self.color = color
 
     def mark_space(self, space, marker):
         if self.space_is_empty(space):
@@ -57,24 +58,38 @@ class Board:
         return coords
 
     def _build_board_str(self):
-        first_row = ""
-        for num in range(1, self.side_length + 1):
-            first_row += "   " + str(num)
-        first_row += "\n"
-        filler_row = "  ==="
-        for row in range(1, self.side_length):
-            filler_row += "+==="
-        filler_row += "\n"
+        first_row = self._color_text(self._build_first_row())
+        filler_row = self._color_text(self._build_filler_row())
         board = first_row
         for space in range(0, len(self.spaces)):
             if space % self.side_length == 0:
-                board += self.coordinates[space][0] + " "
-            board += " %s |" % self.spaces[space]
+                board += self._color_text(self.coordinates[space][0]) + " "
+            board += self._color_text(" %s |" % self.spaces[space])
             if (space % self.side_length == self.side_length - 1
                  and space != len(self.spaces) -1 ):
                 board = board[:-1]
                 board += "\n" + filler_row
         return board[:-1] + "\n"
+
+    # BUILD BOARD - HELPER METHODS:
+
+    def _build_first_row(self):
+        first_row = ""
+        for num in range(1, self.side_length + 1):
+            first_row += "   " + str(num)
+        first_row += "\n" 
+        return first_row
+
+    def _build_filler_row(self):
+        filler_row = "  ==="
+        for row in range(1, self.side_length):
+            filler_row += "+==="
+        filler_row += "\n" 
+        return filler_row
+        
+    def _color_text(self, str):
+        no_color = '\033[0m'
+        return str
 
 
 # END CONDITIONS: 

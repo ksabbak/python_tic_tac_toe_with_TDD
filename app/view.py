@@ -1,4 +1,3 @@
-from copy import copy
 from textwrap import dedent
 import time
 
@@ -157,9 +156,8 @@ def _build_board(board, color_spaces):
         return board_str[:-5] + "\033[0m" + "\n"
         
 def _color_spaces(board, player_one, player_two, last_move):
-    spaces = copy(board.spaces)
     new_spaces = []
-    for i, space in enumerate(spaces):
+    for i, space in enumerate(board.spaces):
         if space == player_one.marker:
             new_space = _color_text(space, player_one.color)
         elif space == player_two.marker:
@@ -169,7 +167,6 @@ def _color_spaces(board, player_one, player_two, last_move):
 
         if i == last_move:
             new_space = _color_text(new_space, "\033[;4m")
-
         new_spaces.append(new_space)
     return new_spaces
 

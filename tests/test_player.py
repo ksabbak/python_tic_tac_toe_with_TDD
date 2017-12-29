@@ -9,7 +9,7 @@ from ..app.__init__ import Player, HumanPlayer, Board
 
 def test_players_have_markers():
     assert Player("?").marker is not None
-    assert Player("!").marker == "!"
+    assert Player("!").marker.strip("'\033[0m'") == "!"
 
 def test_player_undo_removes_last_move():
     player = Player("X")

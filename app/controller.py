@@ -3,7 +3,7 @@ from string import punctuation
 from .game import Game
 from .player import HumanPlayer
 from .ai import AI
-from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size
+from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size, get_color, colors
 
 class Controller:
     def __init__(self):
@@ -20,19 +20,23 @@ class Controller:
         print_instructions()
         game_choice = self._handle_input(get_game_type_input, self._acceptable_game_type_input)
         if game_choice in "1":
-            player1, player2 = self._get_markers("Player 1", "Player 2")
-            self.game = Game(HumanPlayer(player1), HumanPlayer(player2), board=board_choice)
+            player1, player2, color1, color2, board_color = self._get_markers("Player 1", "Player 2")
+            self.game = Game(HumanPlayer(player1, color1), HumanPlayer(player2, color2), board=board_choice, color=board_color)
         elif game_choice in "2":
             player_first = self._affirmative(get_who_first())
             print_who_first(player_first)
-            human_player, ai = self._get_markers("you", "the computer")
+            human_player, ai, color1, color2, board_color = self._get_markers("you", "the computer")
             if player_first:
-                self.game = Game.mixed_game({"player1" : HumanPlayer(human_player),  "player2" : AI(ai), "board" : board_choice})
+                self.game = Game.mixed_game({
+                    "player1" : HumanPlayer(human_player, color1),  
+                    "player2" : AI(ai, color2), 
+                    "board" : board_choice, 
+                    "board_color" : board_color})
             else:
-                self.game = Game.mixed_game({"player2" : HumanPlayer(human_player),  "player1" : AI(ai), "board" : board_choice})
+                self.game = Game.mixed_game({"player2" : HumanPlayer(human_player, color1),  "player1" : AI(ai, color2), "board" : board_choice, "board_color" : board_color})
         elif game_choice in "3":
-            player1, player2 = self._get_markers("Computer 1", "Computer 2")
-            self.game = Game(AI(player1), AI(player2), board=board_choice)
+            player1, player2, color1, color2, board_color = self._get_markers("Computer 1", "Computer 2")
+            self.game = Game(AI(player1, color1), AI(player2, color2), board=board_choice, board_color=board_color)
         else:
             print("This program will self-destruct")
             return
@@ -40,7 +44,7 @@ class Controller:
 
 
     def _play(self):
-        print_new_turn(self.game.board)
+        print_new_turn(self.game.board, self.game.last_move, *self.game.players)
         while not self.game.is_over():
             if self.game.current_player.is_ai():
                 self._ai_player_turn()
@@ -50,29 +54,35 @@ class Controller:
         print_game_over(self.game.winner())
 
     def _human_player_turn(self):
-        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.game.current_player.marker])
+        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.game.current_player.marker, self.game.current_player.color])
         if move == "undo":
             self.game.undo_turn()
             move = self.game.current_player.moves[-1] if self.game.current_player.moves else None
         else:
             move = self._coordinate_to_number(move)
             self.game.start_turn(move) 
-        print_humanplayer_update(self.game.board, self.game.current_player.marker, self._number_to_coordinate(move))
+        print_humanplayer_update(self.game, self._number_to_coordinate(move))
 
     def _ai_player_turn(self):
         move = self.game.start_turn()
-        print_ai_update(self.game.board, self.game.current_player.marker, self._number_to_coordinate(move))
+        print_ai_update(self.game, self._number_to_coordinate(move))
 
     def _get_markers(self, player1, player2):
         first_marker = None
         second_marker = None
+        color1 = None
+        color2 = None
+        board_color = None
         while first_marker == second_marker:
             first_marker = self._handle_input(get_marker, self._acceptable_marker_input, [player1])
+            color1 = self._handle_input(get_color, self._acceptable_color_input, [first_marker])
             second_marker = self._handle_input(get_marker, self._acceptable_marker_input, [player2])
-            if first_marker == second_marker or (first_marker is None) or (second_marker is None):
+            color2 = self._handle_input(get_color, self._acceptable_color_input, [second_marker])
+            if (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
                 print_sorry("match marker")
+            board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
 
-        return[first_marker, second_marker]
+        return[first_marker, second_marker, color1, color2, board_color]
 
     def _affirmative(self, response):
         response = response.lower().strip(punctuation)
@@ -106,6 +116,16 @@ class Controller:
     def _acceptable_board_type_input(self, board_type_input):
         if board_type_input not in ["1", "2"]:
             return "board type"
+
+    def _acceptable_color_input(self, color_input):
+        color_input = color_input.lower().strip(punctuation)
+        if color_input == "none": return None
+        for color in self._colors():
+            if color_input == color.lower(): return None
+        return "color"
+
+    def _colors(self):
+        return colors().keys()
 
     def _acceptable_move_input(self, move_input):
         if move_input == "undo": return

@@ -4,17 +4,19 @@ from .player import HumanPlayer
 
 
 class Game:
-    def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o"), board=9):
-        self.board = Board(board)
+    def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o"), board=9, board_color=""):
+        self.board = Board(board, board_color)
         self.players = [player1, player2]
         self.turn = 0
         self._get_current_player()
+        self.last_move = None
 
     def is_over(self):
         return (self.board.is_full() or self.board.winning_marker())
 
     def start_turn(self, move=None):
         move = self.current_player.make_move(self.board, move)
+        self.last_move = self.current_player.last_move()
         return move
 
     def end_turn(self):

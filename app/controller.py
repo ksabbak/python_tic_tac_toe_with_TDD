@@ -27,9 +27,9 @@ class Controller:
             print_who_first(player_first)
             human_player, ai = self._get_markers("you", "the computer")
             if player_first:
-                self.game = Game.mixed_game({"player1" : HumanPlayer(human_player),  "player2" : AI(ai), board : board_choice})
+                self.game = Game.mixed_game({"player1" : HumanPlayer(human_player),  "player2" : AI(ai), "board" : board_choice})
             else:
-                self.game = Game.mixed_game({"player2" : HumanPlayer(human_player),  "player1" : AI(ai), board : board_choice})
+                self.game = Game.mixed_game({"player2" : HumanPlayer(human_player),  "player1" : AI(ai), "board" : board_choice})
         elif game_choice in "3":
             player1, player2 = self._get_markers("Computer 1", "Computer 2")
             self.game = Game(AI(player1), AI(player2), board=board_choice)

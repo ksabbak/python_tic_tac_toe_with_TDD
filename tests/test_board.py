@@ -40,10 +40,13 @@ def test_board_knows_when_full(board):
         i += 1
     assert board.is_full() is True
 
-def test_board_knows_when_space_is_empty(board):
+def test_board_knows_when_space_is_empty(board, big_board):
     assert board.space_is_empty(0)
     board.mark_space(0, "x")
     assert board.space_is_empty(0) is False
+    assert big_board.space_is_empty(13)
+    big_board.mark_space(13, "x")
+    assert big_board.space_is_empty(13) is False
 
 def test_board_to_str_empty(board, big_board):
     pretty_board = """\
@@ -98,6 +101,16 @@ def test_board_knows_all_empty_spaces(board):
     expected_spaces = [0, 2, 3, 4, 5, 6, 7, 8]
     assert board.empty_spaces() == expected_spaces
     assert len(board.empty_spaces()) == 8
+
+def test_board_knows_all_empty_spaces_4x4(big_board):
+    board = big_board
+    assert board.empty_spaces() == list(range(0, 16))
+    assert len(board.empty_spaces()) == 16
+    board.mark_space(1, "!")
+    board.mark_space(15, "!")
+    expected_spaces = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    assert board.empty_spaces() == expected_spaces
+    assert len(board.empty_spaces()) == 14
 
 def test_build_board_length(board):
     board._build_board(5)

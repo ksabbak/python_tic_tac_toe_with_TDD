@@ -21,7 +21,7 @@ class Controller:
         game_choice = self._handle_input(get_game_type_input, self._acceptable_game_type_input)
         if game_choice in "1":
             player1, player2, color1, color2, board_color = self._get_markers("Player 1", "Player 2")
-            self.game = Game(HumanPlayer(player1, color1), HumanPlayer(player2, color2), board=board_choice, color=board_color)
+            self.game = Game(HumanPlayer(player1, color1), HumanPlayer(player2, color2), board=board_choice, board_color=board_color)
         elif game_choice in "2":
             player_first = self._affirmative(get_who_first())
             print_who_first(player_first)

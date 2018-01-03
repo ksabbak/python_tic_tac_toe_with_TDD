@@ -1,5 +1,6 @@
 from random import randint, choice
 from copy import copy
+from math import factorial
 
 from .player import Player
 from .board import Board
@@ -23,11 +24,11 @@ class AI(Player):
         self.opponent_marker = self._deduce_opponent_marker(board) 
         self.move_weights = {}
         self._get_move_weights(board)
-        return self._pick_the_best_move()
+        return self._pick_the_best_move(board)
 
-    def _pick_the_best_move(self):
+    def _pick_the_best_move(self, board):
         best_spaces = []
-        most_weight = -1000000000
+        most_weight = -factorial(len(board.spaces))
         for space, weight in self.move_weights.items():
             if most_weight == weight:
                 best_spaces.append(space)
@@ -48,8 +49,8 @@ class AI(Player):
             board.mark_space(set_move, self.marker)
             if str(board.spaces) in self.transposition_table.keys():
                 weight = self.transposition_table[str(board.spaces)]
-            if board.winning_marker(): return 100000000000
-            if self._check_move_for_win(board, self.opponent_marker) is not None: return -10000000000
+            if board.winning_marker(): return factorial(len(board.spaces))
+            if self._check_move_for_win(board, self.opponent_marker) is not None: return -factorial(len(board.spaces))
             turn = "other"
         weight = 0
         for move in board.empty_spaces():

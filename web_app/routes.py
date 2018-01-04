@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request
 from . import app
-from ..app import Board
+from ..app import Board, AI
 
 @app.route('/index')
 def index():
@@ -22,4 +22,6 @@ def three_x_three_choice(path):
     board = board.strip("'")
     board = Board.create_from_existing(board)
     board.mark_space(int(path), "x")
+    ai = AI("o")
+    ai.make_move(board)
     return three_x_three_board(board.space_string())

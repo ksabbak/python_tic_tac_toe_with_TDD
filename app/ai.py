@@ -10,7 +10,7 @@ class AI(Player):
         super().__init__(marker, color)
         self.transposition_table = {}
 
-    def make_move(self, board, move):
+    def make_move(self, board, move=None):
         move = self._get_move(board)
         return super().make_move(board, move)
 

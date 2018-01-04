@@ -15,6 +15,11 @@ def big_board():
     board = Board.create_from_scratch(16)
     return board
 
+def test_create_from_existing_is_new_board(board):
+    new_board = Board.create_from_existing(board.spaces)
+    assert new_board.__class__.__name__ == "Board"
+    assert new_board != board
+
 def test_board_has_9_spaces(board):
     assert len(board.spaces) == 9
 

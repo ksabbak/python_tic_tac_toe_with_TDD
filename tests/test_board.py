@@ -99,6 +99,9 @@ def test_board_to_str_marked(board, big_board):
         """
     assert str(big_board) == dedent(pretty_big_board)
 
+def test_space_string(board):
+    assert board.space_string() == "         "
+
 def test_board_knows_all_empty_spaces(board):
     assert board.empty_spaces() == list(range(0, 9))
     assert len(board.empty_spaces()) == 9

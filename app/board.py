@@ -14,7 +14,7 @@ class Board:
         for i in range(0, length):
             board += (" ",)
         return cls(board, color)
-        
+
     @classmethod
     def create_from_existing(cls, spaces, color=""):
         board = tuple(spaces)
@@ -48,6 +48,12 @@ class Board:
             if (len(set(board_sample)) == 1 
                and not self.space_is_empty(win_condition[0])):
                 return board_sample[0]
+
+    def space_string(self):
+        space_string = ""
+        for space in self.spaces:
+            space_string += str(space)
+        return space_string
 
 
     def _change_space(self, space, marker):

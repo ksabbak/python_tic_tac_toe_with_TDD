@@ -47,8 +47,9 @@ class AI(Player):
         if board.is_full() or depth > board.side_length + 1: return 0
         if set_move is not None:
             board.mark_space(set_move, self.marker)
-            if str(board.spaces) in self.transposition_table.keys():
-                weight = self.transposition_table[str(board.spaces)]
+            potential_key = self._check_transpositions(board.spaces)
+            if potential_key is not None:
+                weight = self.transposition_table[potential_key]
             if board.winning_marker(): return factorial(len(board.spaces))
             if self._check_move_for_win(board, self.opponent_marker) is not None: return -factorial(len(board.spaces))
             turn = "other"
@@ -66,8 +67,9 @@ class AI(Player):
             weight = win_weight
         else:
             board.mark_space(move, marker)
-            if str(board.spaces) in self.transposition_table.keys():
-                weight = self.transposition_table[str(board.spaces)]
+            potential_key = self._check_transpositions(board.spaces)
+            if potential_key is not None:
+                weight = self.transposition_table[potential_key]
             else:
                 depth +=1
                 next_turn = "self" if win_weight < 0 else "other"
@@ -88,6 +90,24 @@ class AI(Player):
                 and (board.spaces[space] != self.marker)):
                 return board.spaces[space]
         return chr(ord(self.marker.strip('\033[0m')) + 1)
+
+    def _check_transpositions(self, spaces):
+        result = self._check_transposition_and_mirror(str(spaces))
+        result = result or self._check_transposition_and_mirror(self._rotate_spaces(spaces))
+        if result is not None: return result
+
+    def _check_transposition_and_mirror(self, space_string):
+        if space_string in self.transposition_table.keys():
+            return space_string
+        elif space_string[::-1] in self.transposition_table.keys():
+            return  space_string[::-1] 
+
+    def _rotate_spaces(self, spaces):
+        space_string = ""
+        for i in range( int(len(spaces) ** (1 / 2)) , 0, -1):
+            for j in range(0, len(spaces), 4):
+                space_string += str(spaces[len(spaces) - i - j])
+        return space_string
 
     def _transpose(self, board, value):
         if str(board.spaces) not in self.transposition_table.keys():

@@ -7,12 +7,12 @@ from ..app.__init__ import Board
 
 @pytest.fixture()
 def board():
-    board = Board()
+    board = Board.create_from_scratch()
     return board
 
 @pytest.fixture()
 def big_board():
-    board = Board(16)
+    board = Board.create_from_scratch(16)
     return board
 
 def test_board_has_9_spaces(board):
@@ -111,11 +111,6 @@ def test_board_knows_all_empty_spaces_4x4(big_board):
     expected_spaces = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     assert board.empty_spaces() == expected_spaces
     assert len(board.empty_spaces()) == 14
-
-def test_build_board_length(board):
-    board._build_board(5)
-    assert len(board.spaces) == 5
-
 
 def test_build_coordinates(board, big_board):
     assert board.coordinates == ['A1', 'A2', 'A3', 

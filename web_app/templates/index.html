@@ -1,0 +1,35 @@
+{% extends 'template.html' %}
+
+{%block content%}
+
+<a href="{{ url_for('board', size=9) }}">3x3 board</a>
+<a href="{{ url_for('board', size=16) }}">4x4 board</a>
+ <form method="POST" action="{{ url_for('board')}}">
+        <p>Please choose your board size:</p>
+        <div>
+          <input type="radio" name="board" value="9" id="3x3" />
+          <label for="3x3">3x3</label>
+
+          <input type="radio" name="board" value="16" id="4x4" />
+          <label for="4x4">4x4</label>
+        </div>
+        <p>Please choose your game type:</p>
+        <div>
+          <input type="radio" name="game_type" value="pvp" id="pvp" />
+          <label for="pvp">Human vs. Human</label>
+
+          <input type="radio" name="game_type" value="pvc" id="pvc" />
+          <label for="pvc">Human vs. Computer</label>
+
+          <input type="radio" name="game_type" value="cvp" id="cvp" />
+          <label for="cvp">Computer vs. Human</label>
+
+          <input type="radio" name="game_type" value="cvc" id="cvc" />
+          <label for="cvc">Computer vs. Computer</label>
+        </div>
+        
+        <input type="submit" value="Submit" />
+      </form> 
+
+
+{% endblock %}

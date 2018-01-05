@@ -5,7 +5,7 @@ from .player import HumanPlayer
 
 class Game:
     def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o"), board=9, board_color=""):
-        self.board = Board(board, board_color)
+        self.board = Board.create_from_scratch(board, board_color)
         self.players = [player1, player2]
         self.turn = 0
         self._get_current_player()

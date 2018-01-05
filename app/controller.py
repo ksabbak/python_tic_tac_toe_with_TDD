@@ -106,7 +106,7 @@ class Controller:
         return "".join(coord_list)
 
     def _acceptable_marker_input(self, marker_input):
-        if len(marker_input) != 1:
+        if len(marker_input) != 1 or marker_input == " ":
             return "marker length"
 
     def _acceptable_game_type_input(self, game_type_input):

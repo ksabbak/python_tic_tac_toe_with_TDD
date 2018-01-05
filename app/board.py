@@ -1,12 +1,25 @@
 from textwrap import dedent
 
 class Board:
-    def __init__(self, length=9, color=""):
-        self._build_board(length)
+    def __init__(self, board, color):
+        self.spaces = board
         self.side_length = int(len(self.spaces) ** (1 / 2))
         self.all_win_conditions = None
         self.coordinates = self._build_coordinates()
         self.color = color
+
+    @classmethod
+    def create_from_scratch(cls, length=9, color=""):
+        board = ()
+        for i in range(0, length):
+            board += (" ",)
+        return cls(board, color)
+
+    @classmethod
+    def create_from_existing(cls, spaces, color=""):
+        board = tuple(spaces)
+        return cls(board, color)
+
 
     def mark_space(self, space, marker):
         if self.space_is_empty(space):
@@ -36,6 +49,12 @@ class Board:
                and not self.space_is_empty(win_condition[0])):
                 return board_sample[0]
 
+    def space_string(self):
+        space_string = ""
+        for space in self.spaces:
+            space_string += str(space)
+        return space_string
+
 
     def _change_space(self, space, marker):
         spaces = list(self.spaces)
@@ -43,12 +62,12 @@ class Board:
         self.spaces = tuple(spaces)
 
 # BUILDING: 
-    def _build_board(self, length):
-        i = 0
-        self.spaces = ()
-        while i < length:
-            self.spaces += (" ",)
-            i += 1
+    # def _build_board(self, length):
+    #     i = 0
+    #     self.spaces = ()
+    #     while i < length:
+    #         self.spaces += (" ",)
+    #         i += 1
 
     def _build_coordinates(self):
         coords = []

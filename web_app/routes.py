@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, session, _request_ctx_stack
 from . import app
 # from .helpers import end_conditions
-from ..app import Board, AI, Game, HumanPlayer
+from ..app import Board, AI
 
 @app.route('/index')
 @app.route('/')

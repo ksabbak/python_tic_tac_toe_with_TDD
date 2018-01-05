@@ -3,7 +3,7 @@ from string import punctuation
 from .game import Game
 from .player import HumanPlayer
 from .ai import AI
-from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size, get_color, colors
+from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size, get_color, colors, print_ai_thinking
 
 class Controller:
     def __init__(self):
@@ -64,6 +64,7 @@ class Controller:
         print_humanplayer_update(self.game, self._number_to_coordinate(move))
 
     def _ai_player_turn(self):
+        print_ai_thinking()
         move = self.game.start_turn()
         print_ai_update(self.game, self._number_to_coordinate(move))
 

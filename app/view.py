@@ -2,6 +2,7 @@ from textwrap import dedent
 import time
 
 def print_intro_text():
+    print_clear()
     print("Welcome!")
     print("this is tic-tac-toe!")
 
@@ -12,6 +13,7 @@ def print_instructions():
             2. Human vs. Computer
             3. Computer vs. Computer\
         """
+    print("\n")
     print(dedent(instructions))
 
 def print_board_size():
@@ -20,12 +22,15 @@ def print_board_size():
             1. 3x3
             2. 4x4
         """
+    print("\n")
     print(dedent(instructions))
 
 def print_who_first(player_first):
     if player_first:
+        print("\n")
         print("Great, you'll go first!")
     else:
+        print("\n")
         print("Cool! The computer will go first.")
 
 def print_clear():
@@ -39,9 +44,10 @@ def print_game_over(winner=None):
     print("Okay, the game is over")
     if winner is not None: print("%s wins!" % _color_text(winner.marker, winner.color))
 
-def print_ai_update(game, move):
-    time.sleep(0.5)
+def print_ai_thinking():
     print("Hmmmm, the computer is thinking")
+
+def print_ai_update(game, move):
     time.sleep(1)
     print_new_turn(game.board, game.last_move, *game.players)
     print("It looks like, %s moved to space %s" % (_color_text(game.current_player.marker, game.current_player.color), move))
@@ -82,23 +88,28 @@ def _print_board(board, last_move, player_one, player_two, ):
 
 #GETTERS: 
 def get_game_type_input():
+    print("\n")
     print("Please enter the number of your selection:")
     return input().strip()
 
 def get_marker(player):
+    print("\n")
     print("Please enter the marker choice for %s." % player)
     return input().strip()
 
 def get_color(thing_to_color):
-    print("What color would you like %s to be?" % thing_to_color)
+    print("\n")
+    print("What color would you like %s to be? (enter 'help' for options)" % thing_to_color)
     return input().strip()
         
 def get_player_move(marker, color):
+    print("\n")
     print("Where would you like to move, Player %s?" % _color_text(marker, color))
     move = input().strip()
     return move
 
 def get_who_first():
+    print("\n")
     print("Great, would you like to move first?")
     return input().strip()
 
@@ -117,7 +128,7 @@ def colors():
     return colors
 
 def _color_option_string():
-    color_string = ""
+    color_string = "\n"
     for text, color in colors().items():
         color_string += _color_text(text, color) + "\n"
     return color_string

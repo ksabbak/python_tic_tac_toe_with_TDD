@@ -12,9 +12,10 @@
     {% endif %}
 
     <td> {% if space == " " %} 
-      <form method="POST" action="{{ url_for('update_board')}}"class="space-choice">
-        <input type="hidden" name="board" value="{{ board.space_string() }}"/>
-        <input type="hidden" name="choice" value="{{loop.index - 1}}">
+      <form method="POST" action="{{ url_for('update_board')}}" class="space-choice">
+        <input type="hidden" name="_method" value="PUT" />
+        <input type="hidden" name="board" value="{{ board.space_string() }}" />
+        <input type="hidden" name="choice" value="{{loop.index - 1}}"/>
         <button type="submit" value="submit" />
       </form> 
     {% endif %}  &nbsp;{{ space }} &nbsp;  </td>

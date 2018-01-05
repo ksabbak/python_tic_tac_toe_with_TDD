@@ -1,0 +1,8 @@
+{% extends 'template.html' %}
+
+{%block content%}
+
+<a href="{{ url_for('board', size=9) }}">3x3 board</a>
+<a href="{{ url_for('board', size=16) }}">4x4 board</a>
+
+{% endblock %}

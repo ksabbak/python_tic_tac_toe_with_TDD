@@ -61,7 +61,7 @@ class Controller:
         move = self._handle_input(get_player_move, self._acceptable_move_input, [self.game.current_player.marker, self.game.current_player.color])
         if move == "undo":
             self.game.undo_turn()
-            move = self.game.current_player.moves[-1] if self.game.current_player.moves else None
+            move = self.game.last_move
         else:
             move = self._coordinate_to_number(move)
             self.game.start_turn(move) 
@@ -85,7 +85,7 @@ class Controller:
             color2 = self._handle_input(get_color, self._acceptable_color_input, [second_marker])
             if (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
                 print_sorry("match marker")
-            board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
+        board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
 
         return[first_marker, second_marker, color1, color2, board_color]
 

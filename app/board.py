@@ -54,7 +54,7 @@ class Board:
         for space in self.spaces:
             space_string += str(space)
         return space_string
-        
+
 
     def _change_space(self, space, marker):
         spaces = list(self.spaces)
@@ -82,8 +82,7 @@ class Board:
                 board += "\n" + filler_row
         return board[:-1] + "\n"
 
-    # BUILD BOARD - HELPER METHODS:
-
+# BUILD BOARD - HELPER METHODS:
     def _build_first_row(self):
         first_row = ""
         for num in range(1, self.side_length + 1):

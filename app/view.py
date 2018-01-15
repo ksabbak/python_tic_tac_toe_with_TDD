@@ -81,7 +81,7 @@ def print_sorry(about=None):
     else:
         print("Sorry, that won't work, please try again.")
 
-def _print_board(board, last_move, player_one, player_two, ):
+def _print_board(board, last_move, player_one, player_two):
     color_spaces = _color_spaces(board, player_one, player_two, last_move)
     board_str = _build_board(board, color_spaces)
     print(board_str)

@@ -54,20 +54,12 @@ class Board:
         for space in self.spaces:
             space_string += str(space)
         return space_string
-
+        
 
     def _change_space(self, space, marker):
         spaces = list(self.spaces)
         spaces[space] = marker
         self.spaces = tuple(spaces)
-
-# BUILDING: 
-    # def _build_board(self, length):
-    #     i = 0
-    #     self.spaces = ()
-    #     while i < length:
-    #         self.spaces += (" ",)
-    #         i += 1
 
     def _build_coordinates(self):
         coords = []

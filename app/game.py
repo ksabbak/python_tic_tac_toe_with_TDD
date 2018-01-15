@@ -31,12 +31,14 @@ class Game:
         for player in self.players:
             move = player.undo()
             if move is not None: self.board.clear_space(move)
+            self.last_move = self.current_player.last_move()
         self.turn -= 1
 
 # PRIVATE METHODS
 
     def _get_current_player(self):
         self.current_player = self.players[self.turn % 2]
+
 
 # CLASS METHODS:
     @classmethod

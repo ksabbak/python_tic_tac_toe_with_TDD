@@ -14,6 +14,10 @@ class Controller:
         print_board_size()
         board_choice = self._make_board_choice()
         print_instructions()
+        self._impliment_game_choice(board_choice)
+        self._play()
+
+    def _impliment_game_choice(self, board_choice):
         game_choice = self._handle_input(get_game_type_input, self._acceptable_game_type_input)
         if game_choice in "1":
             self._create_game(Game.pvp, board_choice, ["Player 1", "Player 2"])
@@ -26,10 +30,6 @@ class Controller:
                 self._create_game(Game.cvp, board_choice, ["the computer", "you"])
         elif game_choice in "3":
             self._create_game(Game.cvc, board_choice, ["Computer 1", "Computer 2"])
-        else:
-            print("This program will self-destruct")
-            return
-        self._play()
 
     def _create_game(self, new_game, board_choice, players):
         player1, player2, color1, color2, board_color = self._get_markers(*players)

@@ -12,36 +12,40 @@ class Controller:
     def run(self):
         print_intro_text()
         print_board_size()
-        board_choice = self._handle_input(get_game_type_input, self._acceptable_board_type_input)
-        if board_choice in "1":
-            board_choice = 9
-        else:
-            board_choice = 16
+        board_choice = self._make_board_choice()
         print_instructions()
         game_choice = self._handle_input(get_game_type_input, self._acceptable_game_type_input)
         if game_choice in "1":
-            player1, player2, color1, color2, board_color = self._get_markers("Player 1", "Player 2")
-            self.game = Game(HumanPlayer(player1, color1), HumanPlayer(player2, color2), board=board_choice, board_color=board_color)
+            self._create_game(Game.pvp, board_choice, ["Player 1", "Player 2"])
         elif game_choice in "2":
             player_first = self._affirmative(get_who_first())
             print_who_first(player_first)
-            human_player, ai, color1, color2, board_color = self._get_markers("you", "the computer")
             if player_first:
-                self.game = Game.mixed_game({
-                    "player1" : HumanPlayer(human_player, color1),  
-                    "player2" : AI(ai, color2), 
-                    "board" : board_choice, 
-                    "board_color" : board_color})
+                self._create_game(Game.pvc, board_choice, ["you", "the computer"])
             else:
-                self.game = Game.mixed_game({"player2" : HumanPlayer(human_player, color1),  "player1" : AI(ai, color2), "board" : board_choice, "board_color" : board_color})
+                self._create_game(Game.cvp, board_choice, ["the computer", "you"])
         elif game_choice in "3":
-            player1, player2, color1, color2, board_color = self._get_markers("Computer 1", "Computer 2")
-            self.game = Game(AI(player1, color1), AI(player2, color2), board=board_choice, board_color=board_color)
+            self._create_game(Game.cvc, board_choice, ["Computer 1", "Computer 2"])
         else:
             print("This program will self-destruct")
             return
         self._play()
 
+    def _create_game(self, new_game, board_choice, players):
+        player1, player2, color1, color2, board_color = self._get_markers(*players)
+        self.game = new_game(**{ "player1" : (player1, color1),
+                                 "player2": (player2, color2), 
+                                 "board" : board_choice, 
+                                 "board_color" : board_color 
+                                })
+
+    def _make_board_choice(self):
+        board_choice = self._handle_input(get_game_type_input, self._acceptable_board_type_input)
+        if board_choice in "1":
+            board_choice = 9
+        else:
+            board_choice = 16
+        return board_choice
 
     def _play(self):
         print_new_turn(self.game.board, self.game.last_move, *self.game.players)

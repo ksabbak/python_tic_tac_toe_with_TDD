@@ -40,13 +40,17 @@ class Game:
 
 # CLASS METHODS:
     @classmethod
-    def pvp(cls):
-        return Game()
+    def pvp(cls, player1, player2, board, board_color):
+        return Game(HumanPlayer(*player1), HumanPlayer(*player2), board, board_color)
 
     @classmethod
-    def mixed_game(cls, order):
-        return Game(**order)
+    def cvp(cls, player1, player2, board, board_color):
+        return Game(AI(*player1), HumanPlayer(*player2), board, board_color)
 
     @classmethod
-    def cvc(cls):
-        return Game(AI("X"), AI("O"))
+    def pvc(cls, player1, player2, board, board_color):
+        return Game(HumanPlayer(*player1), AI(*player2), board, board_color)
+
+    @classmethod
+    def cvc(cls, player1, player2, board, board_color):
+        return Game(AI(*player1), AI(*player2), board, board_color)

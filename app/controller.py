@@ -72,7 +72,7 @@ class Controller:
         move = self.game.start_turn()
         print_ai_update(self.game, self._number_to_coordinate(move))
 
-    def _get_markers(self, player1, player2):
+    def _get_markers_and_colors(self, player1, player2):
         first_marker = None
         second_marker = None
         color1 = None

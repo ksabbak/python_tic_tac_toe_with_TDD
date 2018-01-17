@@ -1,6 +1,5 @@
 from flask import render_template, redirect, request, session, _request_ctx_stack
 from . import app
-# from .helpers import end_conditions
 from ..app import Board, AI
 
 @app.route('/index')
@@ -25,7 +24,6 @@ def board():
     else:
         return render_template('board.html', board=board)
 
-# @app.route('/board_put', methods=["POST"])
 @app.route('/board', methods=['POST'])
 def update_board():
     marker = session[session["current_player"]]

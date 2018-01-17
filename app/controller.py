@@ -32,7 +32,7 @@ class Controller:
             self._create_game(Game.cvc, board_choice, ["Computer 1", "Computer 2"])
 
     def _create_game(self, new_game, board_choice, players):
-        player1, player2, color1, color2, board_color = self._get_markers(*players)
+        player1, player2, color1, color2, board_color = self._get_markers_and_colors(*players)
         self.game = new_game(**{ "player1" : (player1, color1),
                                  "player2": (player2, color2), 
                                  "board" : board_choice, 
@@ -78,7 +78,7 @@ class Controller:
         color1 = None
         color2 = None
         board_color = None
-        while first_marker == second_marker:
+        while (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
             first_marker = self._handle_input(get_marker, self._acceptable_marker_input, [player1])
             color1 = self._handle_input(get_color, self._acceptable_color_input, [first_marker])
             second_marker = self._handle_input(get_marker, self._acceptable_marker_input, [player2])

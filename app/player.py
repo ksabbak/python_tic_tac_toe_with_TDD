@@ -5,7 +5,7 @@ class Player:
         self.moves = []
 
     def last_move(self):
-        return self.moves[-1]
+        if self.moves: return self.moves[-1]
 
     def make_move(self, board, move):
         board.mark_space(move, self.marker)

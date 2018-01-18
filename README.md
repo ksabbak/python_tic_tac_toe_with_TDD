@@ -24,11 +24,13 @@
 
   *For the command line*:  Run `$ python runner.py` and you're off! Follow the prompts to get started.
 
-  *For the browser*: Run `export FLASK_APP=tic_tac_toe.py` on your command line, then navigate to [port 5000](http://localhost:5000/)
+  *For the browser*: Run `export FLASK_APP=tic_tac_toe.py` on your command line, then  `flask run`, finally navigate to [port 5000](http://localhost:5000/)
 
 ### Running the Tests:
   
   [Install pytest](https://docs.pytest.org/en/latest/getting-started.html). Navigate to the directory and run `pytest` on the command line.
+
+  Alternatively, run `python setup.py test`
 
 
 

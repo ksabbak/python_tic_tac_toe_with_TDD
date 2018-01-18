@@ -61,14 +61,6 @@ class Board:
         spaces[space] = marker
         self.spaces = tuple(spaces)
 
-# BUILDING: 
-    # def _build_board(self, length):
-    #     i = 0
-    #     self.spaces = ()
-    #     while i < length:
-    #         self.spaces += (" ",)
-    #         i += 1
-
     def _build_coordinates(self):
         coords = []
         for alpha in range(ord("A"), ord("A") + self.side_length):
@@ -90,8 +82,7 @@ class Board:
                 board += "\n" + filler_row
         return board[:-1] + "\n"
 
-    # BUILD BOARD - HELPER METHODS:
-
+# BUILD BOARD - HELPER METHODS:
     def _build_first_row(self):
         first_row = ""
         for num in range(1, self.side_length + 1):

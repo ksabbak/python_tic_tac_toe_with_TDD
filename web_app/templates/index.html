@@ -2,8 +2,6 @@
 
 {%block content%}
 
-<a href="{{ url_for('board', size=9) }}">3x3 board</a>
-<a href="{{ url_for('board', size=16) }}">4x4 board</a>
  <form method="POST" action="{{ url_for('board')}}">
         <p>Please choose your board size:</p>
         <div>

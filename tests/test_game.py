@@ -6,7 +6,7 @@ from ..app.__init__ import Game
 
 @pytest.fixture()
 def game():
-    return Game.pvp()
+    return Game()
 
 # GENERAL
 def test_there_is_a_game(game):
@@ -30,6 +30,7 @@ def test_undo_removes_last_move_from_both_players(game):
 def test_undo_does_not_cause_lost_turn(game):
     current_player = game.current_player
     game.undo_turn()
+    game.end_turn()
     assert game.current_player == current_player
 
 # BOARD

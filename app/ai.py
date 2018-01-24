@@ -21,7 +21,7 @@ class AI(Player):
 
     # MOVE LOGIC
     def _get_move(self, board):
-        self.opponent_marker = self._deduce_opponent_marker(board) 
+        self.opponent_marker = self._deduce_opponent_marker(board)
         self.move_weights = {}
         self._get_move_weights(board)
         return self._pick_the_best_move(board)
@@ -33,7 +33,7 @@ class AI(Player):
             if most_weight == weight:
                 best_spaces.append(space)
             elif most_weight < weight:
-                most_weight = weight 
+                most_weight = weight
                 best_spaces = [space]
         if best_spaces:
             return choice(best_spaces)
@@ -89,7 +89,7 @@ class AI(Player):
 
     def _deduce_opponent_marker(self, board):
         for space in range(0, len(board.spaces)):
-            if (not board.space_is_empty(space) 
+            if (not board.space_is_empty(space)
                 and (board.spaces[space] != self.marker)):
                 return board.spaces[space]
         return chr(ord(self.marker.strip('\033[0m')) + 1)
@@ -103,7 +103,7 @@ class AI(Player):
         if space_string in self.transposition_table.keys():
             return space_string
         elif space_string[::-1] in self.transposition_table.keys():
-            return  space_string[::-1] 
+            return  space_string[::-1]
 
     def _rotate_spaces(self, spaces):
         space_string = ""

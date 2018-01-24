@@ -1,8 +1,6 @@
 from string import punctuation
 
-from .game import Game
-from .player import HumanPlayer
-from .ai import AI
+from .__init__ import Game, AI
 from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size, get_color, colors, print_ai_thinking
 
 class Controller:
@@ -34,9 +32,9 @@ class Controller:
     def _create_game(self, new_game, board_choice, players):
         player1, player2, color1, color2, board_color = self._get_markers_and_colors(*players)
         self.game = new_game(**{ "player1" : (player1, color1),
-                                 "player2": (player2, color2), 
-                                 "board" : board_choice, 
-                                 "board_color" : board_color 
+                                 "player2": (player2, color2),
+                                 "board" : board_choice,
+                                 "board_color" : board_color
                                 })
 
     def _make_board_choice(self):
@@ -64,7 +62,7 @@ class Controller:
             move = self.game.last_move
         else:
             move = self._coordinate_to_number(move)
-            self.game.start_turn(move) 
+            self.game.start_turn(move)
         print_humanplayer_update(self.game, self._number_to_coordinate(move))
 
     def _ai_player_turn(self):
@@ -143,7 +141,7 @@ class Controller:
 
     def _handle_input(self, input_getter, input_parser, arguments=[]):
         user_input = None
-        while user_input is None: 
+        while user_input is None:
             user_input = input_getter(*arguments)
             unacceptable_input = input_parser(user_input)
             if unacceptable_input:

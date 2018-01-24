@@ -33,7 +33,7 @@ def test_human_player_has_move_log(human_playerx):
     assert human_playerx.moves == []
 
 def test_human_player_logs_moves(human_playerx):
-    board = Board.create_from_scratch()
+    board = Board.create_fresh_board()
     human_playerx.make_move(board, 8)
     human_playerx.make_move(board, 0)
     human_playerx.make_move(board, 4)

@@ -7,16 +7,16 @@ from ..app.__init__ import Board
 
 @pytest.fixture()
 def board():
-    board = Board.create_from_scratch()
+    board = Board.create_fresh_board()
     return board
 
 @pytest.fixture()
 def big_board():
-    board = Board.create_from_scratch(16)
+    board = Board.create_fresh_board(16)
     return board
 
 def test_create_from_existing_is_new_board(board):
-    new_board = Board.create_from_existing(board.spaces)
+    new_board = Board.create_from_existing_spaces(board.spaces)
     assert new_board.__class__.__name__ == "Board"
     assert new_board != board
 

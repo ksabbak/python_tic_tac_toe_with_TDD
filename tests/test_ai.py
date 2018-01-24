@@ -7,7 +7,7 @@ def ai():
     return AI("x")
 @pytest.fixture()
 def board():
-    return Board.create_from_scratch()
+    return Board.create_fresh_board()
 
 def tests_ai_is_a_player():
     assert issubclass(AI, Player)
@@ -103,7 +103,7 @@ def test_ai_prevents_opponent_from_fork_win_middle_two_corners(ai, board):
 
 @pytest.fixture()
 def big_board():
-    return Board.create_from_scratch(16)
+    return Board.create_fresh_board(16)
 
 def test_ai_can_make_winning_move_16_space_board(ai, big_board):
     big_board.mark_space(0, ai.marker)

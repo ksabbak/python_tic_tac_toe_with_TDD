@@ -1,7 +1,7 @@
 class Player:
     def __init__(self, marker, color=""):
         self.color = color
-        self.marker = marker 
+        self.marker = marker
         self.moves = []
 
     def last_move(self):
@@ -16,12 +16,5 @@ class Player:
         if self.moves:
             return self.moves.pop()
 
-class HumanPlayer(Player):
 
-    def make_move(self, board, move):
-        move = int(move)
-        return super().make_move(board, move)
-
-    def is_ai(self):
-        return False
 

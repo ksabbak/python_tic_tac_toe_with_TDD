@@ -1,10 +1,10 @@
-from textwrap import dedent
+from ..end_conditions import all_win_conditions
 
 class Board:
     def __init__(self, board, color):
         self.spaces = board
         self.side_length = int(len(self.spaces) ** (1 / 2))
-        self.all_win_conditions = None
+        self.all_win_conditions = self._set_win_conditions()
         self.coordinates = self._build_coordinates()
         self.color = color
 
@@ -40,7 +40,7 @@ class Board:
                 if self.space_is_empty(space)]
 
     def winning_marker(self):
-        for win_condition in self._all_win_conditions():
+        for win_condition in self.all_win_conditions:
             board_sample = list(map(lambda x: self.spaces[x], win_condition))
             if (len(set(board_sample)) == 1
                and not self.space_is_empty(win_condition[0])):
@@ -65,32 +65,6 @@ class Board:
                 coords.append(chr(alpha) + str(num))
         return coords
 
-
-# END CONDITIONS:
-    def _all_win_conditions(self):
-        self.all_win_conditions = self.all_win_conditions or self._horizontal_win_conditions() + self._vertical_win_conditions() + self._diagonal_win_conditions()
-        return self.all_win_conditions
-
-    def _horizontal_win_conditions(self):
-        wins = []
-        for i in range(0, self.side_length):
-            wins.append(self._calculate_win_conditions(1, self.side_length * i))
-        return wins
-
-    def _vertical_win_conditions(self):
-        wins = []
-        for i in range(0, self.side_length):
-            wins.append(self._calculate_win_conditions(self.side_length, i))
-        return wins
-
-    def _diagonal_win_conditions(self):
-        wins = []
-        wins.append(self._calculate_win_conditions(self.side_length + 1, 0))
-        wins.append(self._calculate_win_conditions(self.side_length - 1, self.side_length - 1))
-        return wins
-
-    def _calculate_win_conditions(self, incrementor, addition):
-        lst = []
-        for space in range(0, self.side_length):
-            lst.append(space * incrementor + addition)
-        return lst
+    def _set_win_conditions(self):
+        self.all_win_conditions = None
+        return all_win_conditions(self)

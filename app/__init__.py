@@ -1,4 +1,4 @@
-from .game import Game
-from .board import Board
-from .player import Player, HumanPlayer
-from .ai import AI
+from .models.game import Game
+from .models.board import Board
+from .models.player import Player, HumanPlayer
+from .models.ai import AI

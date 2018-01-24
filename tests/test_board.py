@@ -53,52 +53,6 @@ def test_board_knows_when_space_is_empty(board, big_board):
     big_board.mark_space(13, "x")
     assert big_board.space_is_empty(13) is False
 
-def test_board_to_str_empty(board, big_board):
-    pretty_board = """\
-           1   2   3
-        A    |   |   
-          ===+===+===
-        B    |   |   
-          ===+===+===
-        C    |   |   
-        """
-    assert str(board) == dedent(pretty_board)
-    pretty_big_board = """\
-           1   2   3   4
-        A    |   |   |   
-          ===+===+===+===
-        B    |   |   |   
-          ===+===+===+===
-        C    |   |   |   
-          ===+===+===+===
-        D    |   |   |   
-        """
-    assert str(big_board) == dedent(pretty_big_board)
-
-def test_board_to_str_marked(board, big_board):
-    board.mark_space(4, "x")
-    pretty_board = """\
-           1   2   3
-        A    |   |   
-          ===+===+===
-        B    | x |   
-          ===+===+===
-        C    |   |   
-        """
-    assert str(board) == dedent(pretty_board)
-    big_board.mark_space(4, "x")
-    pretty_big_board = """\
-           1   2   3   4
-        A    |   |   |   
-          ===+===+===+===
-        B  x |   |   |   
-          ===+===+===+===
-        C    |   |   |   
-          ===+===+===+===
-        D    |   |   |   
-        """
-    assert str(big_board) == dedent(pretty_big_board)
-
 def test_space_string(board):
     assert board.space_string() == "         "
 
@@ -121,11 +75,11 @@ def test_board_knows_all_empty_spaces_4x4(big_board):
     assert len(board.empty_spaces()) == 14
 
 def test_build_coordinates(board, big_board):
-    assert board.coordinates == ['A1', 'A2', 'A3', 
-                                 'B1', 'B2', 'B3', 
+    assert board.coordinates == ['A1', 'A2', 'A3',
+                                 'B1', 'B2', 'B3',
                                  'C1', 'C2', 'C3'
                                  ]
-    assert big_board.coordinates == ['A1', 'A2', 'A3', 'A4', 
+    assert big_board.coordinates == ['A1', 'A2', 'A3', 'A4',
                                      'B1', 'B2', 'B3', 'B4',
                                      'C1', 'C2', 'C3', 'C4',
                                      'D1', 'D2', 'D3', 'D4'
@@ -205,7 +159,7 @@ def test_game_over_for_diagonal_win_right_to_left_9_space_board(board):
     board.mark_space(6, "x")
     assert board.winning_marker() == "x"
 
-# Big Board: 
+# Big Board:
 
 def test_game_knows_winner_16_space_board(big_board):
     big_board.mark_space(0, "x")

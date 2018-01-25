@@ -23,7 +23,7 @@ class AI(Player):
     def _get_move(self, board):
         self.opponent_marker = self._deduce_opponent_marker(board)
         self.move_weights = {}
-        self._get_move_weights(board)
+        self._get_weights_for_all_open_moves(board)
         return self._pick_the_best_move(board)
 
     def _pick_the_best_move(self, board):
@@ -38,7 +38,7 @@ class AI(Player):
         if best_spaces:
             return choice(best_spaces)
 
-    def _get_move_weights(self, board):
+    def _get_weights_for_all_open_moves(self, board):
         for space in board.empty_spaces():
             board2 = copy(board)
             self.move_weights[space] = self._weigh_move(board2, space)

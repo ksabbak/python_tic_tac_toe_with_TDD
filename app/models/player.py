@@ -15,6 +15,3 @@ class Player:
     def undo(self):
         if self.moves:
             return self.moves.pop()
-
-
-

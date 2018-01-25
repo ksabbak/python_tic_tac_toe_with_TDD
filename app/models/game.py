@@ -1,6 +1,6 @@
 from .ai import AI
 from .board import Board
-from .player import HumanPlayer
+from .human_player import HumanPlayer
 
 
 class Game:
@@ -35,13 +35,11 @@ class Game:
         self._get_current_player()
         self.last_move = self.current_player.last_move()
 
-# PRIVATE METHODS
 
     def _get_current_player(self):
         self.current_player = self.players[self.turn % 2]
 
 
-# CLASS METHODS:
     @classmethod
     def pvp(cls, player1, player2, board, board_color):
         return Game(HumanPlayer(*player1), HumanPlayer(*player2), board, board_color)

@@ -2,33 +2,23 @@ from random import randint, choice
 from copy import copy
 from math import factorial
 
-from .player import Player
-from .board import Board
 
-class AI(Player):
-    def __init__(self, marker, color=""):
-        super().__init__(marker, color)
+class MoveLogic:
+    def __init__(self, marker, board):
+        self.move_weights = {}
+        self.marker = marker
+        self.board = board
         self.transposition_table = {}
 
-    def make_move(self, board, move=None):
-        move = self._get_move(board)
-        return super().make_move(board, move)
 
-    def is_ai(self):
-        return True
+    def get_move(self):
+        self.opponent_marker = self._deduce_opponent_marker()
+        self._get_weights_for_all_open_moves()
+        return self._pick_the_best_move()
 
-    # PRIVATE METHODS
-
-    # MOVE LOGIC
-    def _get_move(self, board):
-        self.opponent_marker = self._deduce_opponent_marker(board)
-        self.move_weights = {}
-        self._get_weights_for_all_open_moves(board)
-        return self._pick_the_best_move(board)
-
-    def _pick_the_best_move(self, board):
+    def _pick_the_best_move(self):
         best_spaces = []
-        most_weight = -self._max_weight(board)
+        most_weight = -self._max_weight()
         for space, weight in self.move_weights.items():
             if most_weight == weight:
                 best_spaces.append(space)
@@ -38,9 +28,9 @@ class AI(Player):
         if best_spaces:
             return choice(best_spaces)
 
-    def _get_weights_for_all_open_moves(self, board):
-        for space in board.empty_spaces():
-            board2 = copy(board)
+    def _get_weights_for_all_open_moves(self):
+        for space in self.board.empty_spaces():
+            board2 = copy(self.board)
             self.move_weights[space] = self._weigh_move(board2, space)
 
     def _weigh_move(self, board, set_move=None, turn="self", depth=0):
@@ -50,8 +40,8 @@ class AI(Player):
             potential_key = self._check_transpositions(board.spaces)
             if potential_key is not None:
                 weight = self.transposition_table[potential_key]
-            if board.winning_marker(): return self._max_weight(board)
-            if self._check_move_for_win(board, self.opponent_marker) is not None: return -self._max_weight(board)
+            if board.winning_marker(): return self._max_weight()
+            if self._check_move_for_win(board, self.opponent_marker) is not None: return -self._max_weight()
             turn = "other"
         weight = 0
         for move in board.empty_spaces():
@@ -84,14 +74,14 @@ class AI(Player):
             if copy_board.winning_marker() == marker: return space
 
     # MECHANICS
-    def _max_weight(self, board):
-        return factorial(len(board.spaces))
+    def _max_weight(self):
+        return factorial(len(self.board.spaces))
 
-    def _deduce_opponent_marker(self, board):
-        for space in range(0, len(board.spaces)):
-            if (not board.space_is_empty(space)
-                and (board.spaces[space] != self.marker)):
-                return board.spaces[space]
+    def _deduce_opponent_marker(self):
+        for space in range(0, len(self.board.spaces)):
+            if (not self.board.space_is_empty(space)
+                and (self.board.spaces[space] != self.marker)):
+                return self.board.spaces[space]
         return chr(ord(self.marker.strip('\033[0m')) + 1)
 
     def _check_transpositions(self, spaces):

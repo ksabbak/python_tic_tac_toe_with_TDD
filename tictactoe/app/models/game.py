@@ -13,6 +13,7 @@ class Game:
 
     def is_over(self):
         return (self.board.is_full() or self.board.winning_marker())
+        return (self.board.is_full() or self.board.winning_marker())
 
     def start_turn(self, move=None):
         move = self.current_player.make_move(self.board, move)

@@ -2,7 +2,7 @@ import sys
 import pytest
 import io
 
-from ..app.__init__ import Game
+from tictactoe.app.__init__ import Game
 
 @pytest.fixture()
 def game():

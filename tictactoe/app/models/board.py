@@ -1,4 +1,4 @@
-from ..end_conditions import all_win_conditions
+from ..win_conditions import all_win_conditions
 
 class Board:
     def __init__(self, board, color):

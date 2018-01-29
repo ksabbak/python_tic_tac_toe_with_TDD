@@ -2,7 +2,7 @@ import io
 import pytest
 from textwrap import dedent
 
-from ..app.__init__ import Board
+from tictactoe.app.__init__ import Board
 
 
 @pytest.fixture()

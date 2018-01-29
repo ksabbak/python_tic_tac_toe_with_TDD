@@ -1,7 +1,7 @@
 from string import punctuation
 
 from .__init__ import Game, AI
-from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size, get_color, colors, print_ai_thinking
+from .views.view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size, get_color, colors, print_ai_thinking
 
 class Controller:
     def __init__(self):
@@ -30,11 +30,10 @@ class Controller:
             self._create_game(Game.cvc, board_choice, ["Computer 1", "Computer 2"])
 
     def _create_game(self, new_game, board_choice, players):
-        player1, player2, color1, color2, board_color = self._get_markers_and_colors(*players)
+        player1, player2, color1, color2= self._get_markers_and_colors(*players)
         self.game = new_game(**{ "player1" : (player1, color1),
                                  "player2": (player2, color2),
-                                 "board" : board_choice,
-                                 "board_color" : board_color
+                                 "board" : board_choice
                                 })
 
     def _make_board_choice(self):
@@ -85,7 +84,7 @@ class Controller:
                 print_sorry("match marker")
         board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
 
-        return[first_marker, second_marker, color1, color2, board_color]
+        return[first_marker, second_marker, color1, color2]
 
     def _affirmative(self, response):
         response = response.lower().strip(punctuation)

@@ -1,21 +1,20 @@
 class Board:
-    def __init__(self, board, color):
+    def __init__(self, board):
         self.spaces = board
         self.side_length = int(len(self.spaces) ** (1 / 2))
         self.coordinates = self._build_coordinates()
-        self.color = color
 
     @classmethod
-    def create_fresh_board(cls, length=9, color=""):
+    def create_fresh_board(cls, length=9):
         board = ()
         for i in range(0, length):
             board += (" ",)
-        return cls(board, color)
+        return cls(board)
 
     @classmethod
-    def create_from_existing_spaces(cls, spaces, color=""):
+    def create_from_existing_spaces(cls, spaces):
         board = tuple(spaces)
-        return cls(board, color)
+        return cls(board)
 
 
     def mark_space(self, space, marker):

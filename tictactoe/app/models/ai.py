@@ -9,7 +9,6 @@ from tictactoe.app.move_logic import MoveLogic
 class AI(Player):
     def __init__(self, marker, color=""):
         super().__init__(marker, color)
-        self.transposition_table = {}
 
     def make_move(self, board, move=None):
         move = self._get_move(board)

@@ -2,6 +2,7 @@ from random import randint, choice
 from copy import copy
 from math import factorial
 
+from .rules import Rules
 
 class MoveLogic:
     def __init__(self, marker, board):
@@ -9,6 +10,7 @@ class MoveLogic:
         self.marker = marker
         self.board = board
         self.transposition_table = {}
+        self.rules = Rules(board)
 
 
     def get_move(self):
@@ -40,7 +42,7 @@ class MoveLogic:
             potential_key = self._check_transpositions(board.spaces)
             if potential_key is not None:
                 weight = self.transposition_table[potential_key]
-            if board.winning_marker(): return self._max_weight()
+            if self.rules.winning_marker(board): return self._max_weight()
             if self._check_move_for_win(board, self.opponent_marker) is not None: return -self._max_weight()
             turn = "other"
         weight = 0
@@ -71,7 +73,7 @@ class MoveLogic:
         for space in board.empty_spaces():
             copy_board = copy(board)
             copy_board.mark_space(space, marker)
-            if copy_board.winning_marker() == marker: return space
+            if self.rules.winning_marker(copy_board) == marker: return space
 
     # MECHANICS
     def _max_weight(self):

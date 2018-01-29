@@ -3,6 +3,7 @@ import pytest
 from tictactoe.app.__init__ import Board
 from tictactoe.app.move_logic import MoveLogic
 
+
 @pytest.fixture()
 def board():
     return Board.create_fresh_board()

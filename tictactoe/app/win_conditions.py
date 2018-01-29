@@ -1,6 +1,6 @@
 
 def all_win_conditions(board):
-    all_win_conditions = board.all_win_conditions or _horizontal_win_conditions(board) + _vertical_win_conditions(board) + _diagonal_win_conditions(board)
+    all_win_conditions = _horizontal_win_conditions(board) + _vertical_win_conditions(board) + _diagonal_win_conditions(board)
     return all_win_conditions
 
 def _horizontal_win_conditions(board):

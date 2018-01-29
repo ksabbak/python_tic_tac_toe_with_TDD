@@ -1,6 +1,7 @@
 from .ai import AI
 from .board import Board
 from .human_player import HumanPlayer
+from ..rules import Rules
 
 
 class Game:
@@ -12,8 +13,7 @@ class Game:
         self.last_move = None
 
     def is_over(self):
-        return (self.board.is_full() or self.board.winning_marker())
-        return (self.board.is_full() or self.board.winning_marker())
+        return (self.board.is_full() or self.rules.winning_marker())
 
     def start_turn(self, move=None):
         move = self.current_player.make_move(self.board, move)

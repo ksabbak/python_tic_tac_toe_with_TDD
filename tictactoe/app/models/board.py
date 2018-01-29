@@ -1,10 +1,7 @@
-from ..win_conditions import all_win_conditions
-
 class Board:
     def __init__(self, board, color):
         self.spaces = board
         self.side_length = int(len(self.spaces) ** (1 / 2))
-        self.all_win_conditions = self._set_win_conditions()
         self.coordinates = self._build_coordinates()
         self.color = color
 
@@ -39,13 +36,6 @@ class Board:
         return [space for space in range(0, len(self.spaces))
                 if self.space_is_empty(space)]
 
-    def winning_marker(self):
-        for win_condition in self.all_win_conditions:
-            board_sample = list(map(lambda x: self.spaces[x], win_condition))
-            if (len(set(board_sample)) == 1
-               and not self.space_is_empty(win_condition[0])):
-                return board_sample[0]
-
     def space_string(self):
         space_string = ""
         for space in self.spaces:
@@ -65,6 +55,4 @@ class Board:
                 coords.append(chr(alpha) + str(num))
         return coords
 
-    def _set_win_conditions(self):
-        self.all_win_conditions = None
-        return all_win_conditions(self)
+

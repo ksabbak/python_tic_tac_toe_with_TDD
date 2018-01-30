@@ -3,7 +3,7 @@ from string import punctuation
 from .__init__ import Game, AI
 from .command_line_views.view_getters import get_game_type_input, get_player_move,  get_marker, get_who_first, get_color
 from .command_line_views.view_printer import print_intro_text, print_instructions,print_sorry, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking
-from .command_line_views.colorer import Colorer
+from .command_line_views.colorist import Colorist
 
 class Controller:
     def __init__(self):
@@ -129,7 +129,7 @@ class Controller:
         return "color"
 
     def _colors(self):
-        return Colorer.colors().keys()
+        return Colorist.colors().keys()
 
     def _acceptable_move_input(self, move_input):
         if move_input == "undo": return

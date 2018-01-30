@@ -1,4 +1,4 @@
-from .colorer import Colorer
+from .colorist import Colorist
 
 
 class BuildABoard:
@@ -14,8 +14,8 @@ class BuildABoard:
 
 
     def _build_board(color_spaces):
-            first_row = Colorer.color_text(_build_first_row(), self.board_color)
-            filler_row = Colorer.color_text(_build_filler_row(), self.board_color)
+            first_row = Colorist.color_text(_build_first_row(), self.board_color)
+            filler_row = Colorist.color_text(_build_filler_row(), self.board_color)
             board_str = first_row
             for space in range(0, len(self.board.spaces)):
                 if space % self.board.side_length == 0:
@@ -41,10 +41,10 @@ class BuildABoard:
         return filler_row
 
     def _add_horizontal_coordinate(self, space):
-        return Colorer.color_text(board.coordinates[space][0], self.board_color) + " "
+        return Colorist.color_text(board.coordinates[space][0], self.board_color) + " "
 
     def _fill_standard_square(self, space):
-        return " " + color_spaces[space] + Colorer.color_text(" |", self.board_color)
+        return " " + color_spaces[space] + Colorist.color_text(" |", self.board_color)
 
     def _replace_extraneous_end_chars_with_new_line(self, board_str):
         return board_str[:-5] + "\033[0m" + "\n"
@@ -59,13 +59,13 @@ class BuildABoard:
         new_spaces = []
         for i, space in enumerate(self.board.spaces):
             if space == self.player_one.marker:
-                new_space = Colorer.color_text(space, self.player_one.color)
+                new_space = Colorist.color_text(space, self.player_one.color)
             elif space == self.player_two.marker:
-                new_space = Colorer.color_text(space, self.player_two.color)
+                new_space = Colorist.color_text(space, self.player_two.color)
             else:
                 new_space = space
 
             if i == self.last_move:
-                new_space = Colorer.color_text(new_space, "\033[;4m")
+                new_space = Colorist.color_text(new_space, "\033[;4m")
             new_spaces.append(new_space)
         return new_spaces

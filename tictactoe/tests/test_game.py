@@ -45,6 +45,13 @@ def test_undo_does_not_cause_lost_turn(game):
     game.end_turn()
     assert game.current_player == current_player
 
+def test_game_returns_winning_player(game):
+    assert game.winner() is None
+    game.board.mark_space(0, game.players[0].marker)
+    game.board.mark_space(3, game.players[0].marker)
+    game.board.mark_space(6, game.players[0].marker)
+    assert game.winner() is game.players[0]
+
 # BOARD
 def test_game_has_board(game):
     assert game.board is not None

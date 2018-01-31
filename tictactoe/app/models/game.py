@@ -27,7 +27,7 @@ class Game:
 
     def winner(self):
         for player in self.players:
-            if self.board.winning_marker() == player.marker: return player
+            if self.rules.winning_marker() == player.marker: return player
 
     def undo_turn(self):
         for player in self.players:

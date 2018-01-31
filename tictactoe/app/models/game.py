@@ -11,9 +11,10 @@ class Game:
         self.turn = 0
         self._get_current_player()
         self.last_move = None
+        self.rules = Rules(self.board)
 
     def is_over(self):
-        return (self.board.is_full() or self.rules.winning_marker())
+        return not not(self.board.is_full() or self.rules.winning_marker())
 
     def start_turn(self, move=None):
         move = self.current_player.make_move(self.board, move)

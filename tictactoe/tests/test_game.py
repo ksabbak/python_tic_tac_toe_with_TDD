@@ -19,6 +19,18 @@ def test_game_is_marked_over_when_board_is_filled(game):
         i += 1
     assert game.is_over() is True
 
+def test_game_is_marked_over_when_there_is_a_winner(game):
+    game.board.mark_space(0, "x")
+    game.board.mark_space(3, "x")
+    game.board.mark_space(6, "x")
+    assert game.is_over() is True
+
+def test_game_is_not_marked_over_when_not_over(game):
+    game.board.mark_space(0, "x")
+    game.board.mark_space(3, "o")
+    game.board.mark_space(6, "x")
+    assert game.is_over() is False
+
 def test_undo_removes_last_move_from_both_players(game):
     game.players[0].make_move(game.board, 4)
     game.players[1].make_move(game.board, 5)

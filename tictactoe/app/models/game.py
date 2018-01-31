@@ -5,7 +5,7 @@ from ..rules import Rules
 
 
 class Game:
-    def __init__(self, player1=HumanPlayer("x"), player2=HumanPlayer("o"), board=9):
+    def __init__(self, player1=HumanPlayer(), player2=HumanPlayer(), board=9):
         self.board = Board.create_fresh_board(board)
         self.players = [player1, player2]
         self.turn = 0
@@ -17,7 +17,7 @@ class Game:
         return not not(self.board.is_full() or self.rules.winning_marker())
 
     def start_turn(self, move=None):
-        move = self.current_player.make_move(self.board, move)
+        move = self.current_player.make_move(self.board, move, self.turn)
         self.last_move = self.current_player.last_move()
         return move
 
@@ -43,17 +43,17 @@ class Game:
 
 
     @classmethod
-    def pvp(cls, player1, player2, board):
-        return Game(HumanPlayer(*player1), HumanPlayer(*player2), board)
+    def pvp(cls, board):
+        return Game(HumanPlayer(), HumanPlayer(), board)
 
     @classmethod
-    def cvp(cls, player1, player2, board):
-        return Game(AI(*player1), HumanPlayer(*player2), board)
+    def cvp(cls, board):
+        return Game(AI(), HumanPlayer(), board)
 
     @classmethod
-    def pvc(cls, player1, player2, board):
-        return Game(HumanPlayer(*player1), AI(*player2), board)
+    def pvc(cls, board):
+        return Game(HumanPlayer(), AI(), board)
 
     @classmethod
-    def cvc(cls, player1, player2, board):
-        return Game(AI(*player1), AI(*player2), board)
+    def cvc(cls, board):
+        return Game(AI(), AI(), board)

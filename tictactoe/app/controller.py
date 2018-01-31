@@ -4,10 +4,11 @@ from .__init__ import Game, AI
 from .command_line_views.view_getters import get_game_type_input, get_player_move,  get_marker, get_who_first, get_color
 from .command_line_views.view_printer import print_intro_text, print_instructions,print_sorry, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking
 from .command_line_views.colorist import Colorist
+from .command_line_views.aesthetics import Aesthetics
 
 class Controller:
     def __init__(self):
-        self.game = Game(AI("x"), AI("o"))
+        self.game = Game(AI(), AI())
 
     def run(self):
         print_intro_text()
@@ -33,10 +34,7 @@ class Controller:
 
     def _create_game(self, new_game, board_choice, players):
         player1, player2, color1, color2= self._get_markers_and_colors(*players)
-        self.game = new_game(**{ "player1" : (player1, color1),
-                                 "player2": (player2, color2),
-                                 "board" : board_choice
-                                })
+        self.game = new_game(board_choice)
 
     def _make_board_choice(self):
         board_choice = self._handle_input(get_game_type_input, self._acceptable_board_type_input)
@@ -86,7 +84,9 @@ class Controller:
                 print_sorry("match marker")
         board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
 
-        return[first_marker, second_marker, color1, color2]
+        aesthetics = Aesthetics([first_marker, second_marker], [color1, color2], board_color)
+
+        return aesthetics
 
     def _affirmative(self, response):
         response = response.lower().strip(punctuation)

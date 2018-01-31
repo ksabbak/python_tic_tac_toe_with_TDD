@@ -7,18 +7,15 @@ from .board import Board
 from tictactoe.app.move_logic import MoveLogic
 
 class AI(Player):
-    def __init__(self, marker, color=""):
-        super().__init__(marker, color)
-
-    def make_move(self, board, move=None):
-        move = self._get_move(board)
-        return super().make_move(board, move)
+    def make_move(self, board, move, turn):
+        move = self._get_move(board, turn)
+        return super().make_move(board, move, turn)
 
     def is_ai(self):
         return True
 
-    def _get_move(self, board):
-        move_logic = MoveLogic(self.marker, board)
-        return move_logic.get_move()
+    def _get_move(self, board, turn):
+        move_logic = MoveLogic(board)
+        return move_logic.get_move(turn)
 
 

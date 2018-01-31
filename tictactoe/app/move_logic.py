@@ -5,16 +5,15 @@ from math import factorial
 from .rules import Rules
 
 class MoveLogic:
-    def __init__(self, marker, board):
+    def __init__(self, board):
         self.move_weights = {}
-        self.marker = marker
         self.board = board
         self.transposition_table = {}
         self.rules = Rules(board)
 
 
-    def get_move(self):
-        self.opponent_marker = self._deduce_opponent_marker()
+    def get_move(self, turn):
+        self._get_markers(turn)
         self._get_weights_for_all_open_moves()
         return self._pick_the_best_move()
 
@@ -79,12 +78,14 @@ class MoveLogic:
     def _max_weight(self):
         return factorial(len(self.board.spaces))
 
-    def _deduce_opponent_marker(self):
-        for space in range(0, len(self.board.spaces)):
-            if (not self.board.space_is_empty(space)
-                and (self.board.spaces[space] != self.marker)):
-                return self.board.spaces[space]
-        return chr(ord(self.marker.strip('\033[0m')) + 1)
+    def _get_markers(self, turn):
+        self.marker = turn % 2
+        self.opponent_marker = 1 - self.marker
+        # for space in range(0, len(self.board.spaces)):
+        #     if (not self.board.space_is_empty(space)
+        #         and (self.board.spaces[space] != self.marker)):
+        #         return self.board.spaces[space]
+        # return chr(ord(self.marker.strip('\033[0m')) + 1)
 
     def _check_transpositions(self, spaces):
         result = self._check_transposition_and_mirror(str(spaces))

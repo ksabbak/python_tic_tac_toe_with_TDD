@@ -2,11 +2,11 @@ from .colorist import Colorist
 
 
 class BuildABoard:
-    def __init__(board, board_color, player_one, player_two, last_move):
+    def __init__(board, aesthetics, last_move):
         self.board = board
-        self.board_color = board_color
-        self.player_one = player_one
-        self.player_two = player_two
+        self.board_color = aesthetics.board_color
+        self.markers = aesthetics.markers
+        self.player_colors = aesthetics.player_colors
         self.last_move = last_move
 
     def printable_board():
@@ -15,7 +15,6 @@ class BuildABoard:
 
     def _build_board(color_spaces):
             first_row = Colorist.color_text(_build_first_row(), self.board_color)
-            filler_row = Colorist.color_text(_build_filler_row(), self.board_color)
             board_str = first_row
             for space in range(0, len(self.board.spaces)):
                 if space % self.board.side_length == 0:
@@ -23,7 +22,7 @@ class BuildABoard:
                 board_str += self._fill_standard_square
                 if self._is_space_at_end_of_row(space) and not self._is_space_at_end_of_board(space):
                     board_str = self._replace_extraneous_end_chars_with_new_line(board_str)
-                    board_str += filler_row
+                    board_str += Colorist.color_text(_build_filler_row(), self.board_color)
             return self._replace_extraneous_end_chars_with_new_line(board_str)
 
     def _build_first_row(self):
@@ -58,10 +57,9 @@ class BuildABoard:
     def _color_spaces(self):
         new_spaces = []
         for i, space in enumerate(self.board.spaces):
-            if space == self.player_one.marker:
-                new_space = Colorist.color_text(space, self.player_one.color)
-            elif space == self.player_two.marker:
-                new_space = Colorist.color_text(space, self.player_two.color)
+            if space is not " ":
+                player = i % len(self.markers)
+                new_space = Colorist.color_text(self.markers[player], self.player_colors[player])
             else:
                 new_space = space
 
@@ -69,3 +67,4 @@ class BuildABoard:
                 new_space = Colorist.color_text(new_space, "\033[;4m")
             new_spaces.append(new_space)
         return new_spaces
+

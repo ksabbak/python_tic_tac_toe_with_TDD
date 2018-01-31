@@ -118,6 +118,7 @@ def test_move_logic_prevents_fork_16_space_board(move_logic_with_large_board, bi
     big_board.mark_space(5, "o")
     big_board.mark_space(6, "o")
     big_board.mark_space(11, "o")
+    big_board.mark_space(0, "x")
     big_board.mark_space(13, "x")
     big_board.mark_space(14, "x")
     assert move_logic_with_large_board.get_move() in [7, 4, 15]

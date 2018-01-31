@@ -36,7 +36,7 @@ class MoveLogic:
             self.move_weights[space] = self._weigh_move(board2, space)
 
     def _weigh_move(self, board, set_move=None, turn="self", depth=0):
-        if board.is_full() or depth > board.side_length: return 0
+        if board.is_full() or depth > board.side_length + 1: return 0
         if set_move is not None:
             board.mark_space(set_move, self.marker)
             potential_key = self._check_transpositions(board.spaces)

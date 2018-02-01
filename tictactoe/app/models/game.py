@@ -18,7 +18,7 @@ class Game:
 
     def start_turn(self, move=None):
         move = self.current_player.make_move(self.board, move, self.turn)
-        self.last_move = self.current_player.last_move()
+        self.last_move = self._get_last_move()
         return move
 
     def end_turn(self):
@@ -30,16 +30,23 @@ class Game:
             if self.board.winning_marker() == player.marker: return player
 
     def undo_turn(self):
-        for player in self.players:
-            move = player.undo()
-            if move is not None: self.board.clear_space(move)
         self.turn -= 1
+        for player in self.players:
+            move = self._get_last_move()
+            if move is not None:
+                self.turn -= 1
+                self.board.clear_space(move)
         self._get_current_player()
-        self.last_move = self.current_player.last_move()
+        self.last_move = self._get_last_move()
 
 
     def _get_current_player(self):
         self.current_player = self.players[self.turn % 2]
+
+    def _get_last_move(self):
+        if self.turn in self.board.spaces:
+            return self.board.spaces.index(self.turn)
+
 
 
     @classmethod

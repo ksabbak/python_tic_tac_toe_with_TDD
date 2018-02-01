@@ -51,13 +51,13 @@ def print_ai_update(game, move):
     print_new_turn(game.board, game.last_move, *game.players)
     print("It looks like, %s moved to space %s" % (_color_text(game.current_player.marker, game.current_player.color), move))
 
-def print_humanplayer_update(game, move):
+def print_humanplayer_update(board, aesthetics, move, turn):
     if move is not None:
-        print_new_turn(game.board, game.last_move, *game.players)
-        print("Okay, %s is now on space %s" % (_color_text(game.current_player.marker, game.current_player.color), move))
+        print_new_turn(board, move, aesthetics)
+        print("Okay, %s is now on space %s" % (aesthetics.markers[turn % 2], move))
         time.sleep(1)
     else:
-        print_new_turn(game.board, game.last_move, *game.players)
+        print_new_turn(board, aesthetics, turn)
 
 #BAD INPUT PRINT
 def print_sorry(about=None):

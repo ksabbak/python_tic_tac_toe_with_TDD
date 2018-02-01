@@ -14,11 +14,3 @@ def tests_ai_is_a_player():
 
 def test_player_is_ai(ai):
     assert ai.is_ai() is True
-
-def test_ai_player_has_move_log(ai):
-    assert ai.moves == []
-
-def test_ai_player_logs_moves(ai, board):
-    move = ai.make_move(board, None, 0)
-    move_2 = ai.make_move(board, None, 2)
-    assert ai.moves == [move, move_2]

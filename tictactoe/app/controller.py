@@ -58,10 +58,9 @@ class Controller:
         move = self._handle_input(get_player_move, self._acceptable_move_input, [self.game.current_player.marker, self.game.current_player.color])
         if move == "undo":
             self.game.undo_turn()
-            move = self.game.last_move
         else:
-            move = self._coordinate_to_number(move)
-            self.game.start_turn(move)
+            self.game.start_turn(self._coordinate_to_number(move))
+        move = self.game.last_move
         print_humanplayer_update(self.game, self._number_to_coordinate(move))
 
     def _ai_player_turn(self):
@@ -85,6 +84,7 @@ class Controller:
         board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
 
         aesthetics = Aesthetics([first_marker, second_marker], [color1, color2], board_color)
+        self.aesthetics = aesthetics
 
         return aesthetics
 

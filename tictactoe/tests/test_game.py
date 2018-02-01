@@ -31,19 +31,33 @@ def test_game_is_not_marked_over_when_not_over(game):
     game.board.mark_space(6, 2)
     assert game.is_over() is False
 
+
 def test_undo_removes_last_move_from_both_players(game):
-    game.players[0].make_move(game.board, 4, 0)
-    game.players[1].make_move(game.board, 5, 1)
-    game.players[0].make_move(game.board, 0, 2)
+    assert len(game.board.empty_spaces()) == 9
+    for i in range(0, 4):
+        game.start_turn(i)
+        game.end_turn()
+    assert len(game.board.empty_spaces()) == 5
     game.undo_turn()
-    assert len(game.players[0].moves) == 1
-    assert len(game.players[1].moves) == 0
+    game.end_turn()
+    assert len(game.board.empty_spaces()) == 7
 
 def test_undo_does_not_cause_lost_turn(game):
     current_player = game.current_player
+    for i in range(0, 4):
+        game.start_turn(i)
+        game.end_turn()
     game.undo_turn()
     game.end_turn()
-    assert game.current_player == current_player
+    assert current_player == game.current_player
+
+def test_undo_does_not_repeat_turn(game):
+    for i in range(0, 4):
+        game.start_turn(i)
+        game.end_turn()
+    game.undo_turn()
+    game.end_turn()
+    assert game.turn not in game.board.spaces
 
 # BOARD
 def test_game_has_board(game):

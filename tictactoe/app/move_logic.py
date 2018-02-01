@@ -9,7 +9,7 @@ class MoveLogic:
         self.move_weights = {}
         self.board = board
         self.transposition_table = {}
-        self.rules = Rules(board)
+        self.rules = Rules(self.board)
 
 
     def get_move(self, turn):
@@ -31,7 +31,7 @@ class MoveLogic:
 
     def _get_weights_for_all_open_moves(self):
         for space in self.board.empty_spaces():
-            board2 = copy(self.board)
+            board2 = self._copy_board_for_speed(self.board)
             self.move_weights[space] = self._weigh_move(board2, space)
 
     def _weigh_move(self, board, set_move=None, turn="self", depth=0):
@@ -108,3 +108,14 @@ class MoveLogic:
     def _transpose(self, board, value):
         if str(board.spaces) not in self.transposition_table.keys():
             self.transposition_table[str(board.spaces)] = value
+
+    def _copy_board_for_speed(self, board):
+        copy_board = copy(board)
+        for i, space in enumerate(copy_board.spaces):
+            if space != " " and space not in [0, 1]:
+                new_marker = space % 2
+                copy_board.clear_space(i)
+                copy_board.mark_space(i, new_marker)
+        return copy_board
+
+

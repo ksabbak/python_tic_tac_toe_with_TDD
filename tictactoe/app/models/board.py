@@ -17,9 +17,9 @@ class Board:
         return cls(board)
 
 
-    def mark_space(self, space, marker):
+    def mark_space(self, space, turn):
         if self.space_is_empty(space):
-            self._change_space(space, marker)
+            self._change_space(space, turn)
 
     def clear_space(self, space):
         if not self.space_is_empty(space):
@@ -42,9 +42,9 @@ class Board:
         return space_string
 
 
-    def _change_space(self, space, marker):
+    def _change_space(self, space, turn):
         spaces = list(self.spaces)
-        spaces[space] = marker
+        spaces[space] = turn
         self.spaces = tuple(spaces)
 
     def _build_coordinates(self):

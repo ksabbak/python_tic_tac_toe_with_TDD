@@ -1,31 +1,28 @@
 from .colorist import Colorist
 
-
 class BuildABoard:
     def __init__(board, aesthetics, last_move):
         self.board = board
         self.board_color = aesthetics.board_color
         self.markers = aesthetics.markers
-        self.player_colors = aesthetics.player_colors
         self.last_move = last_move
 
     def printable_board():
-        return self._build_board(self._color_spaces())
+        return self._build_board(self._mark_spaces())
 
 
-    def _build_board(color_spaces):
-            first_row = Colorist.color_text(_build_first_row(), self.board_color)
-            board_str = first_row
+    def _build_board(marked_spaces):
+            board_str = Colorist.color_text(_build_horizontal_coordinates(), self.board_color)
             for space in range(0, len(self.board.spaces)):
                 if space % self.board.side_length == 0:
-                    board_str += self._add_horizontal_coordinate(space)
+                    board_str += self._add_vertical_coordinate(space)
                 board_str += self._fill_standard_square
                 if self._is_space_at_end_of_row(space) and not self._is_space_at_end_of_board(space):
                     board_str = self._replace_extraneous_end_chars_with_new_line(board_str)
                     board_str += Colorist.color_text(_build_filler_row(), self.board_color)
             return self._replace_extraneous_end_chars_with_new_line(board_str)
 
-    def _build_first_row(self):
+    def _build_horizontal_coordinates(self):
         first_row = ""
         for num in range(1, self.board.side_length + 1):
             first_row += "   " + str(num)
@@ -39,7 +36,7 @@ class BuildABoard:
         filler_row += "\n"
         return filler_row
 
-    def _add_horizontal_coordinate(self, space):
+    def _add_vertical_coordinate(self, space):
         return Colorist.color_text(board.coordinates[space][0], self.board_color) + " "
 
     def _fill_standard_square(self, space):
@@ -54,12 +51,12 @@ class BuildABoard:
     def _is_space_at_end_of_board(space):
         return space == len(self.board.spaces) - 1
 
-    def _color_spaces(self):
+    def _mark_spaces(self):
         new_spaces = []
         for i, space in enumerate(self.board.spaces):
             if space is not " ":
                 player = i % len(self.markers)
-                new_space = Colorist.color_text(self.markers[player], self.player_colors[player])
+                new_space = self.markers[player]
             else:
                 new_space = space
 
@@ -68,3 +65,4 @@ class BuildABoard:
             new_spaces.append(new_space)
         return new_spaces
 
+    def _mark_spaces(self):

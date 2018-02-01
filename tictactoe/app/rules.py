@@ -11,7 +11,6 @@ class Rules:
             board = self.board
         for win_condition in self.all_win_conditions:
             board_sample = list(map(lambda x: board.spaces[x], win_condition))
-            print(board_sample)
             if ((" " not in board_sample)
                and len(set(map(lambda x: x % 2, board_sample))) == 1):
                 return board_sample[0] % 2

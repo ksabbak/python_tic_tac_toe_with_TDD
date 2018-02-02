@@ -1,8 +1,14 @@
 from setuptools import setup
 
 setup(
-    name='TicTacToe',
-    packages=['web_app', 'app'],
+    name='tictactoe',
+    packages=[
+        'tictactoe',
+        'tictactoe.web_app',
+        'tictactoe.app',
+        'tictactoe.app.models',
+        'tictactoe.tests'
+        ],
     include_package_data=True,
     install_requires=['flask'],
     setup_requires=[

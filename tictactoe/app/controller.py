@@ -1,13 +1,14 @@
 from string import punctuation
 
-from .game import Game
-from .player import HumanPlayer
-from .ai import AI
-from .view import print_intro_text, print_instructions, get_game_type_input, print_sorry, print_new_turn, print_game_over, get_player_move, print_ai_update, print_humanplayer_update, get_marker, get_who_first, print_who_first, print_board_size, get_color, colors, print_ai_thinking
+from .__init__ import Game, AI
+from .command_line_views.view_getters import get_game_type_input, get_player_move,  get_marker, get_who_first, get_color
+from .command_line_views.view_printer import print_intro_text, print_instructions,print_sorry, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking
+from .command_line_views.colorist import Colorist
+from .command_line_views.board_decorator import BoardDecorator
 
 class Controller:
     def __init__(self):
-        self.game = Game(AI("x"), AI("o"))
+        self.game = Game(AI(), AI())
 
     def run(self):
         print_intro_text()
@@ -32,12 +33,8 @@ class Controller:
             self._create_game(Game.cvc, board_choice, ["Computer 1", "Computer 2"])
 
     def _create_game(self, new_game, board_choice, players):
-        player1, player2, color1, color2, board_color = self._get_markers_and_colors(*players)
-        self.game = new_game(**{ "player1" : (player1, color1),
-                                 "player2": (player2, color2), 
-                                 "board" : board_choice, 
-                                 "board_color" : board_color 
-                                })
+        self._get_markers_and_colors(*players)
+        self.game = new_game(board_choice)
 
     def _make_board_choice(self):
         board_choice = self._handle_input(get_game_type_input, self._acceptable_board_type_input)
@@ -48,29 +45,28 @@ class Controller:
         return board_choice
 
     def _play(self):
-        print_new_turn(self.game.board, self.game.last_move, *self.game.players)
+        print_new_turn(self.game.board, self.board_decorator, self.game.last_move)
         while not self.game.is_over():
             if self.game.current_player.is_ai():
                 self._ai_player_turn()
             else:
                 self._human_player_turn()
             self.game.end_turn()
-        print_game_over(self.game.winner())
+        print_game_over(self.board_decorator, self.game.players, self.game.winner())
 
     def _human_player_turn(self):
-        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.game.current_player.marker, self.game.current_player.color])
+        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.board_decorator.player_markers[self.game.turn % 2]])
         if move == "undo":
             self.game.undo_turn()
-            move = self.game.last_move
         else:
-            move = self._coordinate_to_number(move)
-            self.game.start_turn(move) 
-        print_humanplayer_update(self.game, self._number_to_coordinate(move))
+            self.game.start_turn(self._coordinate_to_number(move))
+        move = self.game.last_move
+        print_humanplayer_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
 
     def _ai_player_turn(self):
         print_ai_thinking()
         move = self.game.start_turn()
-        print_ai_update(self.game, self._number_to_coordinate(move))
+        print_ai_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
 
     def _get_markers_and_colors(self, player1, player2):
         first_marker = None
@@ -87,7 +83,10 @@ class Controller:
                 print_sorry("match marker")
         board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
 
-        return[first_marker, second_marker, color1, color2, board_color]
+        board_decorator = BoardDecorator([first_marker, second_marker], [color1, color2], board_color)
+        self.board_decorator = board_decorator
+
+        return board_decorator
 
     def _affirmative(self, response):
         response = response.lower().strip(punctuation)
@@ -130,7 +129,7 @@ class Controller:
         return "color"
 
     def _colors(self):
-        return colors().keys()
+        return Colorist.colors().keys()
 
     def _acceptable_move_input(self, move_input):
         if move_input == "undo": return
@@ -143,7 +142,7 @@ class Controller:
 
     def _handle_input(self, input_getter, input_parser, arguments=[]):
         user_input = None
-        while user_input is None: 
+        while user_input is None:
             user_input = input_getter(*arguments)
             unacceptable_input = input_parser(user_input)
             if unacceptable_input:

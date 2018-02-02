@@ -4,7 +4,7 @@ from .__init__ import Game, AI
 from .command_line_views.view_getters import get_game_type_input, get_player_move,  get_marker, get_who_first, get_color
 from .command_line_views.view_printer import print_intro_text, print_instructions,print_sorry, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking
 from .command_line_views.colorist import Colorist
-from .command_line_views.aesthetics import Aesthetics
+from .command_line_views.board_decorator import BoardDecorator
 
 class Controller:
     def __init__(self):
@@ -45,28 +45,28 @@ class Controller:
         return board_choice
 
     def _play(self):
-        print_new_turn(self.game.board, self.aesthetics, self.game.last_move)
+        print_new_turn(self.game.board, self.board_decorator, self.game.last_move)
         while not self.game.is_over():
             if self.game.current_player.is_ai():
                 self._ai_player_turn()
             else:
                 self._human_player_turn()
             self.game.end_turn()
-        print_game_over(self.aesthetics, self.game.players, self.game.winner())
+        print_game_over(self.board_decorator, self.game.players, self.game.winner())
 
     def _human_player_turn(self):
-        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.aesthetics.player_markers[self.game.turn % 2]])
+        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.board_decorator.player_markers[self.game.turn % 2]])
         if move == "undo":
             self.game.undo_turn()
         else:
             self.game.start_turn(self._coordinate_to_number(move))
         move = self.game.last_move
-        print_humanplayer_update(self.game.board, self.aesthetics, self._number_to_coordinate(move), self.game.turn)
+        print_humanplayer_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
 
     def _ai_player_turn(self):
         print_ai_thinking()
         move = self.game.start_turn()
-        print_ai_update(self.game.board, self.aesthetics, self._number_to_coordinate(move), self.game.turn)
+        print_ai_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
 
     def _get_markers_and_colors(self, player1, player2):
         first_marker = None
@@ -83,10 +83,10 @@ class Controller:
                 print_sorry("match marker")
         board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
 
-        aesthetics = Aesthetics([first_marker, second_marker], [color1, color2], board_color)
-        self.aesthetics = aesthetics
+        board_decorator = BoardDecorator([first_marker, second_marker], [color1, color2], board_color)
+        self.board_decorator = board_decorator
 
-        return aesthetics
+        return board_decorator
 
     def _affirmative(self, response):
         response = response.lower().strip(punctuation)

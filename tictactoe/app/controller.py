@@ -33,7 +33,7 @@ class Controller:
             self._create_game(Game.cvc, board_choice, ["Computer 1", "Computer 2"])
 
     def _create_game(self, new_game, board_choice, players):
-        player1, player2, color1, color2= self._get_markers_and_colors(*players)
+        self._get_markers_and_colors(*players)
         self.game = new_game(board_choice)
 
     def _make_board_choice(self):
@@ -45,28 +45,28 @@ class Controller:
         return board_choice
 
     def _play(self):
-        print_new_turn(self.game.board, self.game.last_move, *self.game.players)
+        print_new_turn(self.game.board, self.aesthetics, self.game.last_move)
         while not self.game.is_over():
             if self.game.current_player.is_ai():
                 self._ai_player_turn()
             else:
                 self._human_player_turn()
             self.game.end_turn()
-        print_game_over(self.game.winner())
+        print_game_over(self.aesthetics, self.game.players, self.game.winner())
 
     def _human_player_turn(self):
-        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.game.current_player.marker, self.game.current_player.color])
+        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.aesthetics.player_markers[self.game.turn % 2]])
         if move == "undo":
             self.game.undo_turn()
         else:
             self.game.start_turn(self._coordinate_to_number(move))
         move = self.game.last_move
-        print_humanplayer_update(self.game, self._number_to_coordinate(move))
+        print_humanplayer_update(self.game.board, self.aesthetics, self._number_to_coordinate(move), self.game.turn)
 
     def _ai_player_turn(self):
         print_ai_thinking()
         move = self.game.start_turn()
-        print_ai_update(self.game, self._number_to_coordinate(move))
+        print_ai_update(self.game.board, self.aesthetics, self._number_to_coordinate(move), self.game.turn)
 
     def _get_markers_and_colors(self, player1, player2):
         first_marker = None

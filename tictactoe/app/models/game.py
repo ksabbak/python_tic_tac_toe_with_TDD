@@ -14,7 +14,7 @@ class Game:
         self.rules = Rules(self.board)
 
     def is_over(self):
-        return not not(self.board.is_full() or self.rules.winning_marker())
+        return (self.board.is_full() or self.rules.winning_marker() is not None)
 
     def start_turn(self, move=None):
         move = self.current_player.make_move(self.board, move, self.turn)
@@ -26,8 +26,8 @@ class Game:
         self._get_current_player()
 
     def winner(self):
-        for player in self.players:
-            if self.board.winning_marker() == player.marker: return player
+        for player in range(0, len(self.players)):
+            if self.rules.winning_marker() == player: return self.players[player]
 
     def undo_turn(self):
         self.turn -= 1

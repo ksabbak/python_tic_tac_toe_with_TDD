@@ -1,6 +1,9 @@
 from textwrap import dedent
 import time
 
+from .build_a_board import BuildABoard
+from .colorist import Colorist
+
 def print_intro_text():
     print_clear()
     print("Welcome!")
@@ -35,26 +38,26 @@ def print_who_first(player_first):
 def print_clear():
     print(chr(27) + "[2J" + chr(27) + "[0;0H")
 
-def print_new_turn(board, last_move, player_one, player_two):
+def print_new_turn(board, aesthetics, last_move):
     print_clear()
-    _print_board(board, last_move, player_one, player_two)
+    _print_board(board, aesthetics, last_move)
 
-def print_game_over(winner=None):
+def print_game_over(aesthetics, players, winner=None):
     print("Okay, the game is over")
-    if winner is not None: print("%s wins!" % _color_text(winner.marker, winner.color))
+    if winner is not None: print("%s wins!" % (aesthetics.player_markers[players.index(winner)]))
 
 def print_ai_thinking():
     print("Hmmmm, the computer is thinking")
 
-def print_ai_update(game, move):
+def print_ai_update(board, aesthetics, move, turn):
     time.sleep(1)
-    print_new_turn(game.board, game.last_move, *game.players)
-    print("It looks like, %s moved to space %s" % (_color_text(game.current_player.marker, game.current_player.color), move))
+    print_new_turn(board, aesthetics, move)
+    print("It looks like, %s moved to space %s" % (aesthetics.player_markers[turn % 2], move))
 
 def print_humanplayer_update(board, aesthetics, move, turn):
     if move is not None:
-        print_new_turn(board, move, aesthetics)
-        print("Okay, %s is now on space %s" % (aesthetics.markers[turn % 2], move))
+        print_new_turn(board, aesthetics, move)
+        print("Okay, %s is now on space %s" % (aesthetics.player_markers[turn % 2], move))
         time.sleep(1)
     else:
         print_new_turn(board, aesthetics, turn)
@@ -75,12 +78,11 @@ def print_sorry(about=None):
         print("Each marker needs to be different, let's try again.")
     elif about == "color":
         print("I didn't quite understand that. Try one of these: ")
-        print(_color_option_string())
+        print(Colorist.color_option_string())
         print("or 'none' for default")
     else:
         print("Sorry, that won't work, please try again.")
 
 
-def _print_board(board, player_one, player_two, last_move):
-    board_str = _build_board(self.board, self.color_spaces)
-    print(BuildABoard(board, player_one, player_two, last_move).printable_board())
+def _print_board(board, aesthetics, last_move):
+    print(BuildABoard(board, aesthetics, last_move).printable_board())

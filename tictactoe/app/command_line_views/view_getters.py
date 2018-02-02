@@ -13,9 +13,9 @@ def get_color(thing_to_color):
     print("What color would you like %s to be? (enter 'help' for options)" % thing_to_color)
     return input().strip()
 
-def get_player_move(marker, color):
+def get_player_move(marker):
     print("\n")
-    print("Where would you like to move, Player %s?" % _color_text(marker, color))
+    print("Where would you like to move, Player %s?" % marker)
     move = input().strip()
     return move
 

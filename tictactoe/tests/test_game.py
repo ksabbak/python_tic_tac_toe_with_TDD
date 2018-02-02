@@ -59,6 +59,13 @@ def test_undo_does_not_repeat_turn(game):
     game.end_turn()
     assert game.turn not in game.board.spaces
 
+def test_winner(game):
+    assert game.winner() == None
+    game.board.mark_space(3, 0)
+    game.board.mark_space(4, 2)
+    game.board.mark_space(5, 4)
+    assert game.winner() == game.players[0]
+
 # BOARD
 def test_game_has_board(game):
     assert game.board is not None

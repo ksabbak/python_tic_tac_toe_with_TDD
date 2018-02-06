@@ -38,29 +38,29 @@ def print_who_first(player_first):
 def print_clear():
     print(chr(27) + "[2J" + chr(27) + "[0;0H")
 
-def print_new_turn(board, aesthetics, last_move):
+def print_new_turn(board, board_decorator, last_move):
     print_clear()
-    _print_board(board, aesthetics, last_move)
+    _print_board(board, board_decorator, last_move)
 
-def print_game_over(aesthetics, players, winner=None):
+def print_game_over(board_decorator, players, winner=None):
     print("Okay, the game is over")
-    if winner is not None: print("%s wins!" % (aesthetics.player_markers[players.index(winner)]))
+    if winner is not None: print("%s wins!" % (board_decorator.player_markers[players.index(winner)]))
 
 def print_ai_thinking():
     print("Hmmmm, the computer is thinking")
 
-def print_ai_update(board, aesthetics, move, turn):
+def print_ai_update(board, board_decorator, move, turn):
     time.sleep(1)
-    print_new_turn(board, aesthetics, move)
-    print("It looks like, %s moved to space %s" % (aesthetics.player_markers[turn % 2], move))
+    print_new_turn(board, board_decorator, move)
+    print("It looks like, %s moved to space %s" % (board_decorator.player_markers[turn % 2], move))
 
-def print_humanplayer_update(board, aesthetics, move, turn):
+def print_humanplayer_update(board, board_decorator, move, turn):
     if move is not None:
-        print_new_turn(board, aesthetics, move)
-        print("Okay, %s is now on space %s" % (aesthetics.player_markers[turn % 2], move))
+        print_new_turn(board, board_decorator, move)
+        print("Okay, %s is now on space %s" % (board_decorator.player_markers[turn % 2], move))
         time.sleep(1)
     else:
-        print_new_turn(board, aesthetics, turn)
+        print_new_turn(board, board_decorator, turn)
 
 #BAD INPUT PRINT
 def print_sorry(about=None):
@@ -84,5 +84,5 @@ def print_sorry(about=None):
         print("Sorry, that won't work, please try again.")
 
 
-def _print_board(board, aesthetics, last_move):
-    print(BuildABoard(board, aesthetics, last_move).printable_board())
+def _print_board(board, board_decorator, last_move):
+    print(BuildABoard(board, board_decorator, last_move).printable_board())

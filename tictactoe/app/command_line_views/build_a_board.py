@@ -1,10 +1,10 @@
 from .colorist import Colorist
 
 class BuildABoard:
-    def __init__(self, board, aesthetics, last_move):
+    def __init__(self, board, board_decorator, last_move):
         self.board = board
-        self.board_color = aesthetics.board_color
-        self.markers = aesthetics.player_markers
+        self.board_color = board_decorator.board_color
+        self.markers = board_decorator.player_markers
         self.last_move = last_move
 
     def printable_board(self):

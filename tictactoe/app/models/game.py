@@ -41,7 +41,7 @@ class Game:
 
 
     def _get_current_player(self):
-        self.current_player = self.players[self.turn % 2]
+        self.current_player = self.players[self.turn % len(self.players)]
 
     def _get_last_move(self):
         if self.turn in self.board.spaces:

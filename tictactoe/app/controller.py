@@ -1,14 +1,15 @@
 from string import punctuation
 
 from .__init__ import Game, AI
+from .validator import Validator
 from .command_line_views.view_getters import get_game_type_input, get_player_move,  get_marker, get_who_first, get_color
-from .command_line_views.view_printer import print_intro_text, print_instructions,print_sorry, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking
+from .command_line_views.view_printer import print_intro_text, print_instructions, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking
 from .command_line_views.colorist import Colorist
 from .command_line_views.board_decorator import BoardDecorator
 
 class Controller:
     def __init__(self):
-        self.game = Game(AI(), AI())
+        self.game = Game.cvc(9)
 
     def run(self):
         print_intro_text()
@@ -19,7 +20,7 @@ class Controller:
         self._play()
 
     def _impliment_game_choice(self, board_choice):
-        game_choice = self._handle_input(get_game_type_input, self._acceptable_game_type_input)
+        game_choice = Validator.handle_input(get_game_type_input, self._acceptable_game_type_input)
         if game_choice in "1":
             self._create_game(Game.pvp, board_choice, ["Player 1", "Player 2"])
         elif game_choice in "2":
@@ -37,7 +38,7 @@ class Controller:
         self.game = new_game(board_choice)
 
     def _make_board_choice(self):
-        board_choice = self._handle_input(get_game_type_input, self._acceptable_board_type_input)
+        board_choice = Validator.handle_input(get_game_type_input, self._acceptable_board_type_input)
         if board_choice in "1":
             board_choice = 9
         else:
@@ -55,7 +56,7 @@ class Controller:
         print_game_over(self.board_decorator, self.game.players, self.game.winner())
 
     def _human_player_turn(self):
-        move = self._handle_input(get_player_move, self._acceptable_move_input, [self.board_decorator.player_markers[self.game.turn % 2]])
+        move = Validator.handle_input(get_player_move, self._acceptable_move_input, [self.board_decorator.player_markers[self.game.turn % 2]])
         if move == "undo":
             self.game.undo_turn()
         else:
@@ -75,13 +76,13 @@ class Controller:
         color2 = None
         board_color = None
         while (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
-            first_marker = self._handle_input(get_marker, self._acceptable_marker_input, [player1])
-            color1 = self._handle_input(get_color, self._acceptable_color_input, [first_marker])
-            second_marker = self._handle_input(get_marker, self._acceptable_marker_input, [player2])
-            color2 = self._handle_input(get_color, self._acceptable_color_input, [second_marker])
+            first_marker = Validator.handle_input(get_marker, self._acceptable_marker_input, [player1])
+            color1 = Validator.handle_input(get_color, self._acceptable_color_input, [first_marker])
+            second_marker = Validator.handle_input(get_marker, self._acceptable_marker_input, [player2])
+            color2 = Validator.handle_input(get_color, self._acceptable_color_input, [second_marker])
             if (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
                 print_sorry("match marker")
-        board_color = self._handle_input(get_color, self._acceptable_color_input, ["the board"])
+        board_color = Validator.handle_input(get_color, self._acceptable_color_input, ["the board"])
 
         board_decorator = BoardDecorator([first_marker, second_marker], [color1, color2], board_color)
         self.board_decorator = board_decorator
@@ -139,14 +140,3 @@ class Controller:
             return "no coord"
         if move_input not in self.game.board.empty_spaces():
             return "taken"
-
-    def _handle_input(self, input_getter, input_parser, arguments=[]):
-        user_input = None
-        while user_input is None:
-            user_input = input_getter(*arguments)
-            unacceptable_input = input_parser(user_input)
-            if unacceptable_input:
-                user_input = None
-                print_sorry(unacceptable_input)
-            else:
-                return user_input

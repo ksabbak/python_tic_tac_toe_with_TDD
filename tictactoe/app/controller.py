@@ -1,6 +1,6 @@
 from string import punctuation
 
-from .__init__ import Game, AI
+from .__init__ import Game
 from .validator import Validator
 from .command_line_views.view_getters import get_game_type_input, get_player_move,  get_marker, get_who_first, get_color
 from .command_line_views.view_printer import print_intro_text, print_instructions, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking

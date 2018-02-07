@@ -62,7 +62,8 @@ def print_humanplayer_update(board, board_decorator, move, turn):
     else:
         print_new_turn(board, board_decorator, turn)
 
-#BAD INPUT PRINT
+# TODO:
+# BAD INPUT PRINT
 def print_sorry(about=None):
     if about == "game type":
         print("Please enter the numeral 1, 2, or 3:")

@@ -125,12 +125,9 @@ class Controller:
     def _acceptable_color_input(self, color_input):
         color_input = color_input.lower().strip(punctuation)
         if color_input == "none": return None
-        for color in self._colors():
+        for color in Colorist.color_names():
             if color_input == color.lower(): return None
         return "color"
-
-    def _colors(self):
-        return Colorist.colors().keys()
 
     def _acceptable_move_input(self, move_input):
         if move_input == "undo": return

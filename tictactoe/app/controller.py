@@ -2,6 +2,7 @@ from string import punctuation
 
 from .__init__ import Game
 from .validator import Validator
+from .view_setup import ViewSetup
 from .command_line_views.view_getters import get_game_type_input, get_player_move,  get_marker, get_who_first, get_color
 from .command_line_views.view_printer import print_intro_text, print_instructions, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking
 from .command_line_views.colorist import Colorist
@@ -70,22 +71,7 @@ class Controller:
         print_ai_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
 
     def _get_markers_and_colors(self, player1, player2):
-        first_marker = None
-        second_marker = None
-        color1 = None
-        color2 = None
-        board_color = None
-        while (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
-            first_marker = Validator.handle_input(get_marker, self._acceptable_marker_input, [player1])
-            color1 = Validator.handle_input(get_color, self._acceptable_color_input, [first_marker])
-            second_marker = Validator.handle_input(get_marker, self._acceptable_marker_input, [player2])
-            color2 = Validator.handle_input(get_color, self._acceptable_color_input, [second_marker])
-            if (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
-                print_sorry("match marker")
-        board_color = Validator.handle_input(get_color, self._acceptable_color_input, ["the board"])
-
-        board_decorator = BoardDecorator([first_marker, second_marker], [color1, color2], board_color)
-        self.board_decorator = board_decorator
+        board_decorator = ViewSetup().get_markers_and_colors
 
         return board_decorator
 

@@ -3,7 +3,7 @@ from .command_line_views.view_printer import print_sorry
 
 class Validator:
     @staticmethod
-    def handle_input(cls, input_getter, input_parser, arguments=[]):
+    def handle_input( input_getter, input_parser, arguments=[]):
         user_input = None
         while user_input is None:
             user_input = input_getter(*arguments)

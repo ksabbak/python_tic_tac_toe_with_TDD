@@ -26,7 +26,7 @@ class ViewSetup:
         board_color = Validator.handle_input(get_color, self._acceptable_color_input, ["the board"])
 
         board_decorator = BoardDecorator([self.first_marker, self.second_marker], [self.color1, self.color2], self.board_color)
-        self.board_decorator = board_decorator
+        # self.board_decorator = board_decorator
 
         return board_decorator
 

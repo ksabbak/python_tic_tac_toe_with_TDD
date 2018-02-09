@@ -18,6 +18,3 @@ def test_number_to_coordinate():
     assert controller._number_to_coordinate(5) == "B3"
     assert controller._number_to_coordinate(8) == "C3"
 
-def test_affirmation():
-    assert Controller()._affirmative("Okay!") is True
-    assert Controller()._affirmative("No thanks") is False

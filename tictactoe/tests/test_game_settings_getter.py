@@ -11,29 +11,33 @@ def game_settings_getter():
 
 def test_game_settings_getter_choses_proper_game_player_vs_player(game_settings_getter):
     pvp = '1'
+    board_choice = 9
     with unittest.mock.patch('builtins.input', return_value=pvp):
-        game = game_settings_getter.impliment_game_choice()
+        game = game_settings_getter.impliment_game_choice(board_choice)
         assert game.players[0].is_ai() is False
         assert game.players[1].is_ai() is False
 
 def test_game_settings_getter_choses_proper_game_player_vs_comp(game_settings_getter):
     pvc = '2'
+    board_choice = 9
     with unittest.mock.patch('builtins.input', return_value=pvc):
-        game = game_settings_getter.impliment_game_choice()
+        game = game_settings_getter.impliment_game_choice(board_choice)
         assert game.players[0].is_ai() is False
         assert game.players[1].is_ai() is True
 
 def test_game_settings_getter_choses_proper_game_comp_vs_player(game_settings_getter):
     cvp = '3'
+    board_choice = 9
     with unittest.mock.patch('builtins.input', return_value=cvp):
-        game = game_settings_getter.impliment_game_choice()
+        game = game_settings_getter.impliment_game_choice(board_choice)
         assert game.players[0].is_ai() is True
         assert game.players[1].is_ai() is False
 
 def test_game_settings_getter_choses_proper_game_comp_vs_comp(game_settings_getter):
     cvc = '4'
+    board_choice = 9
     with unittest.mock.patch('builtins.input', return_value=cvc):
-        game = game_settings_getter.impliment_game_choice()
+        game = game_settings_getter.impliment_game_choice(board_choice)
         assert game.players[0].is_ai() is True
         assert game.players[1].is_ai() is True
 

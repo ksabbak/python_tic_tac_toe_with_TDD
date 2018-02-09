@@ -38,7 +38,7 @@ class Colorist:
 
     @staticmethod
     def assign_color_value(color):
-        if color.upper() in Colorist.colors().keys():
+        if color.upper() in Colorist.color_names():
             color = Colorist.colors()[color.upper()]
         elif color == "none":
             color = ""

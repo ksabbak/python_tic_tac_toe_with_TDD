@@ -15,7 +15,7 @@ def print_instructions():
             1. Human vs. Human
             2. Human vs. Computer (you go first)
             3. Computer vs. Human (the computer goes first)
-            3. Computer vs. Computer\
+            4. Computer vs. Computer\
         """
     print("\n")
     print(dedent(instructions))

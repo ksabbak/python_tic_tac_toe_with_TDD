@@ -1,5 +1,3 @@
-from string import punctuation
-
 from .__init__ import Game
 from .validator import Validator
 from .command_line_views.view_getters import get_game_type_input, get_who_first
@@ -12,12 +10,12 @@ class GameSettingsGetter:
 
     def make_board_choice(self):
         board_choice = Validator.handle_input(self.game_type_input, 'board_type')
-        self.board_choice = BOARD_CHOICE[board_choice]
-        return self.board_choice
+        board_choice = BOARD_CHOICE[board_choice]
+        return board_choice
 
     def impliment_game_choice(self, board_choice):
         game_choice = Validator.handle_input(self.game_type_input, 'game_type')
         game_choice = getattr(Game, GAME_CHOICE[game_choice])
-        return game_choice(self.board_choice)
+        return game_choice(board_choice)
 
 

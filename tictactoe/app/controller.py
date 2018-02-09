@@ -6,6 +6,7 @@ from .command_line_views.view_getters import get_game_type_input, get_player_mov
 from .command_line_views.view_printer import print_intro_text, print_instructions, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_who_first, print_board_size, print_ai_thinking
 from .command_line_views.colorist import Colorist
 from .command_line_views.board_decorator import BoardDecorator
+from .game_settings_getter import GameSettingsGetter
 
 class Controller:
     def __init__(self):
@@ -14,9 +15,11 @@ class Controller:
     def run(self):
         print_intro_text()
         print_board_size()
-        board_choice = self._make_board_choice()
+        # board_choice = self._make_board_choice()
+        board_choice = GameSettingsGetter().make_board_choice()
         print_instructions()
-        self._impliment_game_choice(board_choice)
+        GameSettingsGetter().impliment_game_choice(board_choice)
+        self._get_markers_and_colors("player 1", "player 2")
         self._play()
 
     def _impliment_game_choice(self, board_choice):
@@ -76,10 +79,10 @@ class Controller:
         color2 = None
         board_color = None
         while (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
-            first_marker = Validator.handle_input(get_marker, self._acceptable_marker_input, [player1])
-            color1 = Validator.handle_input(get_color, self._acceptable_color_input, [first_marker])
-            second_marker = Validator.handle_input(get_marker, self._acceptable_marker_input, [player2])
-            color2 = Validator.handle_input(get_color, self._acceptable_color_input, [second_marker])
+            first_marker = Validator.handle_input(get_marker, "marker_input", [player1])
+            color1 = Validator.handle_input(get_color, "color_name", [first_marker])
+            second_marker = Validator.handle_input(get_marker, "marker_input", [player2])
+            color2 = Validator.handle_input(get_color, "color_name", [second_marker])
             if (first_marker == second_marker and color1 == color2) or (first_marker is None) or (second_marker is None):
                 print_sorry("match marker")
         board_color = Validator.handle_input(get_color, self._acceptable_color_input, ["the board"])
@@ -88,10 +91,6 @@ class Controller:
         self.board_decorator = board_decorator
 
         return board_decorator
-
-    def _affirmative(self, response):
-        response = response.lower().strip(punctuation)
-        return (response != "n") and (response in "yes yeah definitely affirmative okay yup sure true")
 
     def _coordinates(self):
         return self.game.board.coordinates
@@ -110,30 +109,30 @@ class Controller:
         coord_list.reverse()
         return "".join(coord_list)
 
-    def _acceptable_marker_input(self, marker_input):
-        if len(marker_input) != 1 or marker_input == " ":
-            return "marker length"
+    # def _acceptable_marker_input(self, marker_input):
+    #     if len(marker_input) != 1 or marker_input == " ":
+    #         return "marker length"
 
-    def _acceptable_game_type_input(self, game_type_input):
-        if game_type_input not in ["1", "2", "3"]:
-            return "game type"
+    # def _acceptable_game_type_input(self, game_type_input):
+    #     if game_type_input not in ["1", "2", "3"]:
+    #         return "game type"
 
-    def _acceptable_board_type_input(self, board_type_input):
-        if board_type_input not in ["1", "2"]:
-            return "board type"
+    # def _acceptable_board_type_input(self, board_type_input):
+    #     if board_type_input not in ["1", "2"]:
+    #         return "board type"
 
-    def _acceptable_color_input(self, color_input):
-        color_input = color_input.lower().strip(punctuation)
-        if color_input == "none": return None
-        for color in Colorist.color_names():
-            if color_input == color.lower(): return None
-        return "color"
+    # def _acceptable_color_input(self, color_input):
+    #     color_input = color_input.lower().strip(punctuation)
+    #     if color_input == "none": return None
+    #     for color in Colorist.color_names():
+    #         if color_input == color.lower(): return None
+    #     return "color"
 
-    def _acceptable_move_input(self, move_input):
-        if move_input == "undo": return
-        move_input = self._format_move_input(move_input)
-        move_input = self._coordinate_to_number(move_input)
-        if move_input is None:
-            return "no coord"
-        if move_input not in self.game.board.empty_spaces():
-            return "taken"
+    # def _acceptable_move_input(self, move_input):
+    #     if move_input == "undo": return
+    #     move_input = self._format_move_input(move_input)
+    #     move_input = self._coordinate_to_number(move_input)
+    #     if move_input is None:
+    #         return "no coord"
+    #     if move_input not in self.game.board.empty_spaces():
+    #         return "taken"

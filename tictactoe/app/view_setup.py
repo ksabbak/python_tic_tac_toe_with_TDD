@@ -16,17 +16,16 @@ class ViewSetup:
 
     def get_markers_and_colors(self, player1, player2):
         while self._markers_match() or self._markers_need_filling():
-            self.first_marker = Validator.handle_input(get_marker, self._acceptable_marker_input, [player1])
-            self.color1 = Validator.handle_input(get_color, self._acceptable_color_input, [self.first_marker])
-            self.second_marker = Validator.handle_input(get_marker, self._acceptable_marker_input, [player2])
-            self.color2 = Validator.handle_input(get_color, self._acceptable_color_input, [self.second_marker])
+            self.first_marker = Validator.handle_input(get_marker, "marker_input", [player1])
+            self.color1 = Validator.handle_input(get_color, "color_name", [self.first_marker])
+            self.second_marker = Validator.handle_input(get_marker, "marker_input", [player2])
+            self.color2 = Validator.handle_input(get_color, "color_name", [self.second_marker])
             if self._markers_match() or self._markers_need_filling():
                 # TODO: fix this - should be part of the validator
                 print_sorry("match marker")
-        board_color = Validator.handle_input(get_color, self._acceptable_color_input, ["the board"])
+        self.board_color = Validator.handle_input(get_color, "color_name", ["the board"])
 
         board_decorator = BoardDecorator([self.first_marker, self.second_marker], [self.color1, self.color2], self.board_color)
-        # self.board_decorator = board_decorator
 
         return board_decorator
 
@@ -35,15 +34,4 @@ class ViewSetup:
 
     def _markers_match(self):
         (self.first_marker == self.second_marker and self.color1 == self.color2)
-
-    def _acceptable_marker_input(self, marker_input):
-        if len(marker_input) != 1 or marker_input == " ":
-            return "marker length"
-
-    def _acceptable_color_input(self, color_input):
-        color_input = color_input.lower().strip(punctuation)
-        if color_input == "none": return None
-        for color in Colorist.color_names():
-            if color_input == color.lower(): return None
-        return "color"
 

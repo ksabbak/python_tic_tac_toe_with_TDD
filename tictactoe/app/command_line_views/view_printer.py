@@ -47,6 +47,10 @@ def print_game_over(board_decorator, players, winner=None):
     print("Okay, the game is over")
     if winner is not None: print("%s wins!" % (board_decorator.player_markers[players.index(winner)]))
 
+def print_error(error):
+    print("\n")
+    print(error)
+
 def print_ai_thinking():
     print("Hmmmm, the computer is thinking")
 

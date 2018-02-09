@@ -1,6 +1,6 @@
 from string import punctuation
 
-from .command_line_views.view_printer import print_sorry
+from .command_line_views.view_printer import print_error
 from .command_line_views.colorist import Colorist
 from .command_line_views.view_config import BOARD_CHOICE, GAME_CHOICE
 
@@ -13,9 +13,9 @@ class Validator:
             unacceptable_input_checker = getattr(cls, cls.ACCEPTABLE_FUNCTIONS[input_type])
             try:
                 unacceptable_input_checker(cls(), user_input)
-            except Exception as err:
+            except Exception as error:
                 user_input = None
-                print(err)
+                print_error(error)
         return user_input
 
 
@@ -43,7 +43,7 @@ class Validator:
         raise Exception(self._color_exception())
 
     def _color_exception(self):
-        return (("\nI didn't quite understand that. Try one of these: ") + Colorist.color_option_string() + ("or 'none' for default"))
+        return (("I didn't quite understand that. Try one of these: ") + Colorist.color_option_string() + ("or 'none' for default"))
 
     def _acceptable_move_input(self, move_input):
         if move_input == "undo": return

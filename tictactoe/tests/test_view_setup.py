@@ -4,19 +4,32 @@ from unittest.mock import patch
 
 from tictactoe.app.view_setup import ViewSetup
 
-def test_view_setup_returns_board_decorator():
-    with unittest.mock.patch('builtins.input', side_effect=['x', 'red', 'o', 'blue', 'green' ]):
-        assert ViewSetup().get_markers_and_colors("one", "two").__class__.__name__ is 'BoardDecorator'
-
 def test_view_setup_requires_unique_markers():
-    with unittest.mock.patch('builtins.input', side_effect=['x', 'red', 'x', 'red', 'o', 'blue' ]):
+    marker1 = "x"
+    color1 = "red"
+    marker2 = "o"
+    color2 = "green"
+    irrelevant_to_this_test_board_color = 'green'
+    with unittest.mock.patch('builtins.input', side_effect=[marker1, color1, marker1, color1, marker2, color2, irrelevant_to_this_test_board_color ]):
         view_setup = ViewSetup.setup_view()
-        assert len(view_setup.players) == 2
-        assert view_setup.players[0] != view_setup.players[1]
+        assert len(view_setup.player_markers) == 2
+        assert view_setup.player_markers[0] != view_setup.player_markers[1]
 
 
 def test_view_setup_works_with_unique_markers():
-    with unittest.mock.patch('builtins.input', side_effect=['x', 'red', 'o', 'blue']):
+    marker1 = 'x'
+    marker2 = 'o'
+    color = 'red'
+    with unittest.mock.patch('builtins.input', side_effect=[marker1, color, marker2, color, color]):
         view_setup = ViewSetup.setup_view()
-        assert len(view_setup.players) == 2
+        assert len(view_setup.player_markers) == 2
+
+def test_view_setup_works_with_unique_colors():
+    marker = 'x'
+    color1 = 'red'
+    color2 = 'none'
+    irrelevant_to_this_test_board_color = color1
+    with unittest.mock.patch('builtins.input', side_effect=[marker, color1, marker, color2, irrelevant_to_this_test_board_color]):
+        view_setup = ViewSetup.setup_view()
+        assert len(view_setup.player_markers) == 2
 

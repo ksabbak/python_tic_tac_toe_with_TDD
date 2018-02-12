@@ -74,7 +74,7 @@ class Controller:
         print_ai_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
 
     def _get_markers_and_colors(self, player1, player2):
-        board_decorator = ViewSetup().get_markers_and_colors(player1, player2)
+        board_decorator = ViewSetup().setup_view()
         self.board_decorator = board_decorator
         return board_decorator
 

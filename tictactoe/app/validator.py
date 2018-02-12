@@ -5,33 +5,31 @@ from .command_line_views.view_config import BOARD_CHOICE, GAME_CHOICE
 from .exceptions import TicTacToeInputException
 
 class Validator:
-    ACCEPTABLE_FUNCTIONS = {
-        'board_type' : '_acceptable_board_type_input',
-        'color_name' : '_acceptable_color_input',
-        'game_type' : '_acceptable_game_type_input',
-        'marker_input' : '_acceptable_marker_input',
-        'move_input' : '_acceptable_move_input'
-    }
+    def __init__(self):
+        self.ACCEPTABLE_FUNCTIONS = {
+            'board_type' : '_acceptable_board_type_input',
+            'color_name' : '_acceptable_color_input',
+            'game_type' : '_acceptable_game_type_input',
+            'marker_input' : '_acceptable_marker_input',
+        }
 
-    @classmethod
-    def handle_input(cls, input_getter, input_type, arguments=[]):
+    def handle_input(self, input_getter, input_type, arguments=[]):
         user_input = None
         while user_input is None:
             user_input = input_getter(*arguments)
-            input_checker = getattr(cls, cls.ACCEPTABLE_FUNCTIONS[input_type])
-            if not cls()._check_if_input_is_valid(input_checker, user_input):
+            input_checker = getattr(self, self.ACCEPTABLE_FUNCTIONS[input_type])
+            if not self._check_if_input_is_valid(input_checker, user_input):
                 user_input = None
         return user_input
 
-    @classmethod
-    def no_matches(cls, might_have_matches):
-        checker = getattr(cls, '_no_match_checker')
-        return cls()._check_if_input_is_valid(checker, might_have_matches)
+    def no_matches(self, might_have_matches):
+        checker = getattr(self, '_no_match_checker')
+        return self._check_if_input_is_valid(checker, might_have_matches)
 
 
     def _check_if_input_is_valid(self, checker, input):
         try:
-            checker(self, input)
+            checker(input)
         except TicTacToeInputException as error:
             print_error(error)
         else:

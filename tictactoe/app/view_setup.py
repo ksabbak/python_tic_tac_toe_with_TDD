@@ -23,7 +23,7 @@ class ViewSetup:
         while not successful:
             colored_marker = self._get_colored_marker(player)
             potential_markers = self.player_markers + [colored_marker]
-            if Validator.no_matches(potential_markers):
+            if Validator().no_matches(potential_markers):
                 self.player_markers.append(colored_marker)
                 successful = True
 
@@ -34,9 +34,9 @@ class ViewSetup:
 
 
     def _get_marker(self, player_id):
-        return Validator.handle_input(get_marker, "marker_input", [player_id])
+        return Validator().handle_input(get_marker, "marker_input", [player_id])
 
     def _get_color(self, what_gets_colored):
-        return Validator.handle_input(get_color, "color_name", [what_gets_colored])
+        return Validator().handle_input(get_color, "color_name", [what_gets_colored])
 
 

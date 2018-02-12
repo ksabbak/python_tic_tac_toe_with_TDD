@@ -9,12 +9,12 @@ class GameSettingsGetter:
         self.game_type_input = game_type_input
 
     def make_board_choice(self):
-        board_choice = Validator.handle_input(self.game_type_input, 'board_type')
+        board_choice = Validator().handle_input(self.game_type_input, 'board_type')
         board_choice = BOARD_CHOICE[board_choice]
         return board_choice
 
     def impliment_game_choice(self, board_choice):
-        game_choice = Validator.handle_input(self.game_type_input, 'game_type')
+        game_choice = Validator().handle_input(self.game_type_input, 'game_type')
         game_choice = getattr(Game, GAME_CHOICE[game_choice])
         return game_choice(board_choice)
 

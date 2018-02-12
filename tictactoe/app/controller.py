@@ -20,34 +20,12 @@ class Controller:
         board_choice = GameSettingsGetter().make_board_choice()
         print_instructions()
         GameSettingsGetter().impliment_game_choice(board_choice)
-        self._get_markers_and_colors("player 1", "player 2")
+        self._get_markers_and_colors()
         self._play()
-
-    def _impliment_game_choice(self, board_choice):
-        game_choice = Validator.handle_input(get_game_type_input, self._acceptable_game_type_input)
-        if game_choice in "1":
-            self._create_game(Game.pvp, board_choice, ["Player 1", "Player 2"])
-        elif game_choice in "2":
-            player_first = self._affirmative(get_who_first())
-            print_who_first(player_first)
-            if player_first:
-                self._create_game(Game.pvc, board_choice, ["you", "the computer"])
-            else:
-                self._create_game(Game.cvp, board_choice, ["the computer", "you"])
-        elif game_choice in "3":
-            self._create_game(Game.cvc, board_choice, ["Computer 1", "Computer 2"])
 
     def _create_game(self, new_game, board_choice, players):
         self._get_markers_and_colors(*players)
         self.game = new_game(board_choice)
-
-    def _make_board_choice(self):
-        board_choice = Validator.handle_input(get_game_type_input, self._acceptable_board_type_input)
-        if board_choice in "1":
-            board_choice = 9
-        else:
-            board_choice = 16
-        return board_choice
 
     def _play(self):
         print_new_turn(self.game.board, self.board_decorator, self.game.last_move)
@@ -60,7 +38,7 @@ class Controller:
         print_game_over(self.board_decorator, self.game.players, self.game.winner())
 
     def _human_player_turn(self):
-        move = Validator.handle_input(get_player_move, self._acceptable_move_input, [self.board_decorator.player_markers[self.game.turn % 2]])
+        move = Validator().handle_input(get_player_move, self._acceptable_move_input, [self.board_decorator.player_markers[self.game.turn % 2]])
         if move == "undo":
             self.game.undo_turn()
         else:
@@ -73,7 +51,7 @@ class Controller:
         move = self.game.start_turn()
         print_ai_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
 
-    def _get_markers_and_colors(self, player1, player2):
+    def _get_markers_and_colors(self):
         board_decorator = ViewSetup().setup_view()
         self.board_decorator = board_decorator
         return board_decorator

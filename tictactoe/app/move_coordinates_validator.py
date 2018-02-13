@@ -1,11 +1,13 @@
 from .validator import Validator
+from .exceptions import TicTacToeInputException
 
 class MoveCoordinatesValidator(Validator):
     def __init__(self, board):
+        super().__init__()
         self.board = board
-        self.ACCEPTABLE_FUNCTIONS = super().ACCEPTABLE_FUNCTIONS + {
+        self.ACCEPTABLE_FUNCTIONS.update({
                 'move_input' : '_acceptable_move_input'
-                }
+                })
 
     def _acceptable_move_input(self, move_input):
         if move_input == "undo": return

@@ -8,11 +8,6 @@ def tests_controller_can_be_called():
     controller = Controller()
     assert controller.run
 
-def test_coordinate_to_number():
-    controller = Controller()
-    assert controller._coordinate_to_number("a1") == 0
-    assert controller._coordinate_to_number("2B") == 4
-
 def test_number_to_coordinate():
     controller = Controller()
     assert controller._number_to_coordinate(5) == "B3"

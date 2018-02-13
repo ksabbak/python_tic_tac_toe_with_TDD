@@ -29,13 +29,6 @@ def print_board_size():
     print("\n")
     print(dedent(instructions))
 
-def print_who_first(player_first):
-    print("\n")
-    if player_first:
-        print("Great, you'll go first!")
-    else:
-        print("Cool! The computer will go first.")
-
 def print_clear():
     print(chr(27) + "[2J" + chr(27) + "[0;0H")
 

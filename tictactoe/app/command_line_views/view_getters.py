@@ -18,9 +18,3 @@ def get_player_move(marker):
     print("Where would you like to move, Player %s?" % marker)
     move = input().strip()
     return move
-
-def get_who_first():
-    print("\n")
-    print("Great, would you like to move first?")
-    return input().strip()
-

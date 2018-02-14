@@ -25,12 +25,15 @@ class Controller:
     def _play(self):
         print_new_turn(self.game.board, self.board_decorator, self.game.last_move)
         while not self.game.is_over():
-            if self.game.current_player.is_ai():
-                self._ai_player_turn()
-            else:
-                self._human_player_turn()
-            self.game.end_turn()
+            self._take_turn()
         print_game_over(self.board_decorator, self.game.players, self.game.winner())
+
+    def _take_turn(self):
+        if self.game.current_player.is_ai():
+            self._ai_player_turn()
+        else:
+            self._human_player_turn()
+        self.game.end_turn()
 
     def _human_player_turn(self):
         move = MoveCoordinatesValidator(self.game.board).handle_input(get_player_move, "move_input", [self.board_decorator.player_markers[self.game.turn % 2]])
@@ -49,4 +52,8 @@ class Controller:
     def _number_to_coordinate(self, move):
         if move is not None: return self.game.board.coordinates[move]
 
+    def _coordinate_to_number(self, move):
+        move = self._format_move_input(move)
+        if move in self.board.coordinates:
+            return self.board.coordinates.index(move)
 

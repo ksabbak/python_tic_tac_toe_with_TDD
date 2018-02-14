@@ -18,7 +18,6 @@ class BuildABoard:
                     board_str += self._add_vertical_coordinate(space)
                 board_str += self._fill_standard_square(marked_spaces, space)
                 if self._is_space_at_end_of_row(space) and not self._is_space_at_end_of_board(space):
-
                     board_str = self._replace_extraneous_end_chars_with_new_line(board_str)
                     board_str += Colorist.color_text(self._build_filler_row(), self.board_color)
             return self._replace_extraneous_end_chars_with_new_line(board_str)

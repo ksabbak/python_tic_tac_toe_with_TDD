@@ -60,28 +60,5 @@ def print_humanplayer_update(board, board_decorator, move, turn):
     else:
         print_new_turn(board, board_decorator, turn)
 
-# TODO:
-# BAD INPUT PRINT
-def print_sorry(about=None):
-    if about == "game type":
-        print("Please enter the numeral 1, 2, or 3:")
-    elif about == "board type":
-        print("Please enter the numeral 1, or 2:")
-    elif about == "marker length":
-        print("Sorry, your marker can only be one character.")
-    elif about == "no coord":
-        print("Sorry, I can't find that coordinate.")
-    elif about == "taken":
-        print("Sorry, looks like that spot is taken.")
-    elif about == "match marker":
-        print("Each marker needs to be different, let's try again.")
-    elif about == "color":
-        print("I didn't quite understand that. Try one of these: ")
-        print(Colorist.color_option_string())
-        print("or 'none' for default")
-    else:
-        print("Sorry, that won't work, please try again.")
-
-
 def _print_board(board, board_decorator, last_move):
     print(BuildABoard(board, board_decorator, last_move).printable_board())

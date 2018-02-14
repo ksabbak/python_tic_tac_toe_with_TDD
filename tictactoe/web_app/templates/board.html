@@ -6,18 +6,18 @@
 <table>
   {% for space in board.spaces %}
 
-    {% if (loop.index - 1) % board.side_length == 0 %}
+    {% if (loop.index - 1) % board.side_length() == 0 %}
       </tr>
       <tr class="row{{ ((loop.index - 1) / 3)|int }}">
     {% endif %}
 
-    <td> {% if space == " " %} 
+    <td> {% if space == " " %}
       <form method="POST" action="{{ url_for('update_board')}}" class="space-choice">
         <input type="hidden" name="_method" value="PUT" />
         <input type="hidden" name="board" value="{{ board.space_string() }}" />
         <input type="hidden" name="choice" value="{{loop.index - 1}}"/>
         <button type="submit" value="submit" />
-      </form> 
+      </form>
     {% endif %}  &nbsp;{{ space }} &nbsp;  </td>
 
   {% endfor %}

@@ -7,6 +7,7 @@ from .command_line_views.view_getters import get_player_move
 from .command_line_views.view_printer import print_intro_text, print_instructions, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_board_size, print_ai_thinking
 from .game_settings_getter import GameSettingsGetter
 from .view_setup import ViewSetup
+from .coordinate import Coordinate
 
 
 class Controller:
@@ -20,6 +21,7 @@ class Controller:
         print_instructions()
         self.game = GameSettingsGetter().impliment_game_choice(board_choice)
         self.board_decorator = ViewSetup().setup_view()
+        self.coordinates = Coordinate(self.game.board.side_length())
         self._play()
 
     def _play(self):
@@ -40,14 +42,14 @@ class Controller:
         if move == "undo":
             self.game.undo_turn()
         else:
-            self.game.start_turn(self._coordinate_to_number(move))
+            self.game.start_turn(self.coordinates.coordinate_to_number(move))
         move = self.game.last_move
-        print_humanplayer_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
+        print_humanplayer_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn)
 
     def _ai_player_turn(self):
         print_ai_thinking()
         move = self.game.start_turn()
-        print_ai_update(self.game.board, self.board_decorator, self._number_to_coordinate(move), self.game.turn)
+        print_ai_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn)
 
     def _number_to_coordinate(self, move):
         if move is not None: return self.game.board.coordinates[move]

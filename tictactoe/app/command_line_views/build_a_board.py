@@ -14,7 +14,7 @@ class BuildABoard:
     def _build_board(self, marked_spaces):
             board_str = Colorist.color_text(self._build_horizontal_coordinates(), self.board_color)
             for space in range(0, len(self.board.spaces)):
-                if space % self.board.side_length == 0:
+                if space % self.board.side_length() == 0:
                     board_str += self._add_vertical_coordinate(space)
                 board_str += self._fill_standard_square(marked_spaces, space)
                 if self._is_space_at_end_of_row(space) and not self._is_space_at_end_of_board(space):
@@ -24,14 +24,14 @@ class BuildABoard:
 
     def _build_horizontal_coordinates(self):
         first_row = ""
-        for num in range(1, self.board.side_length + 1):
+        for num in range(1, self.board.side_length() + 1):
             first_row += "   " + str(num)
         first_row += "\n"
         return first_row
 
     def _build_filler_row(self):
         filler_row = "  ==="
-        for row in range(1, self.board.side_length):
+        for row in range(1, self.board.side_length()):
             filler_row += "+==="
         filler_row += "\n"
         return filler_row
@@ -47,7 +47,7 @@ class BuildABoard:
         return board_string
 
     def _is_space_at_end_of_row(self, space):
-        return (space % self.board.side_length) == (self.board.side_length - 1)
+        return (space % self.board.side_length()) == (self.board.side_length() - 1)
 
     def _is_space_at_end_of_board(self, space):
         return (space == (len(self.board.spaces) - 1))

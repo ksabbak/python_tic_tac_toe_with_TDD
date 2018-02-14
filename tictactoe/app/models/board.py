@@ -1,8 +1,6 @@
 class Board:
     def __init__(self, board):
         self.spaces = board
-        self.side_length = int(len(self.spaces) ** (1 / 2))
-        self.coordinates = self._build_coordinates()
 
     @classmethod
     def create_fresh_board(cls, length=9):
@@ -16,6 +14,8 @@ class Board:
         board = tuple(spaces)
         return cls(board)
 
+    def side_length(self):
+        return int(len(self.spaces) ** (1 / 2))
 
     def mark_space(self, space, turn):
         if self.space_is_empty(space):
@@ -46,12 +46,4 @@ class Board:
         spaces = list(self.spaces)
         spaces[space] = turn
         self.spaces = tuple(spaces)
-
-    def _build_coordinates(self):
-        coords = []
-        for alpha in range(ord("A"), ord("A") + self.side_length):
-            for num in range(1, self.side_length + 1):
-                coords.append(chr(alpha) + str(num))
-        return coords
-
 

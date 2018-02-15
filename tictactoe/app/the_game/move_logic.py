@@ -81,11 +81,7 @@ class MoveLogic:
     def _get_markers(self, turn):
         self.marker = turn % 2
         self.opponent_marker = 1 - self.marker
-        # for space in range(0, len(self.board.spaces)):
-        #     if (not self.board.space_is_empty(space)
-        #         and (self.board.spaces[space] != self.marker)):
-        #         return self.board.spaces[space]
-        # return chr(ord(self.marker.strip('\033[0m')) + 1)
+
 
     def _check_transpositions(self, spaces):
         result = self._check_transposition_and_mirror(str(spaces))

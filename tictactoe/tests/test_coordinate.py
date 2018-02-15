@@ -1,6 +1,6 @@
 import pytest
 
-from tictactoe.app.coordinate import Coordinate
+from tictactoe.app.command_line_views.coordinate import Coordinate
 
 
 def test_coordinate_can_build_coordinates_3x3():

@@ -1,6 +1,6 @@
 from .validator import Validator
 from .exceptions import TicTacToeInputException
-from .coordinate import Coordinate
+from .command_line_views.coordinate import Coordinate
 
 class MoveCoordinatesValidator(Validator):
     def __init__(self, board):

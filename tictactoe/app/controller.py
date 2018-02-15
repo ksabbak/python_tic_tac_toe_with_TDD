@@ -5,9 +5,9 @@ from .validator import Validator
 from .move_coordinates_validator import MoveCoordinatesValidator
 from .command_line_views.view_getters import get_player_move
 from .command_line_views.view_printer import print_intro_text, print_instructions, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_board_size, print_ai_thinking
+from .command_line_views.coordinate import Coordinate
 from .game_settings_getter import GameSettingsGetter
 from .view_setup import ViewSetup
-from .coordinate import Coordinate
 
 
 class Controller:
@@ -15,6 +15,11 @@ class Controller:
         self.game = Game.cvc(9)
 
     def run(self):
+        self._setup()
+        self._play()
+        print_game_over(self.board_decorator, self.game.players, self.game.winner())
+
+    def _setup(self):
         print_intro_text()
         print_board_size()
         board_choice = GameSettingsGetter().make_board_choice()
@@ -22,20 +27,16 @@ class Controller:
         self.game = GameSettingsGetter().impliment_game_choice(board_choice)
         self.board_decorator = ViewSetup().setup_view()
         self.coordinates = Coordinate(self.game.board.side_length())
-        self._play()
+
 
     def _play(self):
         print_new_turn(self.game.board, self.board_decorator, self.game.last_move)
         while not self.game.is_over():
-            self._take_turn()
-        print_game_over(self.board_decorator, self.game.players, self.game.winner())
-
-    def _take_turn(self):
-        if self.game.current_player.is_ai():
-            self._ai_player_turn()
-        else:
-            self._human_player_turn()
-        self.game.end_turn()
+            if self.game.current_player.is_ai():
+                self._ai_player_turn()
+            else:
+                self._human_player_turn()
+            self.game.end_turn()
 
     def _human_player_turn(self):
         move = MoveCoordinatesValidator(self.game.board).handle_input(get_player_move, "move_input", [self.board_decorator.player_markers[self.game.turn % 2]])

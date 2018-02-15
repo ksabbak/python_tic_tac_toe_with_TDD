@@ -1,10 +1,5 @@
-from random import randint, choice
-from copy import copy
-from math import factorial
-
 from .player import Player
-from .board import Board
-from tictactoe.app.move_logic import MoveLogic
+from .move_logic import MoveLogic
 
 class AI(Player):
     def make_move(self, board, move, turn):

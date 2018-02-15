@@ -1,7 +1,7 @@
 from .ai import AI
 from .board import Board
 from .human_player import HumanPlayer
-from ..rules import Rules
+from .rules import Rules
 
 
 class Game:

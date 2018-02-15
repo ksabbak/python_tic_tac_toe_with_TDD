@@ -1,7 +1,6 @@
 import pytest
 
-from tictactoe.app.__init__ import Board
-from tictactoe.app.rules import Rules
+from tictactoe.app.__init__ import Board, Rules
 
 
 @pytest.fixture()

@@ -6,7 +6,7 @@ setup(
         'tictactoe',
         'tictactoe.web_app',
         'tictactoe.app',
-        'tictactoe.app.models',
+        'tictactoe.app.the_game',
         'tictactoe.tests'
         ],
     include_package_data=True,

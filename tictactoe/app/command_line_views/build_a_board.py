@@ -1,4 +1,5 @@
 from .colorist import Colorist
+from .coordinate import Coordinate
 
 class BuildABoard:
     def __init__(self, board, board_decorator, last_move):
@@ -6,6 +7,7 @@ class BuildABoard:
         self.board_color = board_decorator.board_color
         self.markers = board_decorator.player_markers
         self.last_move = last_move
+        self.coordinates = Coordinate(board.side_length()).coordinates
 
     def printable_board(self):
         return self._build_board(self._mark_spaces())
@@ -37,7 +39,7 @@ class BuildABoard:
         return filler_row
 
     def _add_vertical_coordinate(self, space):
-        return Colorist.color_text(self.board.coordinates[space][0], self.board_color) + " "
+        return Colorist.color_text(self.coordinates[space][0], self.board_color) + " "
 
     def _fill_standard_square(self, marked_spaces, space):
         return " " + marked_spaces[space] + Colorist.color_text(" |", self.board_color)

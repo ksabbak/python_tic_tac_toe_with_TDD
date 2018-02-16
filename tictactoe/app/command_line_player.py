@@ -22,13 +22,13 @@ class CommandLinePlayer:
             self.game.end_turn()
 
     def _human_player_turn(self):
-        move = self.move_coordinates_validator.handle_input(ViewGetter.get_player_move, "move_input", [self.board_decorator.get_marker_for_current_turn(self.game.turn)])
+        move = self.move_coordinates_validator.handle_input(ViewGetter.get_player_move, "move_input", [self.board_decorator.get_marker_for_current_turn(self.game.turn, self.game.players)])
         if move == "undo":
             self.game.undo_turn()
         else:
             self.game.start_turn(self.coordinates.coordinate_to_number(move))
         move = self.game.last_move
-        self.view_printer.print_humanplayer_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn, self.game.players)
+        self.view_printer.print_humanplayer_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn)
 
     def _ai_player_turn(self):
         self.view_printer.print_ai_thinking()

@@ -1,5 +1,6 @@
 from .validator import Validator
 from .command_line_views.colorist import Colorist
+from .command_line_views.board_decorator import BoardDecorator
 from .command_line_views.view_getters import get_color, get_marker
 
 class ViewSetup:
@@ -12,7 +13,7 @@ class ViewSetup:
         view_setup = cls()
         view_setup._set_up_players(players)
         view_setup.board_color = view_setup._get_color("the board")
-        return view_setup
+        return BoardDecorator(view_setup)
 
     def _set_up_players(self, players):
         for player in players:

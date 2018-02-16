@@ -39,24 +39,16 @@ class Controller:
             self.game.end_turn()
 
     def _human_player_turn(self):
-        move = MoveCoordinatesValidator(self.game.board).handle_input(get_player_move, "move_input", [self.board_decorator.player_markers[self.game.turn % 2]])
+        move = MoveCoordinatesValidator(self.game.board).handle_input(get_player_move, "move_input", [self.board_decorator.get_marker_for_current_turn(self.game.turn)])
         if move == "undo":
             self.game.undo_turn()
         else:
             self.game.start_turn(self.coordinates.coordinate_to_number(move))
         move = self.game.last_move
-        print_humanplayer_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn)
+        print_humanplayer_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn, self.game.players)
 
     def _ai_player_turn(self):
         print_ai_thinking()
         move = self.game.start_turn()
         print_ai_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn)
-
-    def _number_to_coordinate(self, move):
-        if move is not None: return self.game.board.coordinates[move]
-
-    def _coordinate_to_number(self, move):
-        move = self._format_move_input(move)
-        if move in self.board.coordinates:
-            return self.board.coordinates.index(move)
 

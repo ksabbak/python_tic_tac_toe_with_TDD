@@ -1,5 +1,5 @@
 from string import punctuation
-from .command_line_views.view_printer import print_error
+from .command_line_views.view_printer import ViewPrinter
 from .command_line_views.colorist import Colorist
 from .command_line_views.view_config import BOARD_CHOICE, GAME_CHOICE
 from .exceptions import TicTacToeInputException
@@ -31,7 +31,7 @@ class Validator:
         try:
             checker(input)
         except TicTacToeInputException as error:
-            print_error(error)
+            ViewPrinter.print_error(error)
         else:
             return True
 

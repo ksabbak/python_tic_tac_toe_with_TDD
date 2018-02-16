@@ -1,54 +1,26 @@
-from string import punctuation
-
 from .__init__ import Game
-from .validator import Validator
-from .move_coordinates_validator import MoveCoordinatesValidator
-from .command_line_views.view_getters import get_player_move
-from .command_line_views.view_printer import print_intro_text, print_instructions, print_new_turn, print_game_over, print_ai_update, print_humanplayer_update, print_board_size, print_ai_thinking
+from .command_line_views.view_printer import ViewPrinter
 from .command_line_views.coordinate import Coordinate
 from .game_settings_getter import GameSettingsGetter
 from .view_setup import ViewSetup
-
+from .command_line_player import CommandLinePlayer
 
 class Controller:
-    def __init__(self):
-        self.game = Game.cvc(9)
-
     def run(self):
-        self._setup()
-        self._play()
-        print_game_over(self.board_decorator, self.game.players, self.game.winner())
+        command_line_player = self._setup()
+        command_line_player.play()
+        ViewPrinter.print_game_over(command_line_player.board_decorator, command_line_player.game.players, command_line_player.game.winner())
 
     def _setup(self):
-        print_intro_text()
-        print_board_size()
-        board_choice = GameSettingsGetter().make_board_choice()
-        print_instructions()
-        self.game = GameSettingsGetter().impliment_game_choice(board_choice)
-        self.board_decorator = ViewSetup().setup_view()
-        self.coordinates = Coordinate(self.game.board.side_length())
+        ViewPrinter.print_intro_text()
+        board_choice = self._setup_board()
+        ViewPrinter.print_instructions()
+        game = GameSettingsGetter().impliment_game_choice(board_choice)
+        board_decorator = ViewSetup().setup_view()
+        coordinates = Coordinate(game.board.side_length())
+        return CommandLinePlayer(**{"game": game, "board_decorator": board_decorator, "coordinates": coordinates})
 
 
-    def _play(self):
-        print_new_turn(self.game.board, self.board_decorator, self.game.last_move)
-        while not self.game.is_over():
-            if self.game.current_player.is_ai():
-                self._ai_player_turn()
-            else:
-                self._human_player_turn()
-            self.game.end_turn()
-
-    def _human_player_turn(self):
-        move = MoveCoordinatesValidator(self.game.board).handle_input(get_player_move, "move_input", [self.board_decorator.get_marker_for_current_turn(self.game.turn)])
-        if move == "undo":
-            self.game.undo_turn()
-        else:
-            self.game.start_turn(self.coordinates.coordinate_to_number(move))
-        move = self.game.last_move
-        print_humanplayer_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn, self.game.players)
-
-    def _ai_player_turn(self):
-        print_ai_thinking()
-        move = self.game.start_turn()
-        print_ai_update(self.game.board, self.board_decorator, self.coordinates.number_to_coordinate(move), self.game.turn)
-
+    def _setup_board(self):
+        ViewPrinter.print_board_size()
+        return GameSettingsGetter().make_board_choice()

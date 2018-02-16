@@ -1,7 +1,7 @@
 from .validator import Validator
 from .command_line_views.colorist import Colorist
 from .command_line_views.board_decorator import BoardDecorator
-from .command_line_views.view_getters import get_color, get_marker
+from .command_line_views.view_getter import ViewGetter
 
 class ViewSetup:
     def __init__(self):
@@ -35,9 +35,9 @@ class ViewSetup:
 
 
     def _get_marker(self, player_id):
-        return Validator().handle_input(get_marker, "marker_input", [player_id])
+        return Validator().handle_input(ViewGetter.get_marker, "marker_input", [player_id])
 
     def _get_color(self, what_gets_colored):
-        return Validator().handle_input(get_color, "color_name", [what_gets_colored])
+        return Validator().handle_input(ViewGetter.get_color, "color_name", [what_gets_colored])
 
 

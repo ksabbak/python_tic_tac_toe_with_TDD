@@ -1,10 +1,11 @@
 from .colorist import Colorist
 
 class BoardDecorator:
-    def __init__(self, player_markers, player_colors=["", ""], board_color=""):
-        self.player_markers = self._merge_markers(player_markers, player_colors)
-        self.board_color = board_color
+    def __init__(self, view_setup):
+        self.player_markers = view_setup.player_markers
+        self.board_color = view_setup.board_color
 
-    def _merge_markers(self, markers, colors):
-        return list(map(lambda marker, color: Colorist.color_text(marker, color), markers, colors))
+    def get_marker_for_current_turn(self, turn, players):
+        return self.player_markers[turn % len(players)]
+
 

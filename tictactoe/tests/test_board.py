@@ -73,14 +73,3 @@ def test_board_knows_all_empty_spaces_4x4(big_board):
     expected_spaces = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     assert board.empty_spaces() == expected_spaces
     assert len(board.empty_spaces()) == 14
-
-def test_build_coordinates(board, big_board):
-    assert board.coordinates == ['A1', 'A2', 'A3',
-                                 'B1', 'B2', 'B3',
-                                 'C1', 'C2', 'C3'
-                                 ]
-    assert big_board.coordinates == ['A1', 'A2', 'A3', 'A4',
-                                     'B1', 'B2', 'B3', 'B4',
-                                     'C1', 'C2', 'C3', 'C4',
-                                     'D1', 'D2', 'D3', 'D4'
-                                     ]

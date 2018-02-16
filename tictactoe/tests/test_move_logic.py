@@ -1,7 +1,6 @@
 import pytest
 
-from tictactoe.app.__init__ import Board
-from tictactoe.app.move_logic import MoveLogic
+from tictactoe.app.__init__ import Board, MoveLogic
 
 
 @pytest.fixture()

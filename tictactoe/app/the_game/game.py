@@ -1,7 +1,7 @@
 from .ai import AI
 from .board import Board
 from .human_player import HumanPlayer
-from ..rules import Rules
+from .rules import Rules
 
 
 class Game:
@@ -41,7 +41,7 @@ class Game:
 
 
     def _get_current_player(self):
-        self.current_player = self.players[self.turn % 2]
+        self.current_player = self.players[self.turn % len(self.players)]
 
     def _get_last_move(self):
         if self.turn in self.board.spaces:

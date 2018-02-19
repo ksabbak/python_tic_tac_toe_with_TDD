@@ -1,12 +1,16 @@
 from flask import render_template, redirect, request, session, _request_ctx_stack
 from tictactoe.web_app import web_app
-from tictactoe.app import Board, AI
+from tictactoe.app import Board, AI, Game
+from flask.ext.session import Session
 
 @web_app.route('/index')
 @web_app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect("/board/new")
 
+@web_app.route('/board/new')
+def board_new():
+    return render_template('index.html')
 
 @web_app.route('/board_start', methods=["POST"])
 def board():
@@ -37,13 +41,11 @@ def update_board():
     if session["type"] == "pvp":
         return render_template('board.html', board=board)
     else:
-        print("hi!")
         return render_template('ai_board.html', board=board, player=session[session["current_player"]])
 
 @web_app.route('/board')
 def ai_board():
     marker = session[session["current_player"]]
-    print(marker)
     board = Board.create_from_existing_spaces(session["board"])
     ai = AI(marker)
     ai.make_move(board)
@@ -59,6 +61,22 @@ def ai_board():
 @web_app.route('/game-over')
 def game_over(board, result):
     return render_template('end.html', board=board, result=result)
+
+
+
+@web_app.route('/test')
+def test():
+    game = Game()
+    session["test"] = game
+    game.end_turn()
+    return render_template('test.html')
+
+@web_app.route('/test2')
+def test2():
+    print(session['test'].turn)
+    return render_template('test2.html')
+
+
 
 
 

@@ -11,7 +11,7 @@ class TicTacToeTestCase(unittest.TestCase):
 
 
     def test_index(self):
-        response = self.app.get('/')
+        response = self.app.get('/board/new')
         assert b'<html>' in response.data
 
     def test_board_start_route_parameters(self):

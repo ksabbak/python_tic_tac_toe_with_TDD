@@ -50,17 +50,31 @@ class Game:
 
 
     @classmethod
-    def pvp(cls, board):
-        return Game(HumanPlayer(), HumanPlayer(), board)
+    def pvp(cls, board, moves=[]):
+        game = Game(HumanPlayer(), HumanPlayer(), board)
+        game._rebuild_game(moves)
+        return game
 
     @classmethod
-    def cvp(cls, board):
-        return Game(AI(), HumanPlayer(), board)
+    def cvp(cls, board, moves=[]):
+        game = Game(AI(), HumanPlayer(), board)
+        game._rebuild_game(moves)
+        return game
 
     @classmethod
-    def pvc(cls, board):
-        return Game(HumanPlayer(), AI(), board)
+    def pvc(cls, board, moves=[]):
+        game = Game(HumanPlayer(), AI(), board)
+        game._rebuild_game(moves)
+        return game
 
     @classmethod
-    def cvc(cls, board):
-        return Game(AI(), AI(), board)
+    def cvc(cls, board, moves=[]):
+        game = Game(AI(), AI(), board)
+        game._rebuild_game(moves)
+        return game
+
+    def _rebuild_game(self, moves):
+        for move in moves:
+            self.start_turn(move)
+            self.end_turn
+

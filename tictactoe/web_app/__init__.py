@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, session
+# from flask.ext.session im/port Session
 from tictactoe.config import Config
 
 

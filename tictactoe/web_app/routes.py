@@ -12,21 +12,26 @@ def index():
 def board_new():
     return render_template('index.html')
 
-@web_app.route('/board_start', methods=["POST"])
-def board():
-    board = Board.create_fresh_board(int(request.form["board"]))
-    session["type"] = request.form["game_type"]
+@web_app.route('/board/create', methods=["POST"])
+def create_board():
+    game_type = getattr(Game, request.form["game_type"])
+    game = game_type(int(request.form["board"]))
+    # session["type"] = request.form["game_type"]
     session["player1"] = "x"
     session["player2"] = "o"
-    session["board"] = board.space_string()
-    if session["type"] == "cvp":
-        session["current_player"] = "player2"
+    session["board"] = game.board.space_string()
+    if game.current_player.is_ai():
+        return render_template('ai_board.html', board=game.board)
     else:
-        session["current_player"] = "player1"
-    if session["type"][0] == "c":
-        return render_template('ai_board.html', board=board, player=session[session["current_player"]])
-    else:
-        return render_template('board.html', board=board)
+        return render_template('board.html', board=game.board)
+    # if session["type"] == "cvp":
+    #     session["current_player"] = "player2"
+    # else:
+    #     session["current_player"] = "player1"
+    # if session["type"][0] == "c":
+    #     return render_template('ai_board.html', board=board, player=session[session["current_player"]])
+    # else:
+    #     return render_template('board.html', board=board)
 
 @web_app.route('/board', methods=['POST'])
 def update_board():
@@ -47,8 +52,8 @@ def update_board():
 def ai_board():
     marker = session[session["current_player"]]
     board = Board.create_from_existing_spaces(session["board"])
-    ai = AI(marker)
-    ai.make_move(board)
+    ai = AI()
+    ai.make_move(board, None, 0)
     end = end_conditions(board, "")
     swap_players()
     session["board"] = board.space_string()
@@ -75,8 +80,6 @@ def test():
 def test2():
     print(session['test'].turn)
     return render_template('test2.html')
-
-
 
 
 

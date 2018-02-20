@@ -2,7 +2,7 @@
 
 {%block content%}
 
- <form method="POST" action="{{ url_for('board')}}">
+ <form method="POST" action="{{ url_for('create_board')}}">
         <p>Please choose your board size:</p>
         <div>
           <input type="radio" name="board" value="9" id="3x3" />
@@ -25,9 +25,9 @@
           <input type="radio" name="game_type" value="cvc" id="cvc" />
           <label for="cvc">Computer vs. Computer</label>
         </div>
-        
+
         <input type="submit" value="Submit" />
-      </form> 
+      </form>
 
 
 {% endblock %}

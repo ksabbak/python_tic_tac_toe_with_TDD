@@ -55,6 +55,8 @@ def test_board_knows_when_space_is_empty(board, big_board):
 
 def test_space_string(board):
     assert board.space_string() == "         "
+    board.mark_space(0, 0)
+    assert board.space_string() == "0        "
 
 def test_board_knows_all_empty_spaces(board):
     assert board.empty_spaces() == list(range(0, 9))

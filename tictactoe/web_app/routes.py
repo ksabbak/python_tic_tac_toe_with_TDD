@@ -25,7 +25,7 @@ def create_board():
     if game.current_player.is_ai():
         return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
     else:
-        return render_template('board.html', board=game.board)
+        return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
     # if session["type"] == "cvp":
     #     session["current_player"] = "player2"
     # else:
@@ -37,34 +37,30 @@ def create_board():
 
 @web_app.route('/board', methods=['POST'])
 def update_board():
-
-    marker = session[session["current_player"]]
-    board = request.form['board']
-    board = Board.create_from_existing_spaces(board)
-    board.mark_space(int(request.form['choice']), marker)
-    session["board"] = board.space_string()
-    end = end_conditions(board, marker)
-    swap_players()
+    game = _build_game()
+    game.start_turn(int(request.form['choice']))
+    session["board"] = game.board.space_string()
+    end = end_conditions(game)
+    game.end_turn()
     if end: return end
-    if session["type"] == "pvp":
-        return render_template('board.html', board=board)
+    if game.current_player.is_ai():
+        return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
     else:
-        return render_template('ai_board.html', board=board, player=session[session["current_player"]])
+        return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
 
 @web_app.route('/board')
 def ai_board():
-    marker = session[session["current_player"]]
     game = _build_game()
     game.start_turn()
-    end = end_conditions(game, "")
     session["board"] = game.board.space_string()
     game.end_turn()
+    end = end_conditions(game)
     if end: return end
     if game.current_player.is_ai():
         time.sleep(1)
         return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
     else:
-        return render_template('board.html', board=board)
+        return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
 
 @web_app.route('/game-over')
 def game_over(board, length, result):
@@ -107,8 +103,8 @@ def _build_game(board=None):
     return game_type(spaces, moves)
 
 
-def end_conditions(game, player_marker):
-    if game.winner() == player_marker:
+def end_conditions(game):
+    if game.winner() == game.current_player:
         return game_over(board=_board_view_builder(game.board), length=game.board.side_length(), result="You won! 😃")
     elif game.winner() is not None:
         return game_over(board=_board_view_builder(game.board), length=game.board.side_length(), result="You lost 😱")

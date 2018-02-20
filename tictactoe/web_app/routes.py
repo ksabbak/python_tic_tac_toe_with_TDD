@@ -18,7 +18,6 @@ def board_new():
 @web_app.route('/board/create', methods=["POST"])
 def create_board():
     session["type"] = request.form["game_type"]
-    # game = _build_game(session["type"], board=request.form["board"])
     game = _build_game(board=request.form["board"])
     session["players"] = "xo"
     session["board"] = game.board.space_string()
@@ -26,14 +25,7 @@ def create_board():
         return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
     else:
         return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
-    # if session["type"] == "cvp":
-    #     session["current_player"] = "player2"
-    # else:
-    #     session["current_player"] = "player1"
-    # if session["type"][0] == "c":
-    #     return render_template('ai_board.html', board=board, player=session[session["current_player"]])
-    # else:
-    #     return render_template('board.html', board=board)
+
 
 @web_app.route('/board', methods=['POST'])
 def update_board():
@@ -67,20 +59,6 @@ def game_over(board, length, result):
     return render_template('end.html', board=board, result=result, length=length)
 
 
-
-# @web_app.route('/test')
-# def test():
-#     game = Game()
-#     session["test"] = game
-#     game.end_turn()
-#     return render_template('test.html')
-
-# @web_app.route('/test2')
-# def test2():
-#     print(session['test'].turn)
-#     return render_template('test2.html')
-
-
 def _board_view_builder(board):
     board_view = ""
     for index, space in enumerate(board.spaces):
@@ -111,8 +89,3 @@ def end_conditions(game):
     elif game.is_over():
         return game_over(board=_board_view_builder(game.board), length=game.board.side_length(), result="Game over, no one wins. 🙃")
 
-def swap_players():
-    if session["current_player"] == "player1":
-        session["current_player"] = "player2"
-    else:
-        session["current_player"] = "player1"

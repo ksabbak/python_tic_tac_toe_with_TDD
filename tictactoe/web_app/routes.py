@@ -3,8 +3,6 @@ import time
 from flask import render_template, redirect, request, session, _request_ctx_stack
 from tictactoe.web_app import web_app
 from tictactoe.app import Board, AI, Game
-from flask.ext.session import Session
-
 
 @web_app.route('/index')
 @web_app.route('/')
@@ -21,43 +19,47 @@ def create_board():
     game = _build_game(board=request.form["board"])
     session["players"] = "xo"
     session["board"] = game.board.space_string()
-    if game.current_player.is_ai():
-        return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
-    else:
-        return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
+    return _render_next(game)
 
 
 @web_app.route('/board', methods=['POST'])
 def update_board():
-    game = _build_game()
-    game.start_turn(int(request.form['choice']))
-    session["board"] = game.board.space_string()
+    game = _start_turn(int(request.form['choice']))
     end = end_conditions(game)
     game.end_turn()
     if end: return end
-    if game.current_player.is_ai():
-        return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
-    else:
-        return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
+    return _render_next(game)
 
 @web_app.route('/board')
 def ai_board():
-    game = _build_game()
-    game.start_turn()
-    session["board"] = game.board.space_string()
+    game = _start_turn()
     game.end_turn()
     end = end_conditions(game)
     if end: return end
-    if game.current_player.is_ai():
-        time.sleep(1)
-        return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
-    else:
-        return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
+    return _render_next(game)
 
 @web_app.route('/game-over')
 def game_over(board, length, result):
     return render_template('end.html', board=board, result=result, length=length)
 
+
+def _start_turn(move=None):
+    game = _build_game()
+    game.start_turn(move)
+    session["board"] = game.board.space_string()
+    return game
+
+def _build_game(board=None):
+    if board is not None:
+        moves = []
+        spaces = int(board)
+    elif session["board"] is not None:
+        moves = list(session["board"])
+        spaces = len(moves)
+    else:
+        print("panic")
+    game_type = getattr(Game, session["type"])
+    return game_type(spaces, moves)
 
 def _board_view_builder(board):
     board_view = ""
@@ -68,18 +70,11 @@ def _board_view_builder(board):
             board_view += session["players"][space % 2]
     return board_view
 
-def _build_game(board=None):
-    if board is not None:
-        spaces = int(board)
-        moves = []
-    elif session["board"] is not None:
-        moves = list(session["board"])
-        spaces = len(moves)
+def _render_next(game):
+    if game.current_player.is_ai():
+        return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
     else:
-        print("panic")
-    game_type = getattr(Game, session["type"])
-    return game_type(spaces, moves)
-
+        return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
 
 def end_conditions(game):
     if game.winner() == game.current_player:

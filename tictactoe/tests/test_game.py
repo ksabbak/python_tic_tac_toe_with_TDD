@@ -6,7 +6,7 @@ from tictactoe.app.__init__ import Game
 
 @pytest.fixture()
 def game():
-    return Game()
+    return Game.pvp(9)
 
 # GENERAL
 def test_there_is_a_game(game):

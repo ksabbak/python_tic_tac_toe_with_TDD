@@ -5,13 +5,14 @@ from .rules import Rules
 
 
 class Game:
-    def __init__(self, player1=HumanPlayer(), player2=HumanPlayer(), board=9):
+    def __init__(self, moves, player1=HumanPlayer(), player2=HumanPlayer(), board=9):
         self.board = Board.create_fresh_board(board)
         self.players = [player1, player2]
         self.turn = 0
         self._get_current_player()
         self.last_move = None
         self.rules = Rules(self.board)
+        self._rebuild_game(moves)
 
     def is_over(self):
         return (self.board.is_full() or self.rules.winning_marker() is not None)
@@ -51,26 +52,22 @@ class Game:
 
     @classmethod
     def pvp(cls, board, moves=[]):
-        game = Game(HumanPlayer(), HumanPlayer(), board)
-        game._rebuild_game(moves)
+        game = Game(moves, HumanPlayer(), HumanPlayer(), board)
         return game
 
     @classmethod
     def cvp(cls, board, moves=[]):
-        game = Game(AI(), HumanPlayer(), board)
-        game._rebuild_game(moves)
+        game = Game(moves, AI(), HumanPlayer(), board)
         return game
 
     @classmethod
     def pvc(cls, board, moves=[]):
-        game = Game(HumanPlayer(), AI(), board)
-        game._rebuild_game(moves)
+        game = Game(moves, HumanPlayer(), AI(), board)
         return game
 
     @classmethod
     def cvc(cls, board, moves=[]):
-        game = Game(AI(), AI(), board)
-        game._rebuild_game(moves)
+        game = Game(moves, AI(), AI(), board)
         return game
 
     def _rebuild_game(self, moves):

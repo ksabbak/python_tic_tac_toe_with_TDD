@@ -74,7 +74,8 @@ class Game:
         return game
 
     def _rebuild_game(self, moves):
-        for move in moves:
-            self.start_turn(move)
-            self.end_turn
+        for index, move in enumerate(moves):
+            if move != " ":
+                self.board.mark_space(index, int(move))
+                self.end_turn()
 

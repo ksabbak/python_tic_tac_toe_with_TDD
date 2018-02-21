@@ -21,17 +21,17 @@ class TicTacToeTestCase(unittest.TestCase):
 
     def test_board_start_route_response_when_game_type_includes_computer(self):
         response = self.app.post('/board/create', data={'game_type': 'cvc', 'board': '9'})
-        assert b'</form>' not in response.data
+        assert b'choice' not in response.data
 
     def test_board_start_route_response_when_game_type_does_not_have_computer(self):
         response = self.app.post('/board/create', data={'game_type': 'pvp', 'board': '9'})
-        assert b'</form>' in response.data
+        assert b'choice' in response.data
 
     def xtest_board_route_update_when_human_turn(self):
         with web_app.test_client().session_transaction() as sess:
             sess["type"] = "pvp"
             response = self.app.post('/board', data={"board": "x xo ox x", "choice": '2'})
-            assert b'</form>' in response.data
+            assert b'choice' in response.data
 
     def xtest_game_over(self):
         response = self.app.get('/game-over')

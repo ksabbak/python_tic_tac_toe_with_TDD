@@ -9,18 +9,25 @@
 <body>
   <h1>Tic Tac Toe!</h1>
   <h2>Computer's turn!</h2>
-<table>
-  {% for space in board %}
+  <table>
+    {% for space in board %}
 
-    {% if (loop.index - 1) % length == 0 %}
-      </tr>
-      <tr class="row{{ ((loop.index - 1) / 3)|int }}">
-    {% endif %}
+      {% if (loop.index - 1) % length == 0 %}
+        </tr>
+        <tr class="row{{ ((loop.index - 1) / 3)|int }}">
+      {% endif %}
 
-    <td> &nbsp;{{ space }} &nbsp;  </td>
+      <td> &nbsp;{{ space }} &nbsp;  </td>
 
-  {% endfor %}
-  </tr>
-</table>
+    {% endfor %}
+
+
+    </tr>
+
+    <form method="POST" action="{{ url_for('update_board')}}">
+      <input type="hidden" name="_method" value="PUT" />
+      <input type="hidden" name="board" value="{{ board }}" />
+      <button type="submit" value="Next" />
+    </form>
 </body>
 </html>

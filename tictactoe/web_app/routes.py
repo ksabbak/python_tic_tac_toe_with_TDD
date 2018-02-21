@@ -1,8 +1,14 @@
 import time
 
-from flask import render_template, redirect, request, session, _request_ctx_stack
+from flask import render_template, redirect, request, session, url_for
 from tictactoe.web_app import web_app
-from tictactoe.app import Board, AI, Game
+from .route_helpers import end_conditions, render_next, build_game, start_turn, undo_board_view
+
+@web_app.before_request
+def before_request():
+    if 'type' not in session and request.endpoint in ['update_board', 'ai_board', 'game_over']:
+        print("Whoaaaaaaaa")
+        return redirect(url_for('board_new'))
 
 @web_app.route('/index')
 @web_app.route('/')
@@ -15,72 +21,45 @@ def board_new():
 
 @web_app.route('/board/create', methods=["POST"])
 def create_board():
+    if "game_type" not in request.form or "board" not in request.form:
+        session.clear()
+        return render_template('index.html', errors="You must pick a board size and game type")
     session["type"] = request.form["game_type"]
-    game = _build_game(board=request.form["board"])
+    game = build_game(board=request.form["board"])
     session["players"] = "xo"
     session["board"] = game.board.space_string()
-    return _render_next(game)
+    return render_next(game)
 
 
 @web_app.route('/board', methods=['POST'])
 def update_board():
-    game = _start_turn(int(request.form['choice']))
+    session["board"] = undo_board_view(request.form["board"])
+    game = start_turn(int(request.form['choice']))
     end = end_conditions(game)
     game.end_turn()
+    print("Game turns: " + str(game.turn))
     if end: return end
-    return _render_next(game)
+    return render_next(game)
 
 @web_app.route('/board')
 def ai_board():
-    game = _start_turn()
+    game = start_turn()
     game.end_turn()
     end = end_conditions(game)
+    print("Game turns: " + str(game.turn))
     if end: return end
-    return _render_next(game)
+    return render_next(game)
 
 @web_app.route('/game-over')
-def game_over(board, length, result):
-    return render_template('end.html', board=board, result=result, length=length)
+def game_over():
+    session.clear()
+    # return render_template('end.html', board=board, result=result, length=length)
 
-
-def _start_turn(move=None):
-    game = _build_game()
-    game.start_turn(move)
-    session["board"] = game.board.space_string()
-    return game
-
-def _build_game(board=None):
-    if board is not None:
-        moves = []
-        spaces = int(board)
-    elif session["board"] is not None:
-        moves = list(session["board"])
-        spaces = len(moves)
-    else:
-        print("panic")
-    game_type = getattr(Game, session["type"])
-    return game_type(spaces, moves)
-
-def _board_view_builder(board):
-    board_view = ""
-    for index, space in enumerate(board.spaces):
-        if board.space_is_empty(index):
-            board_view += space
-        else:
-            board_view += session["players"][space % 2]
-    return board_view
-
-def _render_next(game):
-    if game.current_player.is_ai():
-        return render_template('ai_board.html', board=_board_view_builder(game.board), length=game.board.side_length())
-    else:
-        return render_template('board.html', board=_board_view_builder(game.board), length=game.board.side_length())
-
-def end_conditions(game):
-    if game.winner() == game.current_player:
-        return game_over(board=_board_view_builder(game.board), length=game.board.side_length(), result="You won! 😃")
-    elif game.winner() is not None:
-        return game_over(board=_board_view_builder(game.board), length=game.board.side_length(), result="You lost 😱")
-    elif game.is_over():
-        return game_over(board=_board_view_builder(game.board), length=game.board.side_length(), result="Game over, no one wins. 🙃")
+@web_app.route('/test')
+def clear_session():
+    print(session)
+    print("-----------")
+    session.clear()
+    print(session)
+    return redirect(url_for('board_new'))
 

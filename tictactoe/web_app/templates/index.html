@@ -2,6 +2,12 @@
 
 {%block content%}
 
+{% if (errors) %}
+
+<p class="error">{{ errors }}</p>
+
+{% endif %}
+
  <form method="POST" action="{{ url_for('create_board')}}">
         <p>Please choose your board size:</p>
         <div>

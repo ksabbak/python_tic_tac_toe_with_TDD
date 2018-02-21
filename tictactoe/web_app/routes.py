@@ -2,19 +2,18 @@ import time
 
 from flask import render_template, redirect, request, session, url_for
 from tictactoe.web_app import web_app
-from .route_helpers import end_conditions, render_next, build_game, start_turn, undo_board_view
+from .route_helpers import end_conditions, render_next, build_game, start_turn, undo_board_view, board_view_builder, take_normal_turn, undo_turn
 
 @web_app.before_request
 def before_request():
     if 'type' not in session and request.endpoint in ['update_board', 'ai_board', 'game_over']:
-        print("Whoaaaaaaaa")
         return redirect(url_for('board_new'))
+
 
 @web_app.route('/index')
 @web_app.route('/')
 def index():
     return redirect("/board/new")
-
 @web_app.route('/board/new')
 def board_new():
     return render_template('index.html')
@@ -33,27 +32,30 @@ def create_board():
 
 @web_app.route('/board', methods=['POST'])
 def update_board():
-    session["board"] = undo_board_view(request.form["board"])
-    game = start_turn(int(request.form['choice']))
-    end = end_conditions(game)
+    if request.form["submit"] == "submit":
+        game = take_normal_turn()
+    else:
+        game = undo_turn()
+    end_conditions(game)
     game.end_turn()
-    print("Game turns: " + str(game.turn))
-    if end: return end
     return render_next(game)
+
 
 @web_app.route('/board')
 def ai_board():
+    print("Board = " + session["board"])
     game = start_turn()
     game.end_turn()
-    end = end_conditions(game)
-    print("Game turns: " + str(game.turn))
-    if end: return end
+    end_conditions(game)
     return render_next(game)
 
 @web_app.route('/game-over')
 def game_over():
+    result = session["result"]
+    board = board_view_builder(session["board"])
+    length = session["length"]
     session.clear()
-    # return render_template('end.html', board=board, result=result, length=length)
+    return render_template('end.html', board=board, length=length, result=result)
 
 @web_app.route('/test')
 def clear_session():
@@ -62,4 +64,9 @@ def clear_session():
     session.clear()
     print(session)
     return redirect(url_for('board_new'))
+
+@web_app.context_processor
+def build_context():
+    return {"auto_go": (('type' in session.keys()) and (session['type'] == 'cvc')) }
+
 

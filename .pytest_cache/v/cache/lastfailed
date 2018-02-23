@@ -1,1 +1,4 @@
-{}
+{
+  "tictactoe/tests/test_game_builder_helper.py::test_setup_error_handling_game_type": true,
+  "tictactoe/tests/test_turn_helper.py::test_take_normal_turn": true
+}

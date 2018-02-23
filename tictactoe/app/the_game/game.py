@@ -5,7 +5,7 @@ from .rules import Rules
 
 
 class Game:
-    def __init__(self, moves, player1=HumanPlayer(), player2=HumanPlayer(), board=9):
+    def __init__(self, moves, player1=HumanPlayer(0), player2=HumanPlayer(1), board=9):
         self.board = Board.create_fresh_board(board)
         self.players = [player1, player2]
         self.turn = 0
@@ -52,22 +52,22 @@ class Game:
 
     @classmethod
     def pvp(cls, board, moves=[]):
-        game = Game(moves, HumanPlayer(), HumanPlayer(), board)
+        game = Game(moves, HumanPlayer(0), HumanPlayer(1), board)
         return game
 
     @classmethod
     def cvp(cls, board, moves=[]):
-        game = Game(moves, AI(), HumanPlayer(), board)
+        game = Game(moves, AI(0), HumanPlayer(1), board)
         return game
 
     @classmethod
     def pvc(cls, board, moves=[]):
-        game = Game(moves, HumanPlayer(), AI(), board)
+        game = Game(moves, HumanPlayer(0), AI(1), board)
         return game
 
     @classmethod
     def cvc(cls, board, moves=[]):
-        game = Game(moves, AI(), AI(), board)
+        game = Game(moves, AI(0), AI(1), board)
         return game
 
     def _rebuild_game(self, moves):

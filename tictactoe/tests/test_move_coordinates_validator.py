@@ -1,6 +1,5 @@
 import pytest
 import unittest
-from unittest.mock import patch
 
 from tictactoe.app.move_coordinates_validator import MoveCoordinatesValidator
 from tictactoe.app.__init__ import Board

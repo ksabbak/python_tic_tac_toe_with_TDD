@@ -5,12 +5,15 @@ from unittest.mock import patch
 from tictactoe.app.__init__ import Player, HumanPlayer, Board
 
 @pytest.fixture()
-def human_playerx():
-    return HumanPlayer()
+def human_player():
+    return HumanPlayer(0)
 
-def test_human_player_is_not_ai(human_playerx):
-    assert human_playerx.is_ai() is False
+def test_human_player_is_not_ai(human_player):
+    assert human_player.is_ai() is False
 
-def xtest_get_move(human_playerx):
+def xtest_get_move(human_player):
     with unittest.mock.patch('builtins.input', return_value='7'):
-        assert human_playerx.get_move() == 7
+        assert human_player.get_move() == 7
+
+def test_human_player_knows_turn_order(human_player):
+    assert human_player.turn_order == 0

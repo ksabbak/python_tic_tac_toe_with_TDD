@@ -2,7 +2,8 @@ import time
 
 from flask import render_template, redirect, request, session, url_for
 from tictactoe.web_app import web_app
-from .route_helpers import end_conditions, render_next, build_game, start_turn, undo_board_view, board_view_builder, take_normal_turn, undo_turn
+from .game_builder_helper import GameBuilderHelper
+from .turn_helper import TurnHelper
 
 @web_app.before_request
 def before_request():
@@ -16,57 +17,54 @@ def index():
     return redirect("/board/new")
 @web_app.route('/board/new')
 def board_new():
+    session.clear()
     return render_template('index.html')
 
 @web_app.route('/board/create', methods=["POST"])
 def create_board():
-    if "game_type" not in request.form or "board" not in request.form:
-        session.clear()
-        return render_template('index.html', errors="You must pick a board size and game type")
+    game_builder_helper = GameBuilderHelper()
+    error = game_builder_helper.error_handling_for_setup(request.form)
+    if error:
+        return render_template('index.html', errors=error)
     session["type"] = request.form["game_type"]
-    game = build_game(board=request.form["board"])
-    session["players"] = "xo"
-    session["board"] = game.board.space_string()
-    return render_next(game)
-
+    game = game_builder_helper.build_game(board=request.form["board"])
+    game_builder_helper.set_game_sessions(game, request.form)
+    next_step = TurnHelper().get_next_render_data(game)
+    if "redirect" in next_step.keys():
+        return redirect(next_step["redirect"])
+    else:
+        return render_template(**next_step)
 
 @web_app.route('/board', methods=['POST'])
 def update_board():
     if request.form["submit"] == "submit":
-        game = take_normal_turn()
+        game = TurnHelper().take_normal_turn(request.form)
     else:
-        game = undo_turn()
-    end_conditions(game)
+        game = TurnHelper().undo_turn()
+    TurnHelper().check_game_over(game)
     game.end_turn()
-    return render_next(game)
+    next_step = TurnHelper().get_next_render_data(game)
+    if "redirect" in next_step.keys():
+        return redirect(next_step["redirect"])
+    else:
+        return render_template(**next_step)
 
 
 @web_app.route('/board')
 def ai_board():
     print("Board = " + session["board"])
-    game = start_turn()
+    game = TurnHelper().start_turn()
     game.end_turn()
-    end_conditions(game)
-    return render_next(game)
+    TurnHelper().check_game_over(game)
+    next_step = TurnHelper().get_next_render_data(game)
+    if "redirect" in next_step.keys():
+        return redirect(next_step["redirect"])
+    else:
+        return render_template(**next_step)
 
 @web_app.route('/game-over')
 def game_over():
-    result = session["result"]
-    board = board_view_builder(session["board"])
-    length = session["length"]
-    session.clear()
-    return render_template('end.html', board=board, length=length, result=result)
-
-@web_app.route('/test')
-def clear_session():
-    print(session)
-    print("-----------")
-    session.clear()
-    print(session)
-    return redirect(url_for('board_new'))
-
-@web_app.context_processor
-def build_context():
-    return {"auto_go": (('type' in session.keys()) and (session['type'] == 'cvc')) }
+    board = GameBuilderHelper().board_view_builder(session["board"])
+    return render_template('end.html', board=board, length=session["length"], result=session["result"])
 
 

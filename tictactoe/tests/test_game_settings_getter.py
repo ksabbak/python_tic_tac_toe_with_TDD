@@ -1,6 +1,5 @@
 import pytest
 import unittest
-from unittest.mock import patch
 
 from tictactoe.app.game_settings_getter import GameSettingsGetter
 from tictactoe.tests.helpers import mock_get_game_input

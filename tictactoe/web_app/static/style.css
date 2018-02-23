@@ -1,6 +1,6 @@
 body {
-  background-color: #caf;
   padding: 10px;
+  padding-left: 30px;
 }
 
 table {
@@ -15,4 +15,20 @@ table td {
 
 .error {
   color: red;
+}
+
+p.instructions {
+  font-weight: bold;
+}
+
+#setup {
+  padding-left: 20px;
+}
+
+.options {
+  padding-left: 10px;
+}
+
+#start {
+  margin-top: 10px;
 }

@@ -1,6 +1,5 @@
 import pytest
 import unittest
-from unittest.mock import patch
 
 from tictactoe.app.controller import Controller
 

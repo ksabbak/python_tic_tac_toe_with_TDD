@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tic Tic Toe</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='normalize.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+  {% if session['ai'] == True and 'result' not in session.keys() %}
+    <meta http-equiv="refresh" content="1; url={{url_for('update_board')}}">
+  {% endif %}
+
+  <style>
+    body {
+        background-color: {{session['bgcolor']}};
+    }
+
+    .{{session['players'][0]}} {
+        color: {{session['colors'][0]}};
+    }
+
+    .{{session['players'][1]}} {
+      color: {{session['colors'][1]}};
+    }
+  </style>
+</head>
+<body >
+  <h1>Tic Tac Toe!</h1>
+{% block content %}{% endblock %}
+</body>
+</html>

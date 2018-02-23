@@ -28,7 +28,7 @@
 
 ### Running the Tests:
 
-  [Install pytest](https://docs.pytest.org/en/latest/getting-started.html). Navigate to the directory and run `pytest` on the command line.
+  [Install pytest](https://docs.pytest.org/en/latest/getting-started.html). Navigate to the directory and run `python -m pytest` on the command line.
 
   Alternatively, run `python setup.py test`
 

@@ -1,6 +1,6 @@
 import pytest
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch #This mock is used
 
 from tictactoe.app.view_setup import ViewSetup
 

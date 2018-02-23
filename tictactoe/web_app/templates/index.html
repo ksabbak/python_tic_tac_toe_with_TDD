@@ -2,17 +2,24 @@
 
 {%block content%}
 
- <form method="POST" action="{{ url_for('board')}}">
-        <p>Please choose your board size:</p>
-        <div>
+{% if (errors) %}
+
+<p class="error">{{ errors }}</p>
+
+{% endif %}
+<h2>Game Settings:</h2>
+ <form method="POST" action="{{ url_for('create_board')}}" id="setup">
+        <h3>Basics: </h3>
+        <p class="instructions">Please choose your board size:</p>
+        <div class="options">
           <input type="radio" name="board" value="9" id="3x3" />
           <label for="3x3">3x3</label>
 
           <input type="radio" name="board" value="16" id="4x4" />
           <label for="4x4">4x4</label>
         </div>
-        <p>Please choose your game type:</p>
-        <div>
+        <p class="instructions">Please choose your game type:</p>
+        <div class="options">
           <input type="radio" name="game_type" value="pvp" id="pvp" />
           <label for="pvp">Human vs. Human</label>
 
@@ -25,9 +32,31 @@
           <input type="radio" name="game_type" value="cvc" id="cvc" />
           <label for="cvc">Computer vs. Computer</label>
         </div>
-        
-        <input type="submit" value="Submit" />
-      </form> 
+        <p class="instructions">Please choose your markers:</p>
+        <div class="options">
+            <label for="player1">Player 1:</label>
+            <input type="text" name="player1" maxlength="1" id="player1" />
+            <label for="player2">Player 2:</label>
+            <input type="text" name="player2" maxlength="1" id="player2" />
+        </div>
+        <h3>Colors:</h3>
+        <p>If a color picker doesn't display, please type a <a href="https://htmlcolorcodes.com/color-picker/">hex code.</a></p>
+        <p class="instructions">Please choose the color for each player:</p>
+        <div class="options">
+          <label for="color1">Player 1:</label>
+          <input type="color" name="color1" id="color1" value="#0000ff">
+          <label for="color2">Player 2:</label>
+          <input type="color" name="color2" id="color2" value="#ff0000">
+        </div>
+        <p class="instructions">Please choose the color for the background</p>
+        <div class="options">
+          <label for="bgcolor">Background:</label>
+          <input type="color" name="bgcolor" id="bgcolor" value="#ffffff">
+        </div>
+        <div>
+          <input type="submit" value="Let's Play!" id="start" />
+        </div>
+      </form>
 
 
 {% endblock %}

@@ -5,13 +5,14 @@ from .rules import Rules
 
 
 class Game:
-    def __init__(self, player1=HumanPlayer(), player2=HumanPlayer(), board=9):
+    def __init__(self, moves, player1=HumanPlayer(0), player2=HumanPlayer(1), board=9):
         self.board = Board.create_fresh_board(board)
         self.players = [player1, player2]
         self.turn = 0
         self._get_current_player()
         self.last_move = None
         self.rules = Rules(self.board)
+        self._rebuild_game(moves)
 
     def is_over(self):
         return (self.board.is_full() or self.rules.winning_marker() is not None)
@@ -50,17 +51,28 @@ class Game:
 
 
     @classmethod
-    def pvp(cls, board):
-        return Game(HumanPlayer(), HumanPlayer(), board)
+    def pvp(cls, board, moves=[]):
+        game = Game(moves, HumanPlayer(0), HumanPlayer(1), board)
+        return game
 
     @classmethod
-    def cvp(cls, board):
-        return Game(AI(), HumanPlayer(), board)
+    def cvp(cls, board, moves=[]):
+        game = Game(moves, AI(0), HumanPlayer(1), board)
+        return game
 
     @classmethod
-    def pvc(cls, board):
-        return Game(HumanPlayer(), AI(), board)
+    def pvc(cls, board, moves=[]):
+        game = Game(moves, HumanPlayer(0), AI(1), board)
+        return game
 
     @classmethod
-    def cvc(cls, board):
-        return Game(AI(), AI(), board)
+    def cvc(cls, board, moves=[]):
+        game = Game(moves, AI(0), AI(1), board)
+        return game
+
+    def _rebuild_game(self, moves):
+        for index, move in enumerate(moves):
+            if move != " ":
+                self.board.mark_space(index, int(move))
+                self.end_turn()
+

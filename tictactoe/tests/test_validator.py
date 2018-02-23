@@ -1,6 +1,5 @@
 import pytest
 import unittest
-from unittest.mock import patch
 
 from tictactoe.app.validator import Validator
 from tictactoe.tests.helpers import mock_for_validator

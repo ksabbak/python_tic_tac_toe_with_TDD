@@ -17,7 +17,7 @@ class MoveLogic:
     def _minimax(self, turn, board):
         moves = {}
         for space in board.empty_spaces():
-            new_board = self._copy_board_for_speed(board)
+            new_board = copy(board)
             new_board.mark_space(space, turn)
             move_score = self._calculate_move_score(new_board, turn)
             if move_score is not None:
@@ -34,7 +34,7 @@ class MoveLogic:
             return self._player_weights(turn)
 
     def _max_calculated_turns(self, turn):
-        return (turn - self.turn) > self.board.side_length() + 1
+        return (turn - self.turn) > self.board.side_length()
 
     def _turn_matches_player(self, turn):
         return self._player_turn(turn) == self._player_turn(self.turn)

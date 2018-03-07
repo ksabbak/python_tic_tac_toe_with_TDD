@@ -40,7 +40,7 @@ class MoveLogic:
         return self._player_turn(turn) == self._player_turn(self.turn)
 
     def _player_weights(self, turn):
-        turn_weight = 10 - turn
+        turn_weight = len(self.board.spaces) - turn
         return turn_weight if self._turn_matches_player(turn) else -turn_weight
 
     def _choose_best(self, moves, turn):
@@ -50,7 +50,7 @@ class MoveLogic:
             return self._choose_best_value(moves, turn)
 
     def _choose_best_value(self, moves, turn):
-        best_value = self._player_weights(turn) * -100
+        best_value = self._player_weights(turn) * -10000
         for space, value in moves.items():
             if ((self._turn_matches_player(turn) and value > best_value)
                 or
@@ -64,6 +64,12 @@ class MoveLogic:
         for space, value in moves.items():
             if value == best_value:
                 options.append(space)
+        if not options:
+            print("+++++++++++++")
+            print("Turn: " + str(turn))
+            print("best_value: " + str(best_value))
+            print(moves)
+            print("+++++++++++++")
         return choice(options)
 
     def _player_turn(self, turn):

@@ -32,14 +32,11 @@ class Board:
         return self.spaces[space] == " "
 
     def empty_spaces(self):
-        return [space for space in range(0, len(self.spaces))
+        return [space for space in range(len(self.spaces))
                 if self.space_is_empty(space)]
 
     def space_string(self):
-        space_string = ""
-        for space in self.spaces:
-            space_string += str(space)
-        return space_string
+        return "".join(str(space) for space in self.spaces)
 
 
     def _change_space(self, space, turn):

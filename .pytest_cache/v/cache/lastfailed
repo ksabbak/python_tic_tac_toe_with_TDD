@@ -1,4 +1,6 @@
 {
   "tictactoe/tests/test_game_builder_helper.py::test_setup_error_handling_game_type": true,
+  "tictactoe/tests/test_move_logic.py::test_move_logic_can_make_winning_move": true,
+  "tictactoe/tests/test_move_logic.py::test_move_logic_can_stop_immediate_horizontal_loss8": true,
   "tictactoe/tests/test_turn_helper.py::test_take_normal_turn": true
 }

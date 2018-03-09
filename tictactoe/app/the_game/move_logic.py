@@ -1,5 +1,3 @@
-import pdb
-
 from copy import copy
 from math import factorial, inf
 from random import choice
@@ -18,24 +16,36 @@ class MoveLogic:
 
     def _minimax(self, turn, board, alpha=-inf, beta=inf):
         moves = {}
-        for space in board.empty_spaces():
-            new_board = copy(board)
-            new_board.mark_space(space, turn)
-            move_score = self._calculate_move_score(new_board, turn)
-            if move_score is not None:
-                moves[space] = move_score
-            else:
-                moves[space] = self._minimax(turn + 1, new_board, alpha, beta)
+        if beta >= alpha:
+            for space in board.empty_spaces():
+                new_board = copy(board)
+                new_board.mark_space(space, turn)
+                move_score = self._calculate_move_score(new_board, turn)
+                if move_score is not None:
+                    moves[space] = move_score
+                else:
+                    moves[space] = self._minimax(turn + 1, new_board, alpha, beta)
+                    alpha = self._set_alpha(turn, alpha, moves[space])
+                    beta = self._set_beta(turn, beta, moves[space])
+            return self._choose_best(moves, turn)
+        else:
+            return self._alpha_or_beta(turn, alpha, beta)
 
-            if self._turn_matches_player(turn):
-                alpha = max(alpha, moves[space])
-            else:
-                beta = min(beta, moves[space])
+    def _alpha_or_beta(self, turn, alpha, beta):
+        if self._turn_matches_player(turn):
+            return alpha
+        else:
+            return beta
 
-            if beta <= alpha:
-                break
+    def _set_alpha(self, turn, alpha, score):
+        if self._turn_matches_player(turn):
+            alpha = max(alpha, score)
+        return alpha
 
-        return self._choose_best(moves, turn)
+    def _set_beta(self, turn, beta, score):
+        if not self._turn_matches_player(turn):
+            beta = min(beta, score)
+        return beta
 
     def _calculate_move_score(self, board, turn):
         if board.is_full() or self._max_calculated_turns(turn):
@@ -59,20 +69,6 @@ class MoveLogic:
         else:
             return self._choose_best_value(moves, turn)
 
-    # def _choose_best_value(self, moves, turn):
-    #     best_value = self._player_weights(turn) * -inf
-    #     for space, value in moves.items():
-    #         if self._turn_matches_player(turn):
-    #             best_value = max(best_value, value)
-    #             self.alpha = max(self.alpha, best_value)
-    #         else:
-    #             best_value = min(best_value, value)
-    #             self.beta = min(self.beta, best_value)
-
-    #         if self.beta <= self.alpha:
-    #             break
-    #     return best_value
-
     def _choose_best_value(self, moves, turn):
         best_value = self._player_weights(turn) * -inf
         for space, value in moves.items():
@@ -89,7 +85,6 @@ class MoveLogic:
             best_value = max(value, best_value)
             if value == best_value:
                 options.append(space)
-        # pdb.set_trace()
         return choice(options)
 
     def _player_turn(self, turn):

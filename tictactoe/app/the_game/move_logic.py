@@ -1,117 +1,92 @@
-from random import randint, choice
+from random import choice
 from copy import copy
-from math import factorial
+from math import factorial, inf
 
 from .rules import Rules
 
 class MoveLogic:
     def __init__(self, board):
-        self.move_weights = {}
         self.board = board
-        self.transposition_table = {}
         self.rules = Rules(self.board)
 
 
     def get_move(self, turn):
-        self._get_markers(turn)
-        self._get_weights_for_all_open_moves()
-        return self._pick_the_best_move()
+        self.turn = turn
+        return self._minimax(turn, self.board)
 
-    def _pick_the_best_move(self):
-        best_spaces = []
-        most_weight = -self._max_weight()
-        for space, weight in self.move_weights.items():
-            if most_weight == weight:
-                best_spaces.append(space)
-            elif most_weight < weight:
-                most_weight = weight
-                best_spaces = [space]
-        if best_spaces:
-            return choice(best_spaces)
-
-    def _get_weights_for_all_open_moves(self):
-        for space in self.board.empty_spaces():
-            board2 = self._copy_board_for_speed(self.board)
-            self.move_weights[space] = self._weigh_move(board2, space)
-
-    def _weigh_move(self, board, set_move=None, turn="self", depth=0):
-        if board.is_full() or depth > board.side_length() + 1: return 0
-        if set_move is not None:
-            board.mark_space(set_move, self.marker)
-            potential_key = self._check_transpositions(board.spaces)
-            if potential_key is not None:
-                weight = self.transposition_table[potential_key]
-            if self.rules.winning_marker(board): return self._max_weight()
-            if self._check_move_for_win(board, self.opponent_marker) is not None: return -self._max_weight()
-            turn = "other"
-        weight = 0
-        for move in board.empty_spaces():
-            boardcopy = copy(board)
-            value = 1 if turn == "self" else -1
-            weight += self._calculate_move(boardcopy, move, value, depth)
-        self._transpose(board, weight)
-        return weight
-
-    def _calculate_move(self, board, move, win_weight, depth):
-        marker = self.marker if win_weight > 0 else self.opponent_marker
-        if self._check_move_for_win(board, marker) is not None:
-            weight = win_weight
+    def _minimax(self, turn, board, alpha=-inf, beta=inf):
+        moves = {}
+        if beta >= alpha:
+            for space in board.empty_spaces():
+                new_board = copy(board)
+                new_board.mark_space(space, turn)
+                move_score = self._calculate_move_score(new_board, turn)
+                if move_score is not None:
+                    moves[space] = move_score
+                else:
+                    moves[space] = self._minimax(turn + 1, new_board, alpha, beta)
+                    alpha = self._set_alpha(turn, alpha, moves[space])
+                    beta = self._set_beta(turn, beta, moves[space])
+            return self._choose_best(moves, turn)
         else:
-            board.mark_space(move, marker)
-            potential_key = self._check_transpositions(board.spaces)
-            if potential_key is not None:
-                weight = self.transposition_table[potential_key]
-            else:
-                depth +=1
-                next_turn = "self" if win_weight < 0 else "other"
-                weight = self._weigh_move(board, turn=next_turn, depth=depth)
-                self._transpose(board, weight)
-        return weight
+            return self._alpha_or_beta(turn, alpha, beta)
 
-    def _check_move_for_win(self, board, marker):
-        for space in board.empty_spaces():
-            copy_board = copy(board)
-            copy_board.mark_space(space, marker)
-            if self.rules.winning_marker(copy_board) == marker: return space
+    def _alpha_or_beta(self, turn, alpha, beta):
+        if self._turn_matches_player(turn):
+            return alpha
+        else:
+            return beta
 
-    # MECHANICS
-    def _max_weight(self):
-        return factorial(len(self.board.spaces))
+    def _set_alpha(self, turn, alpha, score):
+        if self._turn_matches_player(turn):
+            alpha = max(alpha, score)
+        return alpha
 
-    def _get_markers(self, turn):
-        self.marker = turn % 2
-        self.opponent_marker = 1 - self.marker
+    def _set_beta(self, turn, beta, score):
+        if not self._turn_matches_player(turn):
+            beta = min(beta, score)
+        return beta
 
+    def _calculate_move_score(self, board, turn):
+        if board.is_full() or self._max_calculated_turns(turn):
+            return 0
+        elif self.rules.winning_marker(board) is not None:
+            return self._player_weights(turn)
 
-    def _check_transpositions(self, spaces):
-        result = self._check_transposition_and_mirror(str(spaces))
-        result = result or self._check_transposition_and_mirror(self._rotate_spaces(spaces))
-        if result is not None: return result
+    def _max_calculated_turns(self, turn):
+        return (turn - self.turn) > self.board.side_length()
 
-    def _check_transposition_and_mirror(self, space_string):
-        if space_string in self.transposition_table.keys():
-            return space_string
-        elif space_string[::-1] in self.transposition_table.keys():
-            return  space_string[::-1]
+    def _turn_matches_player(self, turn):
+        return self._player_turn(turn) == self._player_turn(self.turn)
 
-    def _rotate_spaces(self, spaces):
-        space_string = ""
-        for i in range( int(len(spaces) ** (1 / 2)) , 0, -1):
-            for j in range(0, len(spaces), 4):
-                space_string += str(spaces[len(spaces) - i - j])
-        return space_string
+    def _player_weights(self, turn):
+        turn_weight = len(self.board.spaces) - turn
+        return turn_weight if self._turn_matches_player(turn) else -turn_weight
 
-    def _transpose(self, board, value):
-        if str(board.spaces) not in self.transposition_table.keys():
-            self.transposition_table[str(board.spaces)] = value
+    def _choose_best(self, moves, turn):
+        if turn == self.turn:
+            return self._choose_best_move(moves, turn)
+        else:
+            return self._choose_best_value(moves, turn)
 
-    def _copy_board_for_speed(self, board):
-        copy_board = copy(board)
-        for i, space in enumerate(copy_board.spaces):
-            if space != " " and space not in [0, 1]:
-                new_marker = space % 2
-                copy_board.clear_space(i)
-                copy_board.mark_space(i, new_marker)
-        return copy_board
+    def _choose_best_value(self, moves, turn):
+        best_value = self._player_weights(turn) * -inf
+        for space, value in moves.items():
+            if ((self._turn_matches_player(turn) and value > best_value)
+                or
+                (not self._turn_matches_player(turn) and (value < best_value))):
+                best_value = value
+        return best_value
 
+    def _choose_best_move(self, moves, turn):
+        options = []
+        best_value = max(list(moves.values()))
+        for space, value in moves.items():
+            best_value = max(value, best_value)
+            if value == best_value:
+                options.append(space)
+        return choice(options)
+
+    def _player_turn(self, turn):
+        return turn % 2
 

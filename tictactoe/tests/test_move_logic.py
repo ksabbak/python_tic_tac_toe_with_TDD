@@ -14,49 +14,42 @@ def tests_move_logic_can_move_without_input(move_logic, board):
     assert move_logic.get_move(0) in range(0, 9)
 
 def tests_move_logic_moves_to_empty_spot(move_logic, board):
-    for i in range(1, 9):
+    for i in range(8):
         board.mark_space(i, 1)
-    assert move_logic.get_move(0) == 0
+    assert move_logic.get_move(0) == 8
 
-def test_move_logic_can_make_winning_move(move_logic, board):
-    board.mark_space(0, 1)
-    board.mark_space(1, 1)
-    assert move_logic.get_move(1) == 2
+def test_move_logic_can_make_horizontal_winning_move(move_logic, board):
+    board.mark_space(0, 0)
+    board.mark_space(1, 0)
+    assert move_logic.get_move(2) == 2
+
+def test_move_logic_can_make_vertical_winning_move(move_logic, board):
+    board.mark_space(0, 0)
+    board.mark_space(3, 0)
+    assert move_logic.get_move(4) == 6
+
+def test_move_logic_can_make_diagonal_winning_move(move_logic, board):
+    board.mark_space(0, 0)
+    board.mark_space(8, 2)
+    assert move_logic.get_move(4) == 4
 
 def test_move_logic_can_stop_immediate_horizontal_loss0(move_logic, board):
     board.mark_space(3, 0)
     board.mark_space(0, 1)
-    board.mark_space(4, 0)
-    assert move_logic.get_move(1) == 5
+    board.mark_space(4, 2)
+    assert move_logic.get_move(3) == 5
 
 def test_move_logic_can_stop_immediate_horizontal_loss2(move_logic, board):
     board.mark_space(3, 0)
     board.mark_space(2, 1)
-    board.mark_space(4, 0)
-    assert move_logic.get_move(1) == 5
+    board.mark_space(4, 2)
+    assert move_logic.get_move(3) == 5
 
 def test_move_logic_can_stop_immediate_horizontal_loss6(move_logic, board):
     board.mark_space(3, 0)
     board.mark_space(6, 1)
-    board.mark_space(4, 0)
-    assert move_logic.get_move(1) == 5
-
-def test_move_logic_can_stop_immediate_horizontal_loss8(move_logic, board):
-    board.mark_space(3, 0)
-    board.mark_space(8, 1)
-    board.mark_space(4, 0)
-    assert move_logic.get_move(1) == 5
-
-def test_move_logic_1st_move_when_1st_is_center(move_logic, board):
-    assert move_logic.get_move(0) == 4
-
-def test_move_logic_1st_move_when_2nd_is_middle_space_if_open(move_logic, board):
-    board.mark_space(3, 0)
-    assert move_logic.get_move(1) == 4
-
-def test_move_logic_1st_move_when_2nd_is_corner_space_if_middle_taken(move_logic, board):
-    board.mark_space(4, 0)
-    assert move_logic.get_move(1) in [0, 2, 6, 8]
+    board.mark_space(4, 2)
+    assert move_logic.get_move(3) == 5
 
 def test_move_logic_prevents_opponent_from_fork_win(move_logic, board):
     board.mark_space(0, 0)
@@ -120,4 +113,4 @@ def test_move_logic_prevents_fork_16_space_board(move_logic_with_large_board, bi
     big_board.mark_space(0, 1)
     big_board.mark_space(13, 1)
     big_board.mark_space(14, 1)
-    assert move_logic_with_large_board.get_move(1) in [7, 4, 15]
+    assert move_logic_with_large_board.get_move(1) in [7, 4, 12, 15]

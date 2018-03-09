@@ -14,18 +14,38 @@ class MoveLogic:
         self.turn = turn
         return self._minimax(turn, self.board)
 
-    def _minimax(self, turn, board):
+    def _minimax(self, turn, board, alpha=-inf, beta=inf):
         moves = {}
-        for space in board.empty_spaces():
-            new_board = copy(board)
-            new_board.mark_space(space, turn)
-            move_score = self._calculate_move_score(new_board, turn)
-            if move_score is not None:
-                moves[space] = move_score
-            else:
-                moves[space] = self._minimax(turn + 1, new_board)
+        if beta >= alpha:
+            for space in board.empty_spaces():
+                new_board = copy(board)
+                new_board.mark_space(space, turn)
+                move_score = self._calculate_move_score(new_board, turn)
+                if move_score is not None:
+                    moves[space] = move_score
+                else:
+                    moves[space] = self._minimax(turn + 1, new_board, alpha, beta)
+                    alpha = self._set_alpha(turn, alpha, moves[space])
+                    beta = self._set_beta(turn, beta, moves[space])
+            return self._choose_best(moves, turn)
+        else:
+            return self._alpha_or_beta(turn, alpha, beta)
 
-        return self._choose_best(moves, turn)
+    def _alpha_or_beta(self, turn, alpha, beta):
+        if self._turn_matches_player(turn):
+            return alpha
+        else:
+            return beta
+
+    def _set_alpha(self, turn, alpha, score):
+        if self._turn_matches_player(turn):
+            alpha = max(alpha, score)
+        return alpha
+
+    def _set_beta(self, turn, beta, score):
+        if not self._turn_matches_player(turn):
+            beta = min(beta, score)
+        return beta
 
     def _calculate_move_score(self, board, turn):
         if board.is_full() or self._max_calculated_turns(turn):
@@ -60,11 +80,13 @@ class MoveLogic:
 
     def _choose_best_move(self, moves, turn):
         options = []
-        best_value = self._choose_best_value(moves, turn)
+        best_value = max(list(moves.values()))
         for space, value in moves.items():
+            best_value = max(value, best_value)
             if value == best_value:
                 options.append(space)
         return choice(options)
 
     def _player_turn(self, turn):
         return turn % 2
+

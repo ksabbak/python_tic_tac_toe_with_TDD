@@ -1,4 +1,4 @@
-from random import randint, choice
+from random import choice
 from copy import copy
 from math import factorial
 
@@ -64,12 +64,6 @@ class MoveLogic:
         for space, value in moves.items():
             if value == best_value:
                 options.append(space)
-        if not options:
-            print("+++++++++++++")
-            print("Turn: " + str(turn))
-            print("best_value: " + str(best_value))
-            print(moves)
-            print("+++++++++++++")
         return choice(options)
 
     def _player_turn(self, turn):

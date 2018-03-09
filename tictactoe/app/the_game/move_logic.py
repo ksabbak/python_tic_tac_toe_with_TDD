@@ -1,6 +1,8 @@
-from random import randint, choice
+import pdb
+
 from copy import copy
-from math import factorial
+from math import factorial, inf
+from random import choice
 
 from .rules import Rules
 
@@ -14,7 +16,7 @@ class MoveLogic:
         self.turn = turn
         return self._minimax(turn, self.board)
 
-    def _minimax(self, turn, board):
+    def _minimax(self, turn, board, alpha=-inf, beta=inf):
         moves = {}
         for space in board.empty_spaces():
             new_board = copy(board)
@@ -23,7 +25,15 @@ class MoveLogic:
             if move_score is not None:
                 moves[space] = move_score
             else:
-                moves[space] = self._minimax(turn + 1, new_board)
+                moves[space] = self._minimax(turn + 1, new_board, alpha, beta)
+
+            if self._turn_matches_player(turn):
+                alpha = max(alpha, moves[space])
+            else:
+                beta = min(beta, moves[space])
+
+            if beta <= alpha:
+                break
 
         return self._choose_best(moves, turn)
 
@@ -49,8 +59,22 @@ class MoveLogic:
         else:
             return self._choose_best_value(moves, turn)
 
+    # def _choose_best_value(self, moves, turn):
+    #     best_value = self._player_weights(turn) * -inf
+    #     for space, value in moves.items():
+    #         if self._turn_matches_player(turn):
+    #             best_value = max(best_value, value)
+    #             self.alpha = max(self.alpha, best_value)
+    #         else:
+    #             best_value = min(best_value, value)
+    #             self.beta = min(self.beta, best_value)
+
+    #         if self.beta <= self.alpha:
+    #             break
+    #     return best_value
+
     def _choose_best_value(self, moves, turn):
-        best_value = self._player_weights(turn) * -10000
+        best_value = self._player_weights(turn) * -inf
         for space, value in moves.items():
             if ((self._turn_matches_player(turn) and value > best_value)
                 or
@@ -60,17 +84,14 @@ class MoveLogic:
 
     def _choose_best_move(self, moves, turn):
         options = []
-        best_value = self._choose_best_value(moves, turn)
+        best_value = max(list(moves.values()))
         for space, value in moves.items():
+            best_value = max(value, best_value)
             if value == best_value:
                 options.append(space)
-        if not options:
-            print("+++++++++++++")
-            print("Turn: " + str(turn))
-            print("best_value: " + str(best_value))
-            print(moves)
-            print("+++++++++++++")
+        # pdb.set_trace()
         return choice(options)
 
     def _player_turn(self, turn):
         return turn % 2
+

@@ -18,6 +18,14 @@ def tests_move_logic_moves_to_empty_spot(move_logic, board):
         board.mark_space(i, 1)
     assert move_logic.get_move(0) == 8
 
+def test_move_logic_1st_move_when_2nd_player_is_middle_space_if_middle_is_open(move_logic, board):
+    board.mark_space(3, 0)
+    assert move_logic.get_move(1) == 4
+
+def test_move_logic_1st_move_when_2nd_player_is_corner_space_if_middle_taken(move_logic, board):
+    board.mark_space(4, 0)
+    assert move_logic.get_move(1) in [0, 2, 6, 8]
+
 def test_move_logic_can_make_horizontal_winning_move(move_logic, board):
     board.mark_space(0, 0)
     board.mark_space(1, 0)

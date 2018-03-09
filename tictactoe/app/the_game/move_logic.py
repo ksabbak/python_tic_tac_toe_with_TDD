@@ -1,6 +1,6 @@
 from random import choice
 from copy import copy
-from math import factorial
+from math import factorial, inf
 
 from .rules import Rules
 
@@ -50,7 +50,7 @@ class MoveLogic:
             return self._choose_best_value(moves, turn)
 
     def _choose_best_value(self, moves, turn):
-        best_value = self._player_weights(turn) * -10000
+        best_value = self._player_weights(turn) * -inf
         for space, value in moves.items():
             if ((self._turn_matches_player(turn) and value > best_value)
                 or
